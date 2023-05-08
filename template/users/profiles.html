@@ -1,0 +1,71 @@
+<<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <title></title>
+   {% load crispy_forms_tags %}
+
+ <style type="text/css">
+    
+
+ </style>
+
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>Resbrotherx - Marketplace</title>
+      <meta name="description" content="Take your Compeny to the next level. With Resbritherx Studio plans, get everything you need to help grow your skills, build your Compeny and advance your career.">
+      <meta property="og:url" content="https://www.resbrotherx.com/subscribe">
+      <meta property="og:site_name" content="Resbritherx">
+      <meta property="og:title" content="Subscribe to Resbrotherx Premium">
+      <meta property="og:image" content="https://www.artstation.com/images/facebook.jpg' %}">
+      <meta property="og:description" content="Take your Compeny to the next level. With Resbritherx Studio plans, get everything you need to help grow your skills, build your Compeny and advance your career.">
+      <meta property="og:type" content="website">
+      <meta property="fb:app_id" content="249255215230397">
+      <meta name="twitter:site" content="@Resbritherx">
+      <meta name="twitter:site_name" content="Resbritherx">
+      <meta name="twitter:title" content="Subscribe to Resbritherx Premium">
+       <meta name="instagram:site" content="@Resbritherx">
+      <meta name="instagram:site_name" content="Resbritherx">
+      <meta name="instagram:title" content="Subscribe to Resbritherx Premium">
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:description" content="Take your Compeny to the next level. With Resbritherx Studio plans, get everything you need to help grow your skills, build your Compeny and advance your career.">
+      <meta name="twitter:image" content="https://www.artstation.com/images/facebook.jpg' %}">
+      <meta name="image" content="https://www.artstation.com/images/facebook.jpg' %}">
+      <meta content="IE=Edge,chrome=1" http-equiv="X-UA-Compatible">
+</head>
+<body>  
+<main class="page-content" id="main">
+            <section class="login ptb-80 ptb-sm-40 ptb-md-80 max-box">
+                <div class="container">
+                    <div class="col-md-10 m-auto">
+                        <div class="w-100 h-100 d-flex overflow-hidden shadow-default" style="border-radius: 10px;">
+                            <div class="row">
+                                <div class="col-md-5 position-relative bg-cover bg-norepeat bg-center align-items-center justify-content-center z-index-2 " data-color-overlay="10">
+                                    <div class="position-absolute top-0 left-0 bottom-0 right-0 bg-cover bg-center bg-norepeat" data-bg-image="img/bg/bg-4.jpg"></div>
+                           
+<h1>{{user.username}}</h1>
+<h1>{{user.email}}</h1>
+<img src="{{user.profile.image.url}}">
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="card px-3 px-lg-5 py-5 border-0">
+                                        <h3 class="mb-3 text-center">profile info</h3>
+                                        <div class="basic-dash-line w-75 m-auto"></div>
+                                        <form class="mt-5" method="POST" enctype="multipart/form-data">
+                                        	{% csrf_token %}
+                                            <div class="field-wrapper mb-4">
+                                                {{u_form|crispy}}
+                                                {{p_form|crispy}}
+                                            </div>
+                                           
+                                            <button type="submit">update</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+</body>
+</html>

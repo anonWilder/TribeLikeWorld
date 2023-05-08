@@ -1,0 +1,132 @@
+
+{% load static %} 
+{% include 'head-search.html' %}
+        <!-- Start of Main -->
+        <main class="main">
+            <!-- Start of Page Header -->
+            <div class="page-header" style="height: 181px;">
+                <div class="container">
+                    <h1 class="page-title">All Brands</h1>
+                    <h4 class="page-subtitle">Brands</h4>
+                </div>
+            </div>
+            <!-- End of Page Header -->
+
+            <!-- Start of Breadcrumb -->
+            <nav class="breadcrumb-nav mb-10 pb-1">
+                <div class="container">
+                    <ul class="breadcrumb">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/all-vendors/">All Brands</a></li>
+                        <li>Brands</li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- End of Breadcrumb -->
+
+            <!-- Start of Page Content -->
+            <div class="page-content vendor-page-content">
+                <div class="container">
+                 
+                    <!-- End of Default Section -->
+
+             
+                    <!-- End of Info Head Section -->
+
+                
+                    <!-- Vendor Banner Section -->
+
+                    <section class="ultimate-section mb-10 mb-lg-8">
+                        <h2 class="title title-center mb-5"></h2>
+                        <div class="swiper-theme show-code-action">
+                            <div class="swiper-wrapper row cols-xl-4 cols-md-3 cols-sm-2 cols-1">
+
+
+
+                                {% for i in vendors_list %}
+                                <div class="swiper-slide vendor-widget">
+                                    <div class="vendor-widget-banner">
+                                        <figure class="vendor-banner">
+                                            <a href="{{i.get_absolute_url}}">
+                                                <img src="{{i.brand_banner.url}}" alt="Vendor Banner"
+                                                    width="625" height="300" style="background-color: #40485F;" />
+                                            </a>
+                                        </figure>
+                                        <div class="vendor-details">
+                                            <figure class="vendor-logo">
+                                                <a href="{{i.get_absolute_url}}">
+                                                    <img src="{{i.brand_logo.url}}" alt="Vendor Logo"
+                                                        width="80" height="80" />
+                                                </a>
+                                            </figure>
+                                            <div class="vendor-personal">
+                                                <h4 class="vendor-name">
+                                                    <a href="{{i.get_absolute_url}}">{{i.Boutique_name}}</a>
+                                                </h4>
+                                                <!-- <div class="ratings-container">
+                                                    <div class="ratings-full">
+                                                        <span class="ratings" style="width: 100%;"></span>
+                                                        <span class="tooltiptext tooltip-top"></span>
+                                                    </div>
+                                                </div> -->
+                                                <span class="vendor-product-count">{{single_count}} Products</span>
+                                                <a href="{{i.get_absolute_url}}" class="visit-vendor-btn">Browse This
+                                                    Vendor</a>
+                                            </div>
+                                            <div class="vendor-products row cols-3 gutter-sm">
+                                                <div class="vendor-product">
+                                                    <figure class="product-media">
+                                                        <a href="product-default.html">
+                                                            <img src="{{i.products_image1.url}}"
+                                                                alt="Vendor Product" width="300" height="338" />
+                                                        </a>
+                                                    </figure>
+                                                </div>
+                                                <div class="vendor-product">
+                                                    <figure class="product-media">
+                                                        <a href="product-default.html">
+                                                            <img src="{{i.products_image2.url}}"
+                                                                alt="Vendor Product" width="300" height="338" />
+                                                        </a>
+                                                    </figure>
+                                                </div>
+                                                <div class="vendor-product">
+                                                    <figure class="product-media">
+                                                        <a href="product-default.html">
+                                                            <img src="{{i.products_image3.url}}"
+                                                                alt="Vendor Product" width="300" height="338" />
+                                                        </a>
+                                                    </figure>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End of Vendor Widget Banner -->
+                                </div>
+                                {% endfor %}
+
+
+                                
+                            </div>
+
+
+                            
+                            <!-- <div class="swiper-pagination"></div> -->
+                        </div>
+                    </section>
+
+
+
+                    
+                    <!-- End of Ultimate Section -->
+                </div>
+                
+          
+                <!-- End of Element Section -->
+
+            </div>
+            <!-- End of Page Content -->
+        </main>
+        <!-- End of Main -->
+
+        {% include 'footer.html' %}
