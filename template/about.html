@@ -71,34 +71,21 @@
                         }
                     }">
                         <div class="swiper-wrapper row cols-lg-3 cols-md-2 cols-1">
+
+                            {% for co in counter %}
                             <div class="swiper-slide counter-wrap">
                                 <div class="counter text-center">
-                                    <span class="count-to" data-to="15">0</span>
-                                    <span>M+</span>
-                                    <h4 class="title title-center">Products For Sale</h4>
-                                    <p>Diam maecenas ultricies mi eget mauris<br>
-                                        Nibh tellus molestie nunc non</p>
+                                    <span class="count-to" data-to="{{co.count}}">0</span>
+                                    <span></span>
+                                    <h4 class="title title-center">{{co.name}}</h4>
+                                    <!-- <p>Diam maecenas ultricies mi eget mauris<br>
+                                        Nibh tellus molestie nunc non</p> -->
                                 </div>
                             </div>
-                            <div class="swiper-slide counter-wrap">
-                                <div class="counter text-center">
-                                    <span>$</span>
-                                    <span class="count-to" data-to="25">0</span>
-                                    <span>B+</span>
-                                    <h4 class="title title-center">Community Earnings</h4>
-                                    <p>Diam maecenas ultricies mi eget mauris<br>
-                                        Nibh tellus molestie nunc non</p>
-                                </div>
-                            </div>
-                            <div class="swiper-slide counter-wrap">
-                                <div class="counter text-center">
-                                    <span class="count-to" data-to="100">0</span>
-                                    <span>M+</span>
-                                    <h4 class="title title-center">Growing Buyers</h4>
-                                    <p>Diam maecenas ultricies mi eget mauris<br>
-                                        Nibh tellus molestie nunc non</p>
-                                </div>
-                            </div>
+                            {% endfor %}
+                          
+
+
                         </div>
                         <div class="swiper-pagination"></div>
                     </div>

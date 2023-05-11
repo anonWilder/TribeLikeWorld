@@ -3080,7 +3080,8 @@ blockquote {
 }
 
 .bg-primary {
-  background-color: #336699 !important;
+  /* background-color: #336699 !important; */
+  background-color: #df1d1d !important;
 }
 
 .bg-secondary {

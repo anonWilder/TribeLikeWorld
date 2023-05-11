@@ -318,3 +318,19 @@ class Referal(models.Model):
 			code = generate_ref_code()
 			self.code = code
 		super().save(*args, **kwargs)
+
+
+
+class counter(models.Model):
+    name = models.CharField(max_length=30)
+    count = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+class Top_Brands(models.Model):
+    brands_logo = models.ImageField(blank=True, null=True, default=False)
+
+    def __str__(self):
+        return self.id

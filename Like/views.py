@@ -275,15 +275,15 @@ class IndexView(View):
 		latest = Item.objects.filter(seasson='NEW ARRIVALS').order_by('-timestamp')[0:10]
 		best_sell = Item.objects.filter(seasson='BEST SELLER').order_by('-timestamp')[0:10]
 		most_popular = Item.objects.filter(seasson='MOST POPULAR').order_by('-timestamp')[0:10]
-		men_cloth = Item.objects.filter(category__name='MEN CLOTHING').order_by('-timestamp')[0:2]
-		men_cloth2 = Item.objects.filter(category__name='MEN CLOTHING').order_by('-timestamp')[2:4]
-		men_cloth3 = Item.objects.filter(category__name='MEN CLOTHING').order_by('-timestamp')[4:6]
-		men_cloth4 = Item.objects.filter(category__name='MEN CLOTHING').order_by('-timestamp')[6:8]
+		men_cloth = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[0:2]
+		men_cloth2 = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[2:4]
+		men_cloth3 = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[4:6]
+		men_cloth4 = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[6:8]
 
-		women_cloth = Item.objects.filter(category__name='WOMEN CLOTHING').order_by('-timestamp')[0:2]
-		women_cloth2 = Item.objects.filter(category__name='WOMEN CLOTHING').order_by('-timestamp')[2:4]
-		women_cloth3 = Item.objects.filter(category__name='WOMEN CLOTHING').order_by('-timestamp')[4:6]
-		women_cloth4 = Item.objects.filter(category__name='WOMEN CLOTHING').order_by('-timestamp')[6:8]
+		women_cloth = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[0:2]
+		women_cloth2 = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[2:4]
+		women_cloth3 = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[4:6]
+		women_cloth4 = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[6:8]
 
 		ACCESSORIES = Item.objects.filter(category__name='ACCESSORIES & SHOES').order_by('-timestamp')[0:2]
 		ACCESSORIES2 = Item.objects.filter(category__name='ACCESSORIES & SHOES').order_by('-timestamp')[2:4]
@@ -836,17 +836,17 @@ def sell_form(request):
 	return render(request,"sell_form.html")
 
 def successfully(request):
-    return render(request,"successful.html")
+	return render(request,"successful.html")
 
 
 def vendors(request):
-    vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
-    vendors_count = BOUTIQUE_REQUEST.objects.filter(approved=True)
-    # for i in vendors_count:
-    #     n = i.user
-    #     print(n.count())
-    single_count = vendors_count.filter(user=request.user).count()
-    return render(request,"vendors.html",{'vendors_list':vendors_list,'single_count':single_count})
+	vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
+	vendors_count = BOUTIQUE_REQUEST.objects.filter(approved=True)
+	# for i in vendors_count:
+	#     n = i.user
+	#     print(n.count())
+	# single_count = vendors_count.filter(user=request.user).count()
+	return render(request,"vendors.html",{'vendors_list':vendors_list})
 
 def VendorDetailView(request, pk):
 	objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pk)
@@ -864,11 +864,12 @@ def VendorDetailView(request, pk):
 	return render(request, 'vendor_details.html', context)
 
 def about(request):
-    return render(request,"about.html")
+	counters = counter.objects.all()
+	return render(request,"about.html",{'counter':counters})
 
 
 def contact(request):
-    return render(request,"contact.html")
+	return render(request,"contact.html")
 
 
 # def news(request):
