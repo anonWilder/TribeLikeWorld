@@ -22,6 +22,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     # path('<str:ref_code>/', index, name="index"),
     path('tinymce/', include('tinymce.urls')),
+    path('paypal', include('paypal.standard.ipn.urls')),
 ]
 
 if settings.DEBUG:

@@ -75,6 +75,18 @@
 </head>
 
 <body class="home">
+    <div class="mt-5 pt-4">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% endfor %}
+        {% endif %}
+        </div>
     <div class="page-wrapper">
         <h1 class="d-none">Tribe Like - Responsive Marketplace</h1>
         <!-- Start of Header -->
@@ -82,6 +94,16 @@
             <div class="header-top">
                 <div class="container">
                     <div class="header-left">
+                        {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                          {{ message }}
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
                         <p class="welcome-msg">Welcome to Tribe Like Store message or remove it!</p>
                     </div>
                     <div class="header-right">
@@ -173,13 +195,13 @@
                         </a>
                         <div class="dropdown cart-dropdown cart-offcanvas mr-0 mr-lg-2">
                             <div class="cart-overlay"></div>
-                            <a href="/cart" class="cart-toggle label-down link">
+                            <a href="/order-summary/" class="label-down link">
                                 <i class="w-icon-cart">
                                     <span class="cart-count">{{ order.items.count }}</span>
                                 </i>
                                 <!-- <span class="cart-label">Cart</span> -->
                             </a>
-                            <div class="dropdown-box">
+                            <!-- <div class="dropdown-box">
                                 <div class="cart-header">
                                     <span>Shopping Cart</span>
                                     <a href="#" class="btn-close">Close<i class="w-icon-long-arrow-right"></i></a>
@@ -238,7 +260,7 @@
                                     <a href="cart.html" class="btn btn-dark btn-outline btn-rounded">View Cart</a>
                                     <a href="checkout.html" class="btn btn-primary  btn-rounded">Checkout</a>
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- End of Dropdown Box -->
                         </div>
                     </div>
@@ -262,7 +284,8 @@
                                         {% for main_cat in category %}
                                         <li>
                                             <a href="shop-fullwidth-banner.html">
-                                                <i class="w-icon-tshirt2"></i>{{main_cat.name}}
+                                                <!-- <i class="w-icon-tshirt2"></i> -->
+                                                {{main_cat.name}}
                                             </a>
                                             <ul class="megamenu">
 
@@ -278,7 +301,7 @@
                                                     </ul>
                                                 </li>
                                                 {% endfor %}
-                                                <li>
+                                                <!-- <li>
                                                     <div class="banner-fixed menu-banner menu-banner2">
                                                         <figure>
                                                             <img src="{% static 'assets/images/menu/banner-2.jpg' %}" alt="Menu Banner"
@@ -296,7 +319,7 @@
                                                             </a>
                                                         </div>
                                                     </div>
-                                                </li>
+                                                </li> -->
                                             </ul>
                                         </li>
                                         {% endfor %}
@@ -722,7 +745,7 @@
                                         </ul> -->
                                     </li>
                                     <li>
-                                        <a href="/news-page/">News</a>
+                                        <a href="/news-page/">Editorial</a>
                                         <!-- <ul>
                                             <li><a href="blog.html">Classic</a></li>
                                             <li><a href="blog-listing.html">Listing</a></li>
@@ -756,6 +779,7 @@
                                             </li>
                                         </ul> -->
                                     </li>
+                                   
                                     <li>
                                         <a href="/about-us/">About</a>
                                         <!-- <ul>
@@ -771,6 +795,41 @@
                                             <li><a href="checkout.html">Checkout</a></li>
                                             <li><a href="my-account.html">My Account</a></li>
                                             <li><a href="compare.html">Compare</a></li>
+                                        </ul> -->
+                                    </li>
+                                    <li>
+                                        <a href="/how-to-sell/">How to sell</a>
+                                        <!-- <ul>
+                                            <li><a href="blog.html">Classic</a></li>
+                                            <li><a href="blog-listing.html">Listing</a></li>
+                                            <li>
+                                                <a href="blog-grid-3cols.html">Grid</a>
+                                                <ul>
+                                                    <li><a href="blog-grid-2cols.html">Grid 2 columns</a></li>
+                                                    <li><a href="blog-grid-3cols.html">Grid 3 columns</a></li>
+                                                    <li><a href="blog-grid-4cols.html">Grid 4 columns</a></li>
+                                                    <li><a href="blog-grid-sidebar.html">Grid sidebar</a></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a href="blog-masonry-3cols.html">Masonry</a>
+                                                <ul>
+                                                    <li><a href="blog-masonry-2cols.html">Masonry 2 columns</a></li>
+                                                    <li><a href="blog-masonry-3cols.html">Masonry 3 columns</a></li>
+                                                    <li><a href="blog-masonry-4cols.html">Masonry 4 columns</a></li>
+                                                    <li><a href="blog-masonry-sidebar.html">Masonry sidebar</a></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a href="blog-mask-grid.html">Mask</a>
+                                                <ul>
+                                                    <li><a href="blog-mask-grid.html">Blog mask grid</a></li>
+                                                    <li><a href="blog-mask-masonry.html">Blog mask masonry</a></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a href="post-single.html">Single Post</a>
+                                            </li>
                                         </ul> -->
                                     </li>
                                     <li>

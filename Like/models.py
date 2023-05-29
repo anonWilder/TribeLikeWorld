@@ -152,6 +152,11 @@ class BOUTIQUE_REQUEST(models.Model):
         return reverse("core:vendors", kwargs={
             'pk': self.pk
         })
+    
+    def get_absolute_urls(self):
+        return reverse("core:sells_details", kwargs={
+            'pk': self.pk
+        })
 
 
 
@@ -331,6 +336,7 @@ class counter(models.Model):
 
 class Top_Brands(models.Model):
     brands_logo = models.ImageField(blank=True, null=True, default=False)
+    timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.id

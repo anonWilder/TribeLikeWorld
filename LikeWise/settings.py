@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+from decouple import config
 
 # import django
 # from django.utils.encoding import smart_str
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'jet.dashboard',
     'tinymce',
     'blog',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -176,6 +178,12 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login'
 LOGOUT_URL = 'logout'
 
+STRIPE_PUBLIC_KEY = 'pk_test_51MyFLNA0mOrYWSJYnPXSoMd55av3ImHJXx5qFDIaLULEhy7uU56VLe8xJuA1aPDQ5syihenCXpk23iUpMhFjNqf600l73zYzfI'
+STRIPE_SECRET_KEY = 'sk_test_51MyFLNA0mOrYWSJYcZhWEomav7mn7mPalo7IaTEhNZvg1IouXmkMbA4P7vies2gc8i0nckLkKXfRbeOPIXym6M1X00x5TAbpgr'
+
+# PAYPAL_RECEIVER_EMAIL = 'likeandco@gmail.com',
+PAYPAL_RECEIVER_EMAIL = 'likeandco2023@gmail.com',
+PAYPAL_TEST = True
 
 SITE_ID = 1
 

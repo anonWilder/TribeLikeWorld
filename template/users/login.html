@@ -1,5 +1,4 @@
    {% load static %}
-   {% load crispy_forms_tags %}
    <!DOCTYPE html>
 <html lang="en">
 
@@ -309,7 +308,7 @@ a.ssolink {
               <form action="" method="POST"> 
                 {% csrf_token %}
                  <div class="field padding-bottom--24">
-                  {{form|crispy}}
+                  {{form}}
                   <!-- 
                   <label for="email">First Name</label>
                   <input type="text" name="first_name"> -->

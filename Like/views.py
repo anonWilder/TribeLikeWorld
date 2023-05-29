@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.views.generic import ListView, DetailView, View
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -15,23 +15,27 @@ from users.models import *
 from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.template.loader import render_to_string
-from django.conf import settings
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
-
+from paypal.standard.forms import PayPalPaymentsForm
+import uuid
 import random
 import string
+
+import stripe
 # import Paystack
 
 # paystack.api_key = settings.PAYSTACK_SECRET_KEY
-
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def create_ref_code():
 	return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
 
 def products(request):
+	order = Order.objects.get(user=self.request.user, ordered=False)
 	context = {
+		'order':order,
 		'items': Item.objects.all()
 	}
 	return render(request, "products.html", context)
@@ -234,7 +238,7 @@ class CheckoutView(View):
 				if payment_option == 'S':
 					return redirect('core:payment', payment_option='Paystack')
 				elif payment_option == 'P':
-					return redirect('core:payment', payment_option='paypal')
+					return redirect('core:paypal_payment', payment_option='paypal')
 				else:
 					messages.warning(
 						self.request, "Invalid payment option selected")
@@ -244,147 +248,14 @@ class CheckoutView(View):
 			return redirect("core:order-summary")
 
 
-
-# class HomeView(ListView):
-#     model = Item
-#     paginate_by = 10
-#     template_name = "menu.html"
-
-# def Event_detailsDetailView(request, pk):
-#     post = get_object_or_404(Event, pk=pk)
-#     photos = PostImage.objects.filter(post=post)
-#     return render(request, 'event_details.html', {
-#         'post':post,
-#         'photos':photos
-#     })
-
-class HomeView(ListView):
-	def get(self, request, *args, **kwargs):
-
-		featured_post = Item.objects.all()[:6]
-		latest = Item.objects.order_by('-timestamp')[0:6]
-		context = {
-			'latest':latest,
-		}
-		return render(request, 'menu.html', context)
-
-class IndexView(View):
-	def get(self, request, *args, **kwargs):
-		featured_post = Item.objects.filter(futured=True).order_by('-timestamp')[:10]
-		category = Main_Category.objects.all().order_by('-id')
-		latest = Item.objects.filter(seasson='NEW ARRIVALS').order_by('-timestamp')[0:10]
-		best_sell = Item.objects.filter(seasson='BEST SELLER').order_by('-timestamp')[0:10]
-		most_popular = Item.objects.filter(seasson='MOST POPULAR').order_by('-timestamp')[0:10]
-		men_cloth = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[0:2]
-		men_cloth2 = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[2:4]
-		men_cloth3 = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[4:6]
-		men_cloth4 = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[6:8]
-
-		women_cloth = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[0:2]
-		women_cloth2 = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[2:4]
-		women_cloth3 = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[4:6]
-		women_cloth4 = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[6:8]
-
-		ACCESSORIES = Item.objects.filter(category__name='ACCESSORIES & SHOES').order_by('-timestamp')[0:2]
-		ACCESSORIES2 = Item.objects.filter(category__name='ACCESSORIES & SHOES').order_by('-timestamp')[2:4]
-		ACCESSORIES3 = Item.objects.filter(category__name='ACCESSORIES & SHOES').order_by('-timestamp')[4:6]
-		ACCESSORIES4 = Item.objects.filter(category__name='ACCESSORIES & SHOES').order_by('-timestamp')[6:8]
-
-		category_icon = Main_Category.objects.all()[0:6]
-		# print('this the men cloths there',ACCESSORIES)
-		context = {
-			'men_cloth':men_cloth,
-			'men_cloth2':men_cloth2,
-			'men_cloth3':men_cloth3,
-			'men_cloth4':men_cloth4,
-
-			'ACCESSORIES':ACCESSORIES,
-			'ACCESSORIES2':ACCESSORIES2,
-			'ACCESSORIES3':ACCESSORIES3,
-			'ACCESSORIES4':ACCESSORIES4,
-
-
-			'women_cloth':women_cloth,
-			'women_cloth2':women_cloth2,
-			'women_cloth3':women_cloth3,
-			'women_cloth4':women_cloth4,
-			'best_sell':best_sell,
-			'most_popular':most_popular,
-			'category':category,
-			'category_icon':category_icon,
-			'latest': latest,
-			'futureds': featured_post
-		}
-		return render(request, 'index.html', context)
-
-
-class OrderSummaryView(LoginRequiredMixin, View):
-	def get(self, *args, **kwargs):
-		try:
-			order = Order.objects.get(user=self.request.user, ordered=False)
-			context = {
-				'object': order
-			}
-			return render(self.request, 'order_summary.html', context)
-		except ObjectDoesNotExist:
-			messages.warning(self.request, "You do not have an active order")
-			return redirect("/")
-
-
-# class ItemDetailView(DetailView):
-	
-#     model = Item
-#     template_name = "product.html"
-def ItemDetailView(request, pk):
-	objects = get_object_or_404(Item, pk=pk)
-	latest = Item.objects.filter(seasson='NEW ARRIVALS').order_by('-timestamp')[0:3]
-	# object = Item.objects.filter(item=post)
-	featured_post = Item.objects.filter(futured=True).order_by('-timestamp')[:3]
-	context = {
-		'object': objects,
-		'latest': latest,
-		'futureds': featured_post
-	}
-	return render(request, 'product.html', context)
-
-
-@login_required
-def add_to_cart(request, pk):
-	item = get_object_or_404(Item, id=pk)
-	order_item, created = OrderItem.objects.get_or_create(
-		item=item,
-		user=request.user,
-		ordered=False
-	)
-	order_qs = Order.objects.filter(user=request.user, ordered=False)
-	if order_qs.exists():
-		order = order_qs[0]
-		# check if the order item is in the order
-		if order.items.filter(item__id=item.id).exists():
-			order_item.quantity += 1
-			order_item.save()
-			messages.info(request, "This item quantity was updated.")
-			return redirect("core:order-summary")
-		else:
-			order.items.add(order_item)
-			messages.info(request, "This item was added to your cart.")
-			return redirect("core:order-summary")
-	else:
-		ordered_date = timezone.now()
-		order = Order.objects.create(
-			user=request.user, ordered_date=ordered_date)
-		order.items.add(order_item)
-		messages.info(request, "This item was added to your cart.")
-		return redirect("core:order-summary")
-
-
 class PaymentView(View):
 	def get(self, *args, **kwargs):
 		order = Order.objects.get(user=self.request.user, ordered=False)
 		if order.billing_address:
 			context = {
 				'order': order,
-				'DISPLAY_COUPON_FORM': False
+				'DISPLAY_COUPON_FORM': False,
+				'STRIPE_PUBLIC_KEY' : settings.STRIPE_PUBLIC_KEY
 			}
 			userprofile = self.request.user.userprofile
 			if userprofile.one_click_purchasing:
@@ -404,16 +275,19 @@ class PaymentView(View):
 		else:
 			messages.warning(
 				self.request, "You have not added a billing address")
-			return redirect("checkout")
+			return redirect("core:checkout")
 
 	def post(self, *args, **kwargs):
 		order = Order.objects.get(user=self.request.user, ordered=False)
 		form = PaymentForm(self.request.POST)
 		userprofile = UserProfile.objects.get(user=self.request.user)
+		
 		if form.is_valid():
 			token = form.cleaned_data.get('stripeToken')
 			save = form.cleaned_data.get('save')
 			use_default = form.cleaned_data.get('use_default')
+
+			print("tjk",save,"token",token,"def",use_default)
 
 			if save:
 				if userprofile.stripe_customer_id != '' and userprofile.stripe_customer_id is not None:
@@ -438,14 +312,15 @@ class PaymentView(View):
 					# charge the customer because we cannot charge the token more than once
 					charge = stripe.Charge.create(
 						amount=amount,  # cents
-						currency="usd",
-						customer=userprofile.stripe_customer_id
+						currency="USD",
+						source=token,
+						customer=request.user.id
 					)
 				else:
 					# charge once off on the token
 					charge = stripe.Charge.create(
 						amount=amount,  # cents
-						currency="usd",
+						currency="gpb",
 						source=token
 					)
 
@@ -516,41 +391,418 @@ class PaymentView(View):
 		return redirect("/payment/stripe/")
 
 
-def PaymentView(request):
-	plan = request.GET.get('sub_plane')
-	fetch_membership = Membership.objects.filter(membership_type=plan).exists()
-	if fetch_membership == False:
-		return redirect('subscrib')
-	membership = Membership.objects.get(membership_type=plan)
+def PaypalPayment(request,payment_option):
+	order = Order.objects.get(user=request.user, ordered=False)
+	amount = order.get_total()
+	
+	context = {
+		'order': order,
+		'DISPLAY_COUPON_FORM': False,
+		'amount':amount,
+	}
+	# host = request.get_host()
+	
+	# paypal_dic = {
+	# 	'business':settings.PAYPAL_RECEIVER_EMAIL,
+	# 	'amount': amount,
+	# 	'item_name': 'first peince',
+	# 	'invoice':str(uuid.uuid4()),
+	# 	'currency_code':'USD',
+	# 	'notify_url': 'http://{}{}'.format(host, reverse("paypal-ipn")),
+	# 	'return_url': 'http://{}{}'.format(host, reverse("core:payment-completed")),
+	# 	'cancel_return': 'http://{}{}'.format(host, reverse("core:payment-failed")),
+	# }
+	# print("this the ",paypal_dic)
+	# paypal_payment_button = PayPalPaymentsForm(initial=paypal_dic)
+	return render(request,"paypal-page.html",context)
 
 
-	price = float(membership.price)*100
-	price = int(price)
-	def init_payment(request):
-		url = 'https://api.paystack.co/transaction/initialize'
-		headers = {
-			'Authorization': 'Bearer '+settings.PAYSTACK_SECRET_KEY,
-			'Content-type' : 'application/json',
-			'Accept': 'application/json',
+def InvoicePayment(request,payment_option):
+	order = Order.objects.get(user=request.user, ordered=False)
+	amount = order.get_total()
+	
+	try:
+
+				# create the payment
+		payment = Payment()
+		payment.stripe_charge_id = charge['id']
+		payment.user = self.request.user
+		payment.amount = order.get_total()
+		payment.save()
+
+				# assign the payment to the order
+
+		order_items = order.items.all()
+		order_items.update(ordered=True)
+		for item in order_items:
+			item.save()
+		order.ordered = True
+		order.payment = payment
+		order.ref_code = create_ref_code()
+		order.save()
+
+		messages.success(self.request, "Your order was successful!")
+		return redirect("/")
+
+	except stripe.error.CardError as e:
+		return redirect("/")
+	if order.billing_address:
+		context = {
+			'order': order,
+			'DISPLAY_COUPON_FORM': False,
+			'amount':amount,
+		}
+	else:
+		messages.warning(request, "You have not added a billing address")
+		return redirect("core:checkout")
+	# host = request.get_host()
+	
+	# paypal_dic = {
+	# 	'business':settings.PAYPAL_RECEIVER_EMAIL,
+	# 	'amount': amount,
+	# 	'item_name': 'first peince',
+	# 	'invoice':str(uuid.uuid4()),
+	# 	'currency_code':'USD',
+	# 	'notify_url': 'http://{}{}'.format(host, reverse("paypal-ipn")),
+	# 	'return_url': 'http://{}{}'.format(host, reverse("core:payment-completed")),
+	# 	'cancel_return': 'http://{}{}'.format(host, reverse("core:payment-failed")),
+	# }
+	# print("this the ",paypal_dic)
+	# paypal_payment_button = PayPalPaymentsForm(initial=paypal_dic)
+	return render(request,"invoice-page.html",context)
+
+
+
+def payment_completed_view(request):
+	return render(request,"payment-completed.html")
+
+def payment_failed_view(request):
+	return render(request,"payment-failed.html")
+
+# class HomeView(ListView):
+#     model = Item
+#     paginate_by = 10
+#     template_name = "menu.html"
+
+# def Event_detailsDetailView(request, pk):
+#     post = get_object_or_404(Event, pk=pk)
+#     photos = PostImage.objects.filter(post=post)
+#     return render(request, 'event_details.html', {
+#         'post':post,
+#         'photos':photos
+#     })
+class HomeView(ListView):
+	def get(self, request, *args, **kwargs):
+
+		featured_post = Item.objects.all()[:6]
+		latest = Item.objects.order_by('-timestamp')[0:6]
+		context = {
+			'latest':latest,
+		}
+		return render(request, 'menu.html', context)
+
+class IndexView(View):
+	def get(self, request, *args, **kwargs):
+		order = Order.objects.get(user=self.request.user, ordered=False)
+		featured_post = Item.objects.filter(futured=True).order_by('-timestamp')[:10]
+		category = Main_Category.objects.all().order_by('-id')
+		latest = Item.objects.filter(seasson='NEW ARRIVALS').order_by('-timestamp')[0:10]
+		best_sell = Item.objects.filter(seasson='BEST SELLER').order_by('-timestamp')[0:10]
+		most_popular = Item.objects.filter(seasson='MOST POPULAR').order_by('-timestamp')[0:10]
+		men_cloth = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[0:2]
+		men_cloth2 = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[2:4]
+		men_cloth3 = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[4:6]
+		men_cloth4 = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[6:8]
+
+		women_cloth = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[0:2]
+		women_cloth2 = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[2:4]
+		women_cloth3 = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[4:6]
+		women_cloth4 = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[6:8]
+
+		ACCESSORIES = Item.objects.filter(category__name='ACCESSORIES & SHOES').order_by('-timestamp')[0:2]
+		ACCESSORIES2 = Item.objects.filter(category__name='ACCESSORIES & SHOES').order_by('-timestamp')[2:4]
+		ACCESSORIES3 = Item.objects.filter(category__name='ACCESSORIES & SHOES').order_by('-timestamp')[4:6]
+		ACCESSORIES4 = Item.objects.filter(category__name='ACCESSORIES & SHOES').order_by('-timestamp')[6:8]
+
+		
+		top_brand1 = Top_Brands.objects.order_by('-timestamp')[0:2]
+		top_brand2 = Top_Brands.objects.order_by('-timestamp')[2:4]
+		top_brand3 = Top_Brands.objects.order_by('-timestamp')[4:6]
+		top_brand4 = Top_Brands.objects.order_by('-timestamp')[6:8]
+		top_brand5 = Top_Brands.objects.order_by('-timestamp')[8:10]
+		top_brand6 = Top_Brands.objects.order_by('-timestamp')[10:12]
+
+		category_icon = Main_Category.objects.all()[0:6]
+		# print('this the men cloths there',ACCESSORIES)
+		context = {
+			'order':order,
+			'men_cloth':men_cloth,
+			'men_cloth2':men_cloth2,
+			'men_cloth3':men_cloth3,
+			'men_cloth4':men_cloth4,
+
+			'ACCESSORIES':ACCESSORIES,
+			'ACCESSORIES2':ACCESSORIES2,
+			'ACCESSORIES3':ACCESSORIES3,
+			'ACCESSORIES4':ACCESSORIES4,
+
+
+			'women_cloth':women_cloth,
+			'women_cloth2':women_cloth2,
+			'women_cloth3':women_cloth3,
+			'women_cloth4':women_cloth4,
+			'best_sell':best_sell,
+			'most_popular':most_popular,
+			'category':category,
+			'category_icon':category_icon,
+			'latest': latest,
+			'futureds': featured_post,
+
+			
+			'top_brand1':top_brand1,
+			'top_brand2':top_brand2,
+			'top_brand3':top_brand3,
+			'top_brand4':top_brand4,
+			'top_brand5':top_brand5,
+			'top_brand6':top_brand6,
+		}
+		return render(request, 'index.html', context)
+
+
+class OrderSummaryView(LoginRequiredMixin, View):
+	def get(self, *args, **kwargs):
+		try:
+			order = Order.objects.get(user=self.request.user, ordered=False)
+			context = {
+				'object': order
 			}
-		datum = {
-			"email": request.user.email,
-			"amount": price
-			}
-		x = requests.post(url, data=json.dumps(datum), headers=headers)
-		if x.status_code != 200:
-			return str(x.status_code)
+			return render(self.request, 'order_summary.html', context)
+		except ObjectDoesNotExist:
+			messages.warning(self.request, "You do not have an active order")
+			return redirect("/")
 
-		result = x.json()
-		return result
-	initialized = init_payment(request)
-	print(initialized)
-	amount = price/100
-	instance = PayHistory.objects.create(amount=amount, payment_for=membership, user=request.user, paystack_charge_id=initialized['data']['reference'], paystack_access_code=initialized['data']['access_code'])
-	UserMembership.objects.filter(user=instance.user).update(reference_code=initialized['data']['reference'])
-	link = initialized['data']['authorization_url']
-	return HttpResponseRedirect(link)
-	return render(request, 'Template/subscrib.html')
+
+# class ItemDetailView(DetailView):
+	
+#     model = Item
+#     template_name = "product.html"
+def ItemDetailView(request, pk):
+	objects = get_object_or_404(Item, pk=pk)
+	latest = Item.objects.filter(seasson='NEW ARRIVALS').order_by('-timestamp')[0:3]
+	# object = Item.objects.filter(item=post)
+	featured_post = Item.objects.filter(futured=True).order_by('-timestamp')[:3]
+	context = {
+		'object': objects,
+		'latest': latest,
+		'futureds': featured_post
+	}
+	return render(request, 'product.html', context)
+
+
+@login_required
+def add_to_cart(request, pk):
+	item = get_object_or_404(Item, id=pk)
+	order_item, created = OrderItem.objects.get_or_create(
+		item=item,
+		user=request.user,
+		ordered=False
+	)
+	order_qs = Order.objects.filter(user=request.user, ordered=False)
+	if order_qs.exists():
+		order = order_qs[0]
+		# check if the order item is in the order
+		if order.items.filter(item__id=item.id).exists():
+			order_item.quantity += 1
+			order_item.save()
+			messages.info(request, "This item quantity was updated.")
+			return redirect("core:order-summary")
+		else:
+			order.items.add(order_item)
+			messages.info(request, "This item was added to your cart.")
+			return redirect("core:order-summary")
+	else:
+		ordered_date = timezone.now()
+		order = Order.objects.create(
+			user=request.user, ordered_date=ordered_date)
+		order.items.add(order_item)
+		messages.info(request, "This item was added to your cart.")
+		return redirect("core:order-summary")
+
+
+# class PaymentView(View):
+# 	def get(self, *args, **kwargs):
+# 		order = Order.objects.get(user=self.request.user, ordered=False)
+# 		if order.billing_address:
+# 			context = {
+# 				'order': order,
+# 				'DISPLAY_COUPON_FORM': False
+# 			}
+# 			userprofile = self.request.user.userprofile
+# 			if userprofile.one_click_purchasing:
+# 				# fetch the users card list
+# 				cards = stripe.Customer.list_sources(
+# 					userprofile.stripe_customer_id,
+# 					limit=3,
+# 					object='card'
+# 				)
+# 				card_list = cards['data']
+# 				if len(card_list) > 0:
+# 					# update the context with the default card
+# 					context.update({
+# 						'card': card_list[0]
+# 					})
+# 			return render(self.request, "payment.html", context)
+# 		else:
+# 			messages.warning(
+# 				self.request, "You have not added a billing address")
+# 			return redirect("/checkout")
+
+# 	def post(self, *args, **kwargs):
+# 		order = Order.objects.get(user=self.request.user, ordered=False)
+# 		form = PaymentForm(self.request.POST)
+# 		userprofile = UserProfile.objects.get(user=self.request.user)
+# 		if form.is_valid():
+# 			token = form.cleaned_data.get('stripeToken')
+# 			save = form.cleaned_data.get('save')
+# 			use_default = form.cleaned_data.get('use_default')
+
+# 			if save:
+# 				if userprofile.stripe_customer_id != '' and userprofile.stripe_customer_id is not None:
+# 					customer = stripe.Customer.retrieve(
+# 						userprofile.stripe_customer_id)
+# 					customer.sources.create(source=token)
+
+# 				else:
+# 					customer = stripe.Customer.create(
+# 						email=self.request.user.email,
+# 					)
+# 					customer.sources.create(source=token)
+# 					userprofile.stripe_customer_id = customer['id']
+# 					userprofile.one_click_purchasing = True
+# 					userprofile.save()
+
+# 			amount = int(order.get_total() * 100)
+# 			print("this the paramiter request here",userprofile.stripe_customer_id)
+# 			try:
+
+# 				if use_default or save:
+# 					# charge the customer because we cannot charge the token more than once
+# 					charge = stripe.Charge.create(
+# 						amount=amount,  # cents
+# 						currency="gpb",
+# 						customer=userprofile.stripe_customer_id
+# 					)
+# 					print("this the paramiter request here",userprofile.stripe_customer_id)
+# 				else:
+# 					# charge once off on the token
+# 					charge = stripe.Charge.create(
+# 						amount=amount,  # cents
+# 						currency="gpb",
+# 						source=token
+# 					)
+
+# 				# create the payment
+# 				payment = Payment()
+# 				payment.stripe_charge_id = charge['id']
+# 				payment.user = self.request.user
+# 				payment.amount = order.get_total()
+# 				payment.save()
+
+# 				# assign the payment to the order
+
+# 				order_items = order.items.all()
+# 				order_items.update(ordered=True)
+# 				for item in order_items:
+# 					item.save()
+
+# 				order.ordered = True
+# 				order.payment = payment
+# 				order.ref_code = create_ref_code()
+# 				order.save()
+
+# 				messages.success(self.request, "Your order was successful!")
+# 				return redirect("/")
+
+# 			except stripe.error.CardError as e:
+# 				body = e.json_body
+# 				err = body.get('error', {})
+# 				messages.warning(self.request, f"{err.get('message')}")
+# 				return redirect("/")
+
+# 			except stripe.error.RateLimitError as e:
+# 				# Too many requests made to the API too quickly
+# 				messages.warning(self.request, "Rate limit error")
+# 				return redirect("/")
+
+# 			except stripe.error.InvalidRequestError as e:
+# 				# Invalid parameters were supplied to Stripe's API
+# 				print("this the errro report here",e)
+# 				messages.warning(self.request, "Invalid parameters")
+# 				return redirect("/")
+
+# 			except stripe.error.AuthenticationError as e:
+# 				# Authentication with Stripe's API failed
+# 				# (maybe you changed API keys recently)
+# 				messages.warning(self.request, "Not authenticated")
+# 				return redirect("/")
+
+# 			except stripe.error.APIConnectionError as e:
+# 				# Network communication with Stripe failed
+# 				messages.warning(self.request, "Network error")
+# 				return redirect("/")
+
+# 			except stripe.error.StripeError as e:
+# 				# Display a very generic error to the user, and maybe send
+# 				# yourself an email
+# 				messages.warning(
+# 					self.request, "Something went wrong. You were not charged. Please try again.")
+# 				return redirect("/")
+
+# 			except Exception as e:
+# 				# send an email to ourselves
+# 				messages.warning(
+# 					self.request, "A serious error occurred. We have been notifed.")
+# 				return redirect("/")
+
+# 		messages.warning(self.request, "Invalid data received")
+# 		return redirect("/payment/stripe/")
+
+
+# def PaymentView(request):
+# 	plan = request.GET.get('sub_plane')
+# 	fetch_membership = Membership.objects.filter(membership_type=plan).exists()
+# 	if fetch_membership == False:
+# 		return redirect('subscrib')
+# 	membership = Membership.objects.get(membership_type=plan)
+
+
+# 	price = float(membership.price)*100
+# 	price = int(price)
+# 	def init_payment(request):
+# 		url = 'https://api.paystack.co/transaction/initialize'
+# 		headers = {
+# 			'Authorization': 'Bearer '+settings.PAYSTACK_SECRET_KEY,
+# 			'Content-type' : 'application/json',
+# 			'Accept': 'application/json',
+# 			}
+# 		datum = {
+# 			"email": request.user.email,
+# 			"amount": price
+# 			}
+# 		x = requests.post(url, data=json.dumps(datum), headers=headers)
+# 		if x.status_code != 200:
+# 			return str(x.status_code)
+
+# 		result = x.json()
+# 		return result
+# 	initialized = init_payment(request)
+# 	print(initialized)
+# 	amount = price/100
+# 	instance = PayHistory.objects.create(amount=amount, payment_for=membership, user=request.user, paystack_charge_id=initialized['data']['reference'], paystack_access_code=initialized['data']['access_code'])
+# 	UserMembership.objects.filter(user=instance.user).update(reference_code=initialized['data']['reference'])
+# 	link = initialized['data']['authorization_url']
+# 	return HttpResponseRedirect(link)
+# 	return render(request, 'Template/subscrib.html')
 
 
 def call_back_url(request):
@@ -743,6 +995,7 @@ def about(request):
 	return render(request,'about.html')
 
 def contact(request):
+	order = Order.objects.get(user=request.user, ordered=False)
 	if request.method == "POST":
 		name = request.POST.get("name")
 		email = request.POST.get("email")
@@ -761,7 +1014,7 @@ def contact(request):
 		)
 		messages.success(request, f'Email Sent Successfully !')
 		# return redirect('/login')
-	return render(request,'contact-us.html')
+	return render(request,'contact-us.html',{'order':order})
 
 @login_required
 def reservation(request):
@@ -790,8 +1043,10 @@ def reservation(request):
 	return render(request,'reservation.html',{'res':res})
 
 def shop(request):
+	order = Order.objects.get(user=request.user, ordered=False)
 	shops = Item.objects.all().order_by('-timestamp')
 	const = {
+		'order':order,
 		"shops":shops
 	}
 	return render(request,"shop.html",const)
@@ -800,7 +1055,45 @@ def sell_here(request):
 	return render(request,"sell_here.html")
 
 @login_required
+def ListItem(request):
+	order = Order.objects.get(user=request.user, ordered=False)
+	vendors_list = BOUTIQUE_REQUEST.objects.filter(user=request.user).order_by('-id')
+	category_list = Category.objects.all().order_by('-id')
+	subcategory_list = Sub_Category.objects.all().order_by('-id')
+	if request.method == "POST":
+		pod = Item()
+		pod.user=UserProfile.objects.get(user=request.user)
+		pod.title = request.POST.get("title")
+		pod.price = request.POST.get("price")
+		pod.discount_price =  request.POST.get("discount_price")
+		pod.Boutique_name =  request.POST.get("Boutique_name")
+		pod.category = request.POST.get("category")
+		pod.sub_category = request.POST.get("sub_category")
+		pod.overview = request.POST.get("overview")
+		pod.description = request.POST.get("description")
+		if len(request.FILES) != 0:
+			pod.image = request.FILES["image"]
+			pod.image2 = request.FILES["image2"]
+		pod.save()
+		messages.success(request, f'Request has been sent Successfully !')
+		 
+		template = render_to_string('emails/ITEM_ADDED_EMAIL_TEM.html',{
+			# "email": email
+			"email": 'francisdaniel140@gmail.com'
+		})
+			
+		send_mail('From Like Wise',
+		template,
+		settings.EMAIL_HOST_USER,
+		['francisdaniel140@gmail.com','likegroupinc@gmail.com'],
+		)
+		messages.success(request, f'Request has been sent Successfully !')
+		return redirect('/successfully')
+	return render(request, "dashboard/list-item.html",{"vendors_list":vendors_list,'order':order,"category_list":category_list,"subcategory_list":subcategory_list})
+
+@login_required
 def sell_form(request):
+	order = Order.objects.get(user=request.user, ordered=False)
 	if request.method == "POST":
 		pod = BOUTIQUE_REQUEST()
 		pod.user=request.user
@@ -833,22 +1126,24 @@ def sell_form(request):
 		)
 		messages.success(request, f'Request has been sent Successfully !')
 		return redirect('/successfully')
-	return render(request,"sell_form.html")
+	return render(request,"sell_form.html",{'order':order})
 
 def successfully(request):
 	return render(request,"successful.html")
 
 
 def vendors(request):
+	order = Order.objects.get(user=request.user, ordered=False)
 	vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
 	vendors_count = BOUTIQUE_REQUEST.objects.filter(approved=True)
 	# for i in vendors_count:
 	#     n = i.user
 	#     print(n.count())
 	# single_count = vendors_count.filter(user=request.user).count()
-	return render(request,"vendors.html",{'vendors_list':vendors_list})
+	return render(request,"vendors.html",{'order':order,'vendors_list':vendors_list})
 
 def VendorDetailView(request, pk):
+	order = Order.objects.get(user=request.user, ordered=False)
 	objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pk)
 	# print(objects)
 	latest = Item.objects.filter(Boutique_name=objects).order_by('-timestamp')
@@ -859,18 +1154,60 @@ def VendorDetailView(request, pk):
 	context = {
 		'object': objects,
 		'latest': latest,
+		'order':order,
 		'futureds': featured_post
 	}
 	return render(request, 'vendor_details.html', context)
 
 def about(request):
+	order = Order.objects.get(user=request.user, ordered=False)
 	counters = counter.objects.all()
-	return render(request,"about.html",{'counter':counters})
+	return render(request,"about.html",{'order':order,'counter':counters})
 
 
 def contact(request):
 	return render(request,"contact.html")
 
+@login_required
+def Dashboard_sells(request):
+	vendors_list = BOUTIQUE_REQUEST.objects.filter(user=request.user).filter(approved=True).order_by('-id')[0:4]
+	vendors_list2 = BOUTIQUE_REQUEST.objects.filter(user=request.user).filter(approved=True).order_by('-id')[4:8]
+	vendors_list3 = BOUTIQUE_REQUEST.objects.filter(user=request.user).filter(approved=True).order_by('-id')[8:12]
+	context = {
+		"vendors_list":vendors_list,
+		"vendors_list2":vendors_list2,
+		"vendors_list3":vendors_list3,
+	}
+	return render(request,"dashboard/sells.html",context)
+
+@login_required
+def Dashboard_sells_details(request,pk):
+	objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pk)
+	Boutique_ = Item.objects.filter(Boutique_name=objects).order_by('-timestamp')
+	return render(request,"dashboard/details-sells.html",{"Boutique_":Boutique_})
+
+
+def Dashboard_draft(request):
+	vendors_list = BOUTIQUE_REQUEST.objects.filter(user=request.user).filter(approved=False).order_by('-id')[0:4]
+	vendors_list2 = BOUTIQUE_REQUEST.objects.filter(user=request.user).filter(approved=False).order_by('-id')[4:8]
+	vendors_list3 = BOUTIQUE_REQUEST.objects.filter(user=request.user).filter(approved=False).order_by('-id')[8:12]
+	context = {
+		"vendors_list":vendors_list,
+		"vendors_list2":vendors_list2,
+		"vendors_list3":vendors_list3,
+	}
+	return render(request,"dashboard/draft.html",context)
+
+
+def Dashboard_draft_details(request,pk):
+		# user = request.user.pk
+	objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pk)
+	Boutique_ = Item.objects.filter(Boutique_name=objects).order_by('-timestamp')
+	return render(request,"dashboard/details-draft.html")
+
+
+def Statics(request):
+	return render(request, "dashboard/statics.html")
 
 # def news(request):
 #     return render(request,"news.html")

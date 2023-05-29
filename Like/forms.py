@@ -5,7 +5,8 @@ from tinymce.widgets import TinyMCE
 
 
 PAYMENT_CHOICES = (
-    ('S', 'Paystack'),
+    # ('p', 'Paystack'),
+    ('S', 'Stripe'),
     ('P', 'PayPal')
 )
 

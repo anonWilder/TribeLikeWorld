@@ -15187,7 +15187,8 @@ body .product-popup {
   color: inherit;
 }
 .compare i {
-  font-size: 3.3rem;
+  /* font-size: 3.3rem; */
+  font-size: 2.7rem;
   color: inherit;
 }
 .compare:hover {

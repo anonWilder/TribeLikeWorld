@@ -1,0 +1,156 @@
+
+{% load static %}
+{% include "dashboard/base.html" %}
+{% include "dashboard/navbar.html" %}
+<div class="page-content">
+
+    {% include "dashboard/navtop.html" %}
+
+    <!-- Page header start -->
+    <div class="page-header">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Home</li>
+            <li class="breadcrumb-item">Layouts</li>
+            <li class="breadcrumb-item active">All  &amp; Sells</li>
+        </ol>
+
+        <ul class="app-actions">
+            <li>
+                <a href="#" id="reportrange">
+                    <span class="range-text"></span>
+                    <i class="icon-chevron-down"></i>	
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="icon-export"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- Page header end -->
+    
+    <!-- Main container start -->
+    <div class="main-container">
+
+        <!-- Row start -->
+        <div class="row gutters">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                {% for i in vendors_list %}
+                <div class="card lobipanel-sortable">
+                    <div class="card-header">
+                        <div class="card-title">{{i.Boutique_name}}</div>
+                    </div>
+                    <img src="{{i.brand_logo.url}}" style="float:right;width: 70px;height: 58px;">
+                   <div class="card-body">
+                        <a href="{{i.get_absolute_urls}}" style="background-color: #ee0000;color: #fff; padding: 5px; font-weight: bold; border-radius: 5px;"> Display all Items</a>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- <div class="card lobipanel-sortable">
+                    <div class="card-header">
+                        <div class="card-title">Drag here</div>
+                    </div>
+                    <div class="card-body">
+                        Drag and Drop Cards
+                    </div>
+                </div>
+                <div class="card lobipanel-sortable">
+                    <div class="card-header">
+                        <div class="card-title">Drag here</div>
+                    </div>
+                    <div class="card-body">
+                        Drag and Drop Cards
+                    </div>
+                </div>
+                <div class="card lobipanel-sortable">
+                    <div class="card-header">
+                        <div class="card-title">Drag here</div>
+                    </div>
+                    <div class="card-body">
+                        Drag and Drop Cards
+                    </div>
+                </div> -->
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                {% for i in vendors_list2 %}
+                <div class="card lobipanel-sortable">
+                    <div class="card-header">
+                        <div class="card-title">{{i.Boutique_name}}</div>
+                    </div>
+                    <img src="{{i.brand_logo.url}}" style="float:right;width: 70px;height: 58px;">
+                    <div class="card-body">
+                        <a href="{{i.get_absolute_urls}}" style="background-color: #000;color: #fff; padding: 5px; font-weight: bold; border-radius: 5px;"> Display all Items</a>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- <div class="card lobipanel-sortable">
+                    <div class="card-header">
+                        <div class="card-title">Drag here</div>
+                    </div>
+                    <div class="card-body">
+                        Drag and Drop Cards
+                    </div>
+                </div>
+                <div class="card lobipanel-sortable">
+                    <div class="card-header">
+                        <div class="card-title">Drag here</div>
+                    </div>
+                    <div class="card-body">
+                        Drag and Drop Cards
+                    </div>
+                </div>
+                <div class="card lobipanel-sortable">
+                    <div class="card-header">
+                        <div class="card-title">Drag here</div>
+                    </div>
+                    <div class="card-body">
+                        Drag and Drop Cards
+                    </div>
+                </div> -->
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
+                {% for i in vendors_list3 %}
+                <div class="card lobipanel-sortable">
+                    <div class="card-header">
+                        <div class="card-title">{{i.Boutique_name}}</div>
+                    </div>
+                    <img src="{{i.brand_logo.url}}" style="float:right;width: 70px;height: 58px;">
+                    <div class="card-body">
+                        <a href="{{i.get_absolute_urls}}" style="background-color: #ee0000;color: #fff; padding: 5px; font-weight: bold; border-radius: 5px;"> Display all Items</a>
+                    </div>
+                </div>
+                {% endfor %}
+                <!-- <div class="card lobipanel-sortable">
+                    <div class="card-header">
+                        <div class="card-title">Drag here</div>
+                    </div>
+                    <div class="card-body">
+                        Drag and Drop Cards
+                    </div>
+                </div>
+                <div class="card lobipanel-sortable">
+                    <div class="card-header">
+                        <div class="card-title">Drag here</div>
+                    </div>
+                    <div class="card-body">
+                        Drag and Drop Cards
+                    </div>
+                </div>
+                <div class="card lobipanel-sortable">
+                    <div class="card-header">
+                        <div class="card-title">Drag here</div>
+                    </div>
+                    <div class="card-body">
+                        Drag and Drop Cards
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <!-- Row end -->
+
+    </div>
+    <!-- Main container end -->
+
+</div>
+{% include "dashboard/footer.html" %}
