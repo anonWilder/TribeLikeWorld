@@ -13740,7 +13740,8 @@ body .product-popup {
   max-width: 9rem;
   margin: 0 auto 1.3rem auto;
   border-radius: 50%;
-  background-color: #336699;
+  /* background-color: #336699; */
+  background-color: red;
 }
 .vendor-widget-banner .vendor-logo img {
   -webkit-transition: -webkit-transform 0.3s;
