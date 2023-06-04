@@ -128,12 +128,17 @@
                         <!-- End of Dropdown Menu -->
                         <span class="divider d-lg-show"></span>
                         <!-- <a href="/news/" class="d-lg-show">Blog</a>-->
+                        <div id="google_translate_element"></div>
                         <a href="/contact/" class="d-lg-show">Contact Us</a> 
+                       
+                        {% if user.is_authenticated %} 
                         <a href="#" class="d-lg-show">My Account</a>
+                        {% else %}
                         <a href="/login" class="d-lg-show"><i
                                 class="w-icon-account"></i>Sign In</a>
                         <span class="delimiter d-lg-show">/</span>
                         <a href="/login" class="ml-0 d-lg-show login register">Register</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -147,22 +152,9 @@
                         <a href="/" class="logo ml-lg-0">
                             <img src="{% static 'assets/images/logo.png' %}" alt="logo" width="144" height="45" />
                         </a>
-                        <form method="get" action="/search/"
+                        <form method="get"  action="/search/"
                             class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">
-                            <div class="select-box">
-                                <select id="category" name="category">
-                                    <option value="">Search Anything</option>
-                                    <!-- <option value="4">Fashion</option>
-                                    <option value="5">Furniture</option>
-                                    <option value="6">Shoes</option>
-                                    <option value="7">Sports</option>
-                                    <option value="8">Games</option>
-                                    <option value="9">Computers</option>
-                                    <option value="10">Electronics</option>
-                                    <option value="11">Kitchen</option>
-                                    <option value="12">Clothing</option> -->
-                                </select>
-                            </div>
+                         
                             <input type="text" class="form-control" name="q" id="search" placeholder="Search in..."
                                 required />
                             <button class="btn btn-search" type="submit"><i class="w-icon-search"></i>
@@ -171,11 +163,11 @@
                     </div>
                     <div class="header-right ml-4">
                         <div class="header-call d-xs-show d-lg-flex align-items-center">
-                            <a href="tel:+2347069972326" class="w-icon-call"></a>
+                            <!-- <a href="tel:+2347069972326" class="w-icon-call"></a> -->
                             <div class="call-info d-lg-show">
                                 <!-- <h4 class="chat font-weight-normal font-size-md text-normal ls-normal text-light mb-0">
                                     <a href="https://portotheme.com/cdn-cgi/l/email-protection#0625" class="text-capitalize">Live Chat</a> or :</h4> -->
-                                <a href="tel:+2347069972326" class="phone-number font-weight-bolder ls-50">+2347069972326</a>
+                                <!-- <a href="tel:+2347069972326" class="phone-number font-weight-bolder ls-50">+2347069972326</a> -->
                             </div>
                         </div>
                         <!-- <a class="wishlist label-down link d-xs-show" href="#">
@@ -187,13 +179,17 @@
                             <!-- <span class="compare-label d-lg-show">Compare</span> -->
                         </a>
                         <div class="dropdown cart-dropdown cart-offcanvas mr-0 mr-lg-2">
-                            <div class="cart-overlay"></div>
+                            {% if user.is_authenticated %}
+                              <i class="w-icon-cart"></i> <div class="cart-overlay"></div>
                             <a href="/order-summary/" class="label-down link">
-                                <i class="w-icon-cart">
+                               
+                                  
                                     <span class="cart-count">{{ order.items.count }}</span>
+                                  
                                 </i>
-                                <!-- <span class="cart-label">Cart</span> -->
                             </a>
+                            {% else %}
+                              {% endif %}
                             <!-- <div class="dropdown-box">
                                 <div class="cart-header">
                                     <span>Shopping Cart</span>

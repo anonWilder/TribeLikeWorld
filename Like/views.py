@@ -33,7 +33,10 @@ def create_ref_code():
 
 
 def products(request):
-	order = Order.objects.get(user=self.request.user, ordered=False)
+	if request.user.is_authenticated:
+		order = Order.objects.get(user=self.request.user, ordered=False)
+	else:
+		order = False
 	context = {
 		'order':order,
 		'items': Item.objects.all()
@@ -250,7 +253,10 @@ class CheckoutView(View):
 
 class PaymentView(View):
 	def get(self, *args, **kwargs):
-		order = Order.objects.get(user=self.request.user, ordered=False)
+		if request.user.is_authenticated:
+			order = Order.objects.get(user=self.request.user, ordered=False)
+		else:
+			order = False
 		if order.billing_address:
 			context = {
 				'order': order,
@@ -503,21 +509,24 @@ class HomeView(ListView):
 
 class IndexView(View):
 	def get(self, request, *args, **kwargs):
-		order = Order.objects.get(user=self.request.user, ordered=False)
+		if request.user.is_authenticated:
+			order = Order.objects.get(user=self.request.user, ordered=False)
+		else:
+			order = False
 		featured_post = Item.objects.filter(futured=True).order_by('-timestamp')[:10]
 		category = Main_Category.objects.all().order_by('-id')
 		latest = Item.objects.filter(seasson='NEW ARRIVALS').order_by('-timestamp')[0:10]
 		best_sell = Item.objects.filter(seasson='BEST SELLER').order_by('-timestamp')[0:10]
 		most_popular = Item.objects.filter(seasson='MOST POPULAR').order_by('-timestamp')[0:10]
-		men_cloth = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[0:2]
-		men_cloth2 = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[2:4]
-		men_cloth3 = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[4:6]
-		men_cloth4 = Item.objects.filter(category__name='Men Clothing').order_by('-timestamp')[6:8]
+		men_cloth = Item.objects.filter(category__name="Men's Clothing").order_by('-timestamp')[0:2]
+		men_cloth2 = Item.objects.filter(category__name="Men's Clothing").order_by('-timestamp')[2:4]
+		men_cloth3 = Item.objects.filter(category__name="Men's Clothing").order_by('-timestamp')[4:6]
+		men_cloth4 = Item.objects.filter(category__name="Men's Clothing").order_by('-timestamp')[6:8]
 
-		women_cloth = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[0:2]
-		women_cloth2 = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[2:4]
-		women_cloth3 = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[4:6]
-		women_cloth4 = Item.objects.filter(category__name='Women Clothing').order_by('-timestamp')[6:8]
+		women_cloth = Item.objects.filter(category__name="Women's Clothing").order_by('-timestamp')[0:2]
+		women_cloth2 = Item.objects.filter(category__name="Women's Clothing").order_by('-timestamp')[2:4]
+		women_cloth3 = Item.objects.filter(category__name="Women's Clothing").order_by('-timestamp')[4:6]
+		women_cloth4 = Item.objects.filter(category__name="Women's Clothing").order_by('-timestamp')[6:8]
 
 		ACCESSORIES = Item.objects.filter(category__name='ACCESSORIES & SHOES').order_by('-timestamp')[0:2]
 		ACCESSORIES2 = Item.objects.filter(category__name='ACCESSORIES & SHOES').order_by('-timestamp')[2:4]
@@ -1043,7 +1052,10 @@ def reservation(request):
 	return render(request,'reservation.html',{'res':res})
 
 def shop(request):
-	order = Order.objects.get(user=request.user, ordered=False)
+	if request.user.is_authenticated:
+		order = Order.objects.get(user=request.user, ordered=False)
+	else:
+		order = False
 	shops = Item.objects.all().order_by('-timestamp')
 	const = {
 		'order':order,
