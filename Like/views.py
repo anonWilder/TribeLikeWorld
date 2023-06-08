@@ -22,6 +22,7 @@ import uuid
 import random
 import string
 
+
 import stripe
 # import Paystack
 
@@ -1000,8 +1001,8 @@ def list_category(request, slug):
 	return render(request, template, context)
 
 
-def about(request):
-	return render(request,'about.html')
+def about_us(request):
+	return render(request,'about-us.html')
 
 def contact(request):
 	order = Order.objects.get(user=request.user, ordered=False)
@@ -1143,6 +1144,8 @@ def sell_form(request):
 def successfully(request):
 	return render(request,"successful.html")
 
+def how_to_sell(request):
+    return render(request, 'how-to-sell.html')
 
 def vendors(request):
 	order = Order.objects.get(user=request.user, ordered=False)
@@ -1171,10 +1174,10 @@ def VendorDetailView(request, pk):
 	}
 	return render(request, 'vendor_details.html', context)
 
-def about(request):
+def about_us(request):
 	order = Order.objects.get(user=request.user, ordered=False)
 	counters = counter.objects.all()
-	return render(request,"about.html",{'order':order,'counter':counters})
+	return render(request,"about-us.html",{'order':order,'counter':counters})
 
 
 def contact(request):
