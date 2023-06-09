@@ -1,280 +1,394 @@
-{% load static %} 
+{% load static %}
 {% include 'head-search.html' %}
-     
-     <!-- Start of Main -->
-     <main class="main">
-        <!-- Start of Page Header -->
-        <div class="page-header">
-            <div class="container">
-                <h1 class="page-title mb-0">Grid 4</h1>
-            </div>
-        </div>
-        <!-- End of Page Header -->
 
-        <!-- Start of Breadcrumb -->
-        <nav class="breadcrumb-nav mb-6">
-            <div class="container">
-                <ul class="breadcrumb">
-                    <li><a href="demo1.html">Home</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li>Grid 4</li>
-                </ul>
-            </div>
-        </nav>
-        <!-- End of Breadcrumb -->
+<body>
+    <div class="page-wrapper">
+        <!-- Start of Header -->
 
-        <!-- Start of Page Content -->
-        <div class="page-content">
-            <div class="container">
-                <ul class="nav-filters filter-underline blog-filters mb-4">
-                    <li><a href="#" class="nav-filter active" data-filter="*">All Blog Posts <span>6</span></a></li>
-                    <li><a href="#" class="nav-filter" data-filter=".clothes">Clothes <span>1</span></a></li>
-                    <li><a href="#" class="nav-filter" data-filter=".entertainment">Entertainment <span>1</span></a></li>
-                    <li><a href="#" class="nav-filter" data-filter=".fashion">Fashion <span>2</span></a></li>
-                    <li><a href="#" class="nav-filter" data-filter=".lifestyle">Lifestyle <span>3</span></a></li>
-                    <li><a href="#" class="nav-filter" data-filter=".others">Others <span>2</span></a></li>
-                    <li><a href="#" class="nav-filter" data-filter=".shoes">Shoes <span>1</span></a></li>
-                    <li><a href="#" class="nav-filter" data-filter=".technology">Technology <span>1</span></a></li>
-                </ul>
 
-                <div class="row grid cols-xl-4 cols-lg-3 cols-md-2 mb-2" data-grid-options="{
-                    'layoutMode': 'fitRows'
-                }">
-                    <article class="post post-grid-type grid-item overlay-zoom fashion">
-                        <figure class="post-media br-sm">
-                            <a href="post-single.html">
-                                <img src="assets/images/blog/2cols/1.jpg" width="600"
-                                    height="420" alt="blog">
-                            </a>
-                        </figure>
-                        <div class="post-details">
-                            <div class="post-cats text-primary">
-                                <a href="#">Fashion</a>
-                            </div>
-                            <h4 class="post-title">
-                                <a href="post-single.html">New found the men dress for summer</a>
-                            </h4>
-                            <div class="post-content">
-                                <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, 
-                                eget blandit nunc tortor eu nibh. Suspendisse potenti.Sed egstas, ant at 
-                                vulputate volutpat, uctus metus libero eu augue, vitae luctus…</p> <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
-                            </div>
-                            <div class="post-meta">
-                                by <a href="#" class="post-author">John Doe</a>
-                                - <a href="#" class="post-date">03.01.2021</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="post post-grid-type grid-item overlay-zoom others technology">
-                        <figure class="post-media br-sm">
-                            <a href="post-single.html">
-                                <img src="assets/images/blog/2cols/2.jpg" width="600"
-                                    height="420" alt="blog">
-                            </a>
-                        </figure>
-                        <div class="post-details">
-                            <div class="post-cats text-primary">
-                                <a href="#">Others</a>,
-                                <a href="#">Technology</a>
-                            </div>
-                            <h4 class="post-title">
-                                <a href="post-single.html">Recognitory the needs is primary condition  for design</a>
-                            </h4>
-                            <div class="post-content">
-                                <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, 
-                                eget blandit nunc tortor eu nibh. Suspendisse potenti.Sed egstas, ant at 
-                                vulputate volutpat, uctus metus libero eu augue, vitae luctus…</p>
-                                <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
-                            </div>
-                            <div class="post-meta">
-                                by <a href="#" class="post-author">John Doe</a>
-                                - <a href="#" class="post-date">03.05.2021</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="post post-grid-type grid-item overlay-zoom clothes">
-                        <figure class="post-media br-sm">
-                            <a href="post-single.html">
-                                <img src="assets/images/blog/2cols/3.jpg" width="600"
-                                    height="420" alt="blog">
-                            </a>
-                        </figure>
-                        <div class="post-details">
-                            <div class="post-cats text-primary">
-                                <a href="#">Clothes</a>
-                            </div>
-                            <h4 class="post-title">
-                                <a href="post-single.html">New found the women’s shirt  for summer season</a>
-                            </h4>
-                            <div class="post-content">
-                                <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, 
-                                eget blandit nunc tortor eu nibh. Suspendisse potenti.Sed egstas, ant at 
-                                vulputate volutpat, uctus metus libero eu augue, vitae luctus…</p>
-                                <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
-                            </div>
-                            <div class="post-meta">
-                                by <a href="#" class="post-author">John Doe</a>
-                                - <a href="#" class="post-date">03.01.2021</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="post post-grid-type grid-item overlay-zoom lifestyle">
-                        <figure class="post-media br-sm">
-                            <a href="post-single.html">
-                                <img src="assets/images/blog/2cols/4.jpg" width="600"
-                                    height="420" alt="blog">
-                            </a>
-                        </figure>
-                        <div class="post-details">
-                            <div class="post-cats text-primary">
-                                <a href="#">Lifestyle</a>
-                            </div>
-                            <h4 class="post-title">
-                                <a href="post-single.html">We want to be different and fashion gives to me that outlet</a>
-                            </h4>
-                            <div class="post-content">
-                                <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, 
-                                eget blandit nunc tortor eu nibh. Suspendisse potenti.Sed egstas, ant at 
-                                vulputate volutpat, uctus metus libero eu augue, vitae luctus…</p>
-                                <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
-                            </div>
-                            <div class="post-meta">
-                                by <a href="#" class="post-author">John Doe</a>
-                                - <a href="#" class="post-date">03.03.2021</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="post post-grid-type grid-item overlay-zoom entertainment lifestyle others shoes">
-                        <figure class="post-media br-sm">
-                            <a href="post-single.html">
-                                <img src="assets/images/blog/2cols/5.jpg" width="600"
-                                    height="420" alt="blog">
-                            </a>
-                        </figure>
-                        <div class="post-details">
-                            <div class="post-cats text-primary">
-                                <a href="#">Entertainment</a>,
-                                <a href="#">Lifestyle</a>,
-                                <a href="#">Others</a>
-                            </div>
-                            <h4 class="post-title">
-                                <a href="post-single.html">Comes a cool blog post with Images</a>
-                            </h4>
-                            <div class="post-content">
-                                <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, 
-                                eget blandit nunc tortor eu nibh. Suspendisse potenti.Sed egstas, ant at 
-                                vulputate volutpat, uctus metus libero eu augue, vitae luctus…</p>
-                                <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
-                            </div>
-                            <div class="post-meta">
-                                by <a href="#" class="post-author">John Doe</a>
-                                - <a href="#" class="post-date">03.01.2021</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="post post-grid-type grid-item overlay-zoom fashion technology">
-                        <figure class="post-media br-sm">
-                            <a href="post-single.html">
-                                <img src="assets/images/blog/2cols/6.jpg" width="600"
-                                    height="420" alt="blog">
-                            </a>
-                        </figure>
-                        <div class="post-details">
-                            <div class="post-cats text-primary">
-                                <a href="#">Fashion</a>,
-                                <a href="#">Technology</a>
-                            </div>
-                            <h4 class="post-title">
-                                <a href="post-single.html">Fusce lacinia arcuet nulla</a>
-                            </h4>
-                            <div class="post-content">
-                                <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, 
-                                eget blandit nunc tortor eu nibh. Suspendisse potenti.Sed egstas, ant at 
-                                vulputate volutpat, uctus metus libero eu augue, vitae luctus…</p>
-                                <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
-                            </div>
-                            <div class="post-meta">
-                                by <a href="#" class="post-author">John Doe</a>
-                                - <a href="#" class="post-date">03.06.2021</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="post post-grid-type grid-item overlay-zoom fashion shoes">
-                        <figure class="post-media br-sm">
-                            <a href="post-single.html">
-                                <img src="assets/images/blog/2cols/7.jpg" width="600"
-                                    height="420" alt="blog">
-                            </a>
-                        </figure>
-                        <div class="post-details">
-                            <div class="post-cats text-primary">
-                                <a href="#">Fashion</a>,
-                                <a href="#">Shoes</a>
-                            </div>
-                            <h4 class="post-title">
-                                <a href="post-single.html">Nunc sed augue lacus viverra vitae congue eu consequat ac</a>
-                            </h4>
-                            <div class="post-content">
-                                <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, 
-                                eget blandit nunc tortor eu nibh. Suspendisse potenti.Sed egstas, ant at 
-                                vulputate volutpat, uctus metus libero eu augue, vitae luctus…</p>
-                                <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
-                            </div>
-                            <div class="post-meta">
-                                by <a href="#" class="post-author">John Doe</a>
-                                - <a href="#" class="post-date">03.02.2021</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="post post-grid-type grid-item overlay-zoom fashion">
-                        <figure class="post-media br-sm">
-                            <a href="post-single.html">
-                                <img src="assets/images/blog/2cols/8.jpg" width="600"
-                                    height="420" alt="blog">
-                            </a>
-                        </figure>
-                        <div class="post-details">
-                            <div class="post-cats text-primary">
-                                <a href="#">Fashion</a>
-                            </div>
-                            <h4 class="post-title">
-                                <a href="post-single.html">Fringilla urna porttitor rhoncus dolor purus</a>
-                            </h4>
-                            <div class="post-content">
-                                <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo, 
-                                eget blandit nunc tortor eu nibh. Suspendisse potenti.Sed egstas, ant at 
-                                vulputate volutpat, uctus metus libero eu augue, vitae luctus…</p>
-                                <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
-                            </div>
-                            <div class="post-meta">
-                                by <a href="#" class="post-author">John Doe</a>
-                                - <a href="#" class="post-date">03.06.2021</a>
-                            </div>
-                        </div>
-                    </article>
+
+        <!-- Start of Main -->
+        <main class="main">
+            <!-- Start of Page Header -->
+            <div class="page-header">
+                <div class="container">
+                    <h1 class="page-title mb-0">Editorial</h1>
                 </div>
-                <ul class="pagination justify-content-center mb-10 pb-2 pt-2">
-                    <li class="prev disabled">
-                        <a href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
-                            <i class="w-icon-long-arrow-left"></i>Prev
-                        </a>
+            </div>
+            <!-- End of Page Header -->
+
+            <!-- Start of Breadcrumb -->
+            <nav class="breadcrumb-nav mb-6">
+                <div class="container">
+                    <ul class="breadcrumb">
+                        <li><a href="demo1.html">Home</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li>Editorial</li>
+                    </ul>
+                </div>
+            </nav>
+            <!-- End of Breadcrumb -->
+
+            <!-- Start of Page Content -->
+            <div class="page-content">
+                <div class="container">
+                    <ul class="nav-filters filter-underline blog-filters mb-4">
+                        <li><a href="#" class="nav-filter active" data-filter="*">All Blog Posts <span>6</span></a></li>
+                        <li><a href="#" class="nav-filter" data-filter=".clothes">Clothes <span>1</span></a></li>
+                        <li><a href="#" class="nav-filter" data-filter=".entertainment">Entertainment <span>1</span></a>
+                        </li>
+                        <li><a href="#" class="nav-filter" data-filter=".fashion">Fashion <span>2</span></a></li>
+                        <li><a href="#" class="nav-filter" data-filter=".lifestyle">Lifestyle <span>3</span></a></li>
+                        <li><a href="#" class="nav-filter" data-filter=".others">Others <span>2</span></a></li>
+                        <li><a href="#" class="nav-filter" data-filter=".shoes">Shoes <span>1</span></a></li>
+                        <li><a href="#" class="nav-filter" data-filter=".technology">Technology <span>1</span></a></li>
+                    </ul>
+
+                    <div class="row grid cols-sm-2 mb-2" data-grid-options="{
+                        'layoutMode': 'fitRows'
+                    }">
+                        <article class="post post-grid-type grid-item overlay-zoom fashion">
+                            <figure class="post-media br-sm">
+                                <a href="post-single.html">
+                                    <img src="/static/assets/images/blog/2cols/1.jpg" width="600" height="420" alt="blog">
+                                </a> 
+                            <div class="post-details">
+                                <div class="post-cats text-primary">
+                                    <a href="#">Fashion</a>
+                                </div>
+                                <h4 class="post-title">
+                                    <a href="post-single.html">New found the men dress for summer</a>
+                                </h4>
+                                <div class="post-content">
+                                    <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo,
+                                        eget blandit nunc tortor eu nibh. Suspendisse potenti.Sed egstas, ant at
+                                        vulputate volutpat, uctus metus libero eu augue, vitae luctus…</p> <a
+                                        href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
+                                </div>
+                                <div class="post-meta">
+                                    by <a href="#" class="post-author">John Doe</a>
+                                    - <a href="#" class="post-date">03.01.2021</a>
+                                    <a href="#" class="post-comment"><i
+                                            class="w-icon-comments"></i><span>7</span>Comments</a>
+                                </div>
+                            </div>
+                            </figure>
+                           
+                        </article>
+                        <article class="post post-grid-type grid-item overlay-zoom others technology">
+                            <figure class="post-media br-sm">
+                                <a href="post-single.html">
+                                    <img src="/static/assets/images/blog/2cols/2.jpg" width="600" height="420" alt="blog">
+                                </a> 
+                                <div class="post-details">
+                                <div class="post-cats text-primary">
+                                    <a href="#">Others</a>,
+                                    <a href="#">Technology</a>
+                                </div>
+                                <h4 class="post-title">
+                                    <a href="post-single.html">Recognitory the needs is primary condition for design</a>
+                                </h4>
+                                <div class="post-content">
+                                    <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo,
+                                        eget blandit nunc tortor eu nibh. Suspendisse potenti.Sed egstas, ant at
+                                        vulputate volutpat, uctus metus libero eu augue, vitae luctus…</p>
+                                    <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
+                                </div>
+                                <div class="post-meta">
+                                    by <a href="#" class="post-author">John Doe</a>
+                                    - <a href="#" class="post-date">03.05.2021</a>
+                                    <a href="#" class="post-comment"><i
+                                            class="w-icon-comments"></i><span>4</span>Comments</a>
+                                </div>
+                            </div>
+                            </figure>
+                           
+                        </article>
+                        <article class="post post-grid-type grid-item overlay-zoom clothes">
+                            <figure class="post-media br-sm">
+                                <a href="post-single.html">
+                                    <img src="/static/assets/images/blog/2cols/3.jpg" width="600" height="420" alt="blog">
+                                </a>
+                            </figure>
+                            <div class="post-details">
+                                <div class="post-cats text-primary">
+                                    <a href="#">Clothes</a>
+                                </div>
+                                <h4 class="post-title">
+                                    <a href="post-single.html">New found the women’s shirt for summer season</a>
+                                </h4>
+                                <div class="post-content">
+                                    <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo,
+                                        eget blandit nunc tortor eu nibh. Suspendisse potenti.Sed egstas, ant at
+                                        vulputate volutpat, uctus metus libero eu augue, vitae luctus…</p>
+                                    <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
+                                </div>
+                                <div class="post-meta">
+                                    by <a href="#" class="post-author">John Doe</a>
+                                    - <a href="#" class="post-date">03.01.2021</a>
+                                    <a href="#" class="post-comment"><i
+                                            class="w-icon-comments"></i><span>2</span>Comments</a>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="post post-grid-type grid-item overlay-zoom lifestyle">
+                            <figure class="post-media br-sm">
+                                <a href="post-single.html">
+                                    <img src="/static/assets/images/blog/2cols/4.jpg" width="600" height="420" alt="blog">
+                                </a>
+                            </figure>
+                            <div class="post-details">
+                                <div class="post-cats text-primary">
+                                    <a href="#">Lifestyle</a>
+                                </div>
+                                <h4 class="post-title">
+                                    <a href="post-single.html">We want to be different and fashion gives to me that
+                                        outlet</a>
+                                </h4>
+                                <div class="post-content">
+                                    <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo,
+                                        eget blandit nunc tortor eu nibh. Suspendisse potenti.Sed egstas, ant at
+                                        vulputate volutpat, uctus metus libero eu augue, vitae luctus…</p>
+                                    <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
+                                </div>
+                                <div class="post-meta">
+                                    by <a href="#" class="post-author">John Doe</a>
+                                    - <a href="#" class="post-date">03.03.2021</a>
+                                    <a href="#" class="post-comment"><i
+                                            class="w-icon-comments"></i><span>5</span>Comments</a>
+                                </div>
+                            </div>
+                        </article>
+                        <article
+                            class="post post-grid-type grid-item overlay-zoom entertainment lifestyle shoes others">
+                            <figure class="post-media br-sm">
+                                <a href="post-single.html">
+                                    <img src="/static/assets/images/blog/2cols/5.jpg" width="600" height="420" alt="blog">
+                                </a>
+                            </figure>
+                            <div class="post-details">
+                                <div class="post-cats text-primary">
+                                    <a href="#">Entertainment</a>,
+                                    <a href="#">Lifestyle</a>,
+                                    <a href="#">Others</a>
+                                </div>
+                                <h4 class="post-title">
+                                    <a href="post-single.html">Comes a cool blog post with Images</a>
+                                </h4>
+                                <div class="post-content">
+                                    <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo,
+                                        eget blandit nunc tortor eu nibh. Suspendisse potenti.Sed egstas, ant at
+                                        vulputate volutpat, uctus metus libero eu augue, vitae luctus…</p>
+                                    <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
+                                </div>
+                                <div class="post-meta">
+                                    by <a href="#" class="post-author">John Doe</a>
+                                    - <a href="#" class="post-date">03.01.2021</a>
+                                    <a href="#" class="post-comment"><i
+                                            class="w-icon-comments"></i><span>2</span>Comments</a>
+                                </div>
+                            </div>
+                        </article>
+                        <article class="post post-grid-type grid-item overlay-zoom fashion lifestyle">
+                            <figure class="post-media br-sm">
+                                <a href="post-single.html">
+                                    <img src="/static/assets/images/blog/2cols/6.jpg" width="600" height="420" alt="blog">
+                                </a>
+                            </figure>
+                            <div class="post-details">
+                                <div class="post-cats text-primary">
+                                    <a href="#">Fashion</a>,
+                                    <a href="#">Technology</a>
+                                </div>
+                                <h4 class="post-title">
+                                    <a href="post-single.html">Fusce lacinia arcuet nulla</a>
+                                </h4>
+                                <div class="post-content">
+                                    <p>Sed pretium, ligula sollicitudin laoreet viverra, tortor libero sodales leo,
+                                        eget blandit nunc tortor eu nibh. Suspendisse potenti.Sed egstas, ant at
+                                        vulputate volutpat, uctus metus libero eu augue, vitae luctus…</p>
+                                    <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
+                                </div>
+                                <div class="post-meta">
+                                    by <a href="#" class="post-author">John Doe</a>
+                                    - <a href="#" class="post-date">03.06.2021</a>
+                                    <a href="#" class="post-comment"><i
+                                            class="w-icon-comments"></i><span>3</span>Comments</a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <ul class="pagination justify-content-center mb-10 pb-2 pt-2">
+                        <li class="prev disabled">
+                            <a href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                                <i class="w-icon-long-arrow-left"></i>Prev
+                            </a>
+                        </li>
+                        <li class="page-item active">
+                            <a class="page-link" href="#">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">2</a>
+                        </li>
+                        <li class="next">
+                            <a href="#" aria-label="Next">
+                                Next<i class="w-icon-long-arrow-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- End of Page Content -->
+        </main>
+        <!-- End of Main -->
+
+        <!-- Start of Footer -->
+        <!-- End of Footer -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Start of Sticky Footer -->
+    <div class="sticky-footer sticky-content fix-bottom">
+        <a href="demo1.html" class="sticky-link active">
+            <i class="w-icon-home"></i>
+            <p>Home</p>
+        </a>
+        <a href="shop-banner-sidebar.html" class="sticky-link">
+            <i class="w-icon-category"></i>
+            <p>Shop</p>
+        </a>
+        <a href="my-account.html" class="sticky-link">
+            <i class="w-icon-account"></i>
+            <p>Account</p>
+        </a>
+        <div class="cart-dropdown dir-up">
+            <a href="cart.html" class="sticky-link">
+                <i class="w-icon-cart"></i>
+                <p>Cart</p>
+            </a>
+            <div class="dropdown-box">
+                <div class="products">
+                    <div class="product product-cart">
+                        <div class="product-detail">
+                            <h3 class="product-name">
+                                <a href="product-default.html">Beige knitted elas<br>tic
+                                    runner shoes</a>
+                            </h3>
+                            <div class="price-box">
+                                <span class="product-quantity">1</span>
+                                <span class="product-price">$25.68</span>
+                            </div>
+                        </div>
+                        <figure class="product-media">
+                            <a href="#">
+                                <img src="assets/images/cart/product-1.jpg" alt="product" height="84" width="94" />
+                            </a>
+                        </figure>
+                        <button class="btn btn-link btn-close" aria-label="button">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="product product-cart">
+                        <div class="product-detail">
+                            <h3 class="product-name">
+                                <a href="https://www.portotheme.com/html/wolmart/product.html">Blue utility pina<br>fore
+                                    denim dress</a>
+                            </h3>
+                            <div class="price-box">
+                                <span class="product-quantity">1</span>
+                                <span class="product-price">$32.99</span>
+                            </div>
+                        </div>
+                        <figure class="product-media">
+                            <a href="#">
+                                <img src="assets/images/cart/product-2.jpg" alt="product" width="84" height="94" />
+                            </a>
+                        </figure>
+                        <button class="btn btn-link btn-close" aria-label="button">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="cart-total">
+                    <label>Subtotal:</label>
+                    <span class="price">$58.67</span>
+                </div>
+
+                <div class="cart-action">
+                    <a href="cart.html" class="btn btn-dark btn-outline btn-rounded">View Cart</a>
+                    <a href="checkout.html" class="btn btn-primary  btn-rounded">Checkout</a>
+                </div>
+            </div>
+            <!-- End of Dropdown Box -->
+        </div>
+
+        <div class="header-search hs-toggle dir-up">
+            <a href="#" class="search-toggle sticky-link">
+                <i class="w-icon-search"></i>
+                <p>Search</p>
+            </a>
+            <form action="#" class="input-wrapper">
+                <input type="text" class="form-control" name="search" autocomplete="off" placeholder="Search"
+                    required />
+                <button class="btn btn-search" type="submit">
+                    <i class="w-icon-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <!-- End of Sticky Footer -->
+
+    <!-- Start of Scroll Top -->
+    <a id="scroll-top" class="scroll-top" href="#top" title="Top" role="button"> <i class="w-icon-angle-up"></i> <svg
+            version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 70">
+            <circle id="progress-indicator" fill="transparent" stroke="#000000" stroke-miterlimit="10" cx="35" cy="35"
+                r="34" style="stroke-dasharray: 16.4198, 400;"></circle>
+        </svg> </a>
+    <!-- End of Scroll Top -->
+
+    <!-- Start of Mobile Menu -->
+    <div class="mobile-menu-wrapper">
+        <div class="mobile-menu-overlay"></div>
+        <!-- End of .mobile-menu-overlay -->
+
+        <a href="#" class="mobile-menu-close"><i class="close-icon"></i></a>
+        <!-- End of .mobile-menu-close -->
+
+        <div class="mobile-menu-container scrollable">
+            <form action="#" method="get" class="input-wrapper">
+                <input type="text" class="form-control" name="search" autocomplete="off" placeholder="Search"
+                    required />
+                <button class="btn btn-search" type="submit">
+                    <i class="w-icon-search"></i>
+                </button>
+            </form>
+            <!-- End of Search Form -->
+            <div class="tab">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a href="#main-menu" class="nav-link active">Main Menu</a>
                     </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="next">
-                        <a href="#" aria-label="Next">
-                            Next<i class="w-icon-long-arrow-right"></i>
-                        </a>
+                    <li class="nav-item">
+                        <a href="#categories" class="nav-link">Categories</a>
                     </li>
                 </ul>
             </div>
         </div>
-        <!-- End of Page Content -->
-    </main>
-    <!-- End of Main -->
-    
+    </div>
+    <!-- End of Mobile Menu -->
     {% include 'footer.html' %}
+
+    <!-- Plugin JS File -->
+
+    <script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/vendor/isotope/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/main.min.js"></script>
+    <script>(function () { var js = "window['__CF$cv$params']={r:'7bc9d25b48540a4b',m:'lE6E7nXJHLkNUbk8AZwYoL.40mNOH67HELAVczAeXPM-1682291864-0-AQHAvGWhLhoVTOe9+xm8sC8S6v53HV0uUY4EZRlk/58k',u:'/cdn-cgi/challenge-platform/h/g'};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='../../cdn-cgi/challenge-platform/h/g/scripts/jsd/70d5f7ce/invisible.js',document.getElementsByTagName('head')[0].appendChild(_cpo);"; var _0xh = document.createElement('iframe'); _0xh.height = 1; _0xh.width = 1; _0xh.style.position = 'absolute'; _0xh.style.top = 0; _0xh.style.left = 0; _0xh.style.border = 'none'; _0xh.style.visibility = 'hidden'; document.body.appendChild(_0xh); function handler() { var _0xi = _0xh.contentDocument || _0xh.contentWindow.document; if (_0xi) { var _0xj = _0xi.createElement('script'); _0xj.nonce = ''; _0xj.innerHTML = js; _0xi.getElementsByTagName('head')[0].appendChild(_0xj); } } if (document.readyState !== 'loading') { handler(); } else if (window.addEventListener) { document.addEventListener('DOMContentLoaded', handler); } else { var prev = document.onreadystatechange || function () { }; document.onreadystatechange = function (e) { prev(e); if (document.readyState !== 'loading') { document.onreadystatechange = prev; handler(); } }; } })();</script>
+</body>
+
+</html>

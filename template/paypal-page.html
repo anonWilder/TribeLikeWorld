@@ -249,8 +249,11 @@ form{
                 
               </table>
             </div><!--End Table-->
+            
+            {% csrf_token %}
             <div id="paypal-button-container"></div>
           <form action="/"  target="_top">
+            {% csrf_token %}
             
          <button type="image" src="http://michaeltruong.ca/images/paypal.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">Cancel pay</button>
           </form>
@@ -266,7 +269,7 @@ form{
       </div><!-- End Invoice Holder-->
     <!-- Set up a container element for the button -->
     
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <!-- Include the PayPal JavaScript SDK -->
     <!-- <script src="https://www.paypal.com/sdk/js?client-id=AURDbLJp89oAEAlgVDfBqKo2kIWR_VYAEqWVwkgsfSYn6M_mMdGtWz4xIZDBCdOK_FDGtOopO457hHeG&currency=USD&disable-funding=credit"></script> -->
     <!-- <script src="https://www.paypal.com/sdk/js?client-id=AaM7MAKgPXa5x2II93LPtW4GSFem4bXpfl8-rPhNxJ3JO9QkDTi6RxNH87kSbIXDct3sEQpCS-yLufXc&currency=USD&disable-funding=credit"></script> -->
@@ -276,8 +279,11 @@ form{
         // Render the PayPal button into #paypal-button-container
         paypal.Buttons({
             style:{
-                color:'blue',
-                shape:'rect',
+              layout: 'vertical',
+              color:  'blue',
+              shape:  'rect',
+              label:  'checkout',
+              shape:'rect',
             },
             // Call your server to set up the transaction
             createOrder: function(data, actions) {
@@ -293,11 +299,71 @@ form{
             // Call your server to finalize the transaction
             onApprove: function(data, actions) {
                 return actions.order.capture().then(function(){
-                    
-                    alert('Transaction completed by'+ details.payer.none.given_name + '!');
+                  setTimeout(function () {
+                      // e.preventDefault();
+                      $.ajax({
+                          type:"POST",
+                          url:"/paypal_invoice",
+                          data: {
+                              orderid: data.orderID,
+                              csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                          },
+                          success: function (respons){
+                            if (respons == "Your order was successful!"){
+                                alert(respons)
+                            } else {
+                                alert(respons);
+                            };
+                          },
+                      })
+                  }, 2000)
+                  
+                  // console.log("this the file",data)
+                  // console.log("this the action",actions)
+                  // alert("completed",actions)
+                  alert('Transaction completed by'+ details.payer.none.given_name + '!');
                 });
             }
 
         }).render('#paypal-button-container');
+    </script>
+       <script>
+        $('#kwebtocoin').on('click', function () {
+        setTimeout(function () {
+            // e.preventDefault();
+            $.ajax({
+                type:"POST",
+                url:"/kwebify/wallettransfer",
+                data: {
+                    amount: $('#fixedprice').val(),
+                    user: $('#user').val(),
+                    email: $('#emails').val(),
+                    accounts: $('#accounts').val(),
+                    debitaccounts: $('#total').val(),
+                    type: $('#type').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success: function (respons){
+                    if (respons == "Success ! your transaction was succesfull"){
+                        alert(respons)
+                    } else {
+                        alert(respons);
+                    };
+                },
+            })
+        }, 2000)
+    })
+    </script>
+        <script>
+        'use strict'
+        $(window).on('load', function () {
+
+            /* ck editor */
+            ClassicEditor
+                .create(document.querySelector('#ckeditor'))
+                .catch(error => {
+                    console.error(error);
+                });
+        });
     </script>
 {% include "footer.html" %}

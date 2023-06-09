@@ -37,14 +37,13 @@ urlpatterns = [
     # path('categories/', views.Categories.as_view(), name='categories'),
     # path('category/<int:pk>', views.CategoryView.as_view(), name='category'),
     path('category/<int:pk>', views.list_category, name='list_category'),
-    path('about/', views.about, name='about'),
+    path('about-us/', views.about_us, name='about_us'),
     path('contact/', views.contact, name='contact'),
     path('sell-here/', views.sell_here, name='sell_here'),
     path('sell-form/', views.sell_form, name='sell_form'),
     path('all-vendors/', views.vendors, name='vendors'),
     path('successfully/', views.successfully, name='successfully'),
 
-    path('about-us/', views.about, name="about"),
     path('contact-us/', views.contact, name="contact"),
     # path('news-page/', views.news, name="news"),
     # path('news-details/', views.news_details, name="news_details"),
@@ -57,5 +56,8 @@ urlpatterns = [
     path('statics/', views.Statics, name="statics"),
     path('list-item/', views.ListItem, name="ListItem"),
     path('paypal_payments/<payment_option>/', views.PaypalPayment, name="paypal_payment"),
+    path('paypal_invoice', views.InvoicePayment, name="paypal_invoice"),
     path('sells-details/<int:pk>', views.Dashboard_sells_details, name='sells_details'),
+
+    path('how-to-sell/', views.how_to_sell, name='how_to_sell'),
 ]
