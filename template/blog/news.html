@@ -47,7 +47,36 @@
                     <div class="row grid cols-sm-2 mb-2" data-grid-options="{
                         'layoutMode': 'fitRows'
                     }">
-                        <article class="post post-grid-type grid-item overlay-zoom fashion">
+
+                        {% for article in blog_articles %}
+                        <article class="post post-grid-type grid-item overlay-zoom {{ article.category }}">
+                            <figure class="post-media br-sm">
+                                <a href="post-single.html">
+                                    <img src="{{ article.image.url }}" width="600" height="420" alt="blog">
+                                </a>
+                            </figure>
+                            <div class="post-details">
+                                <div class="post-cats text-primary">
+                                    <a href="#">{{ article.category }}</a>
+                                </div>
+                                <h4 class="post-title">
+                                    <a href="post-single.html">{{ article.title }}</a>
+                                </h4>
+                                <div class="post-content">
+                                    <p>{{ article.content }}</p>
+                                    <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
+                                </div>
+                                <div class="post-meta">
+                                    by <a href="#" class="post-author">{{ article.author }}</a>
+                                    - <a href="#" class="post-date">{{ article.publication_date|date:"d.m.Y" }}</a>
+                                    <a href="#" class="post-comment"><i
+                                            class="w-icon-comments"></i><span>0</span>Comments</a>
+                                </div>
+                            </div>
+                        </article>
+                        {% endfor %}
+
+                        <!-- <article class="post post-grid-type grid-item overlay-zoom fashion">
                             <figure class="post-media br-sm">
                                 <a href="post-single.html">
                                     <img src="/static/assets/images/blog/2cols/1.jpg" width="600" height="420" alt="blog">
@@ -74,8 +103,8 @@
                             </div>
                             </figure>
                            
-                        </article>
-                        <article class="post post-grid-type grid-item overlay-zoom others technology">
+                        </article> -->
+                        <!-- <article class="post post-grid-type grid-item overlay-zoom others technology">
                             <figure class="post-media br-sm">
                                 <a href="post-single.html">
                                     <img src="/static/assets/images/blog/2cols/2.jpg" width="600" height="420" alt="blog">
@@ -103,8 +132,8 @@
                             </div>
                             </figure>
                            
-                        </article>
-                        <article class="post post-grid-type grid-item overlay-zoom clothes">
+                        </article> -->
+                        <!-- <article class="post post-grid-type grid-item overlay-zoom clothes">
                             <figure class="post-media br-sm">
                                 <a href="post-single.html">
                                     <img src="/static/assets/images/blog/2cols/3.jpg" width="600" height="420" alt="blog">
@@ -130,8 +159,8 @@
                                             class="w-icon-comments"></i><span>2</span>Comments</a>
                                 </div>
                             </div>
-                        </article>
-                        <article class="post post-grid-type grid-item overlay-zoom lifestyle">
+                        </article> -->
+                        <!-- <article class="post post-grid-type grid-item overlay-zoom lifestyle">
                             <figure class="post-media br-sm">
                                 <a href="post-single.html">
                                     <img src="/static/assets/images/blog/2cols/4.jpg" width="600" height="420" alt="blog">
@@ -158,8 +187,8 @@
                                             class="w-icon-comments"></i><span>5</span>Comments</a>
                                 </div>
                             </div>
-                        </article>
-                        <article
+                        </article> -->
+                        <!-- <article
                             class="post post-grid-type grid-item overlay-zoom entertainment lifestyle shoes others">
                             <figure class="post-media br-sm">
                                 <a href="post-single.html">
@@ -188,8 +217,8 @@
                                             class="w-icon-comments"></i><span>2</span>Comments</a>
                                 </div>
                             </div>
-                        </article>
-                        <article class="post post-grid-type grid-item overlay-zoom fashion lifestyle">
+                        </article> -->
+                        <!-- <article class="post post-grid-type grid-item overlay-zoom fashion lifestyle">
                             <figure class="post-media br-sm">
                                 <a href="post-single.html">
                                     <img src="/static/assets/images/blog/2cols/6.jpg" width="600" height="420" alt="blog">
@@ -216,7 +245,7 @@
                                             class="w-icon-comments"></i><span>3</span>Comments</a>
                                 </div>
                             </div>
-                        </article>
+                        </article> -->
                     </div>
                     <ul class="pagination justify-content-center mb-10 pb-2 pt-2">
                         <li class="prev disabled">

@@ -1292,3 +1292,14 @@ def payout(request):
 
 # def news_details(request):
 #     return render(request,"NewsDetail.html")
+
+def single_page(request):
+	return render(request, "post-single.html")
+
+def editorial_page(request):
+    blog_posts = BlogPost.objects.all()
+    return render(request, 'news.html', {'blog_posts': blog_posts})
+
+def single_post(request, slug):
+    post = get_object_or_404(BlogPost, slug=slug)
+    return render(request, 'post-single.html', {'post': post})

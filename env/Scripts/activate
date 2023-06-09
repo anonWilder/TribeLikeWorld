@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\MAIN USER\E-commercweb_app\env"
+VIRTUAL_ENV="C:\Users\MAIN USER\desktop\latest_ecommerce\E-commercweb_app\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

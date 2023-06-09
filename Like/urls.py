@@ -60,4 +60,5 @@ urlpatterns = [
     path('sells-details/<int:pk>', views.Dashboard_sells_details, name='sells_details'),
 
     path('how-to-sell/', views.how_to_sell, name='how_to_sell'),
+    path('how-to-sell/', views.how_to_sell, name='how_to_sell'),
 ]

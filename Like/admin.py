@@ -1,5 +1,7 @@
 from django.contrib import admin
 
+from .models import BlogArticle
+
 from .models import *
 
 admin.site.site_header = "Like Wise"
@@ -89,3 +91,9 @@ class PostImageAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(BlogArticle)
+class BlogArticleAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'author', 'publication_date')
+    list_filter = ('category', 'author')
+    search_fields = ('title', 'content', 'author')
+    prepopulated_fields = {'slug': ('title',)}

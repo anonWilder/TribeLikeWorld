@@ -9,6 +9,9 @@ from django.contrib.auth.models import User
 from tinymce.models import HTMLField
 from .utils import generate_ref_code
 
+from django.utils import timezone
+from django.utils.text import slugify
+
 
 # CATEGORY_CHOICES = (
 #     ('S', 'Shirt'),
@@ -341,3 +344,19 @@ class Top_Brands(models.Model):
 
     def __str__(self):
         return self.id
+
+
+# model for blog
+
+class BlogArticle(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    image = models.ImageField(upload_to='blog/images')
+    category = models.CharField(max_length=100)
+    author = models.CharField(max_length=100)
+    publication_date = models.DateTimeField(default=timezone.now)
+    slug = models.SlugField(unique=True, max_length=200)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
