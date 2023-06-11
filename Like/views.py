@@ -1213,6 +1213,9 @@ def about_us(request):
 def contact(request):
 	return render(request,"contact.html")
 
+def terms(request):
+	return render(request,"terms.html")
+
 @login_required
 def Dashboard_sells(request):
 
@@ -1303,3 +1306,7 @@ def editorial_page(request):
 def single_post(request, slug):
     post = get_object_or_404(BlogPost, slug=slug)
     return render(request, 'post-single.html', {'post': post})
+
+
+def terms_view(request):
+    return render(request, 'terms.html')

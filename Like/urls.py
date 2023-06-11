@@ -13,8 +13,10 @@ from .views import (
     AddCouponView,
     search,
     welcome_user,
-    RequestRefundView
+    RequestRefundView,
+    terms_view
 )
+
 
 app_name = 'core'
 
@@ -60,5 +62,6 @@ urlpatterns = [
     path('sells-details/<int:pk>', views.Dashboard_sells_details, name='sells_details'),
 
     path('how-to-sell/', views.how_to_sell, name='how_to_sell'),
-    path('how-to-sell/', views.how_to_sell, name='how_to_sell'),
+
+    path('terms/', views.terms, name='terms'),
 ]
