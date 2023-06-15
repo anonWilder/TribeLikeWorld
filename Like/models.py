@@ -9,6 +9,9 @@ from django.contrib.auth.models import User
 from tinymce.models import HTMLField
 from .utils import generate_ref_code
 
+from django.utils import timezone
+from django.utils.text import slugify
+
 
 # CATEGORY_CHOICES = (
 #     ('S', 'Shirt'),
@@ -87,6 +90,7 @@ class UserProfile(models.Model):
 class Item(models.Model):
     title = models.CharField(max_length=100)
     preview_price = models.CharField(max_length=100,default="0.00")
+    draft =  models.BooleanField(default=True)
     price = models.FloatField()
     user = models.ForeignKey(to=profile, on_delete=models.CASCADE)
     # item_type = models.CharField(max_length=50, choices=(
@@ -343,7 +347,6 @@ class Top_Brands(models.Model):
         return self.id
 
 
-
 class PayoutUserList(models.Model):
     recipient_type = models.CharField(max_length=10, default="EMAIL")
     note = models.CharField(max_length=200, default="Thanks for your patronage!")
@@ -355,4 +358,18 @@ class PayoutUserList(models.Model):
     def __str__(self):
         return self.receiver
 
-     
+
+# model for blog
+
+class BlogArticle(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    image = models.ImageField(upload_to='blog/images')
+    category = models.CharField(max_length=100)
+    author = models.CharField(max_length=100)
+    publication_date = models.DateTimeField(default=timezone.now)
+    slug = models.SlugField(unique=True, max_length=200)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)

@@ -527,7 +527,7 @@ class IndexView(View):
 			order = Order.objects.get(user=self.request.user, ordered=False)
 		else:
 			order = False
-		featured_post = Item.objects.filter(futured=True).order_by('-timestamp')[:10]
+		featured_post = Item.objects.filter(futured=True,draft=True).order_by('-timestamp')[:10]
 		category = Main_Category.objects.all().order_by('-id')
 		latest = Item.objects.filter(seasson='NEW ARRIVALS').order_by('-timestamp')[0:10]
 		best_sell = Item.objects.filter(seasson='BEST SELLER').order_by('-timestamp')[0:10]
@@ -1073,10 +1073,14 @@ def shop(request):
 		order = Order.objects.get(user=request.user, ordered=False)
 	else:
 		order = False
+	category = Main_Category.objects.all().order_by('-id')
 	shops = Item.objects.all().order_by('-timestamp')
+	vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
 	const = {
 		'order':order,
-		"shops":shops
+		"shops":shops,
+		"categorys":category,
+		"vendors_list":vendors_list,
 	}
 	return render(request,"shop.html",const)
 
@@ -1234,6 +1238,9 @@ def about_us(request):
 def contact(request):
 	return render(request,"contact.html")
 
+def terms(request):
+	return render(request,"terms.html")
+
 @login_required
 def Dashboard_sells(request):
 
@@ -1327,3 +1334,18 @@ def payout(request):
 
 # def news_details(request):
 #     return render(request,"NewsDetail.html")
+
+def single_page(request):
+	return render(request, "post-single.html")
+
+def editorial_page(request):
+    blog_posts = BlogPost.objects.all()
+    return render(request, 'news.html', {'blog_posts': blog_posts})
+
+def single_post(request, slug):
+    post = get_object_or_404(BlogPost, slug=slug)
+    return render(request, 'post-single.html', {'post': post})
+
+
+def terms_view(request):
+    return render(request, 'terms.html')

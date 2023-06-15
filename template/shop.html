@@ -164,18 +164,11 @@
                                 <div class="widget widget-collapsible">
                                     <h3 class="widget-title"><span>All Categories</span></h3>
                                     <ul class="widget-body filter-items search-ul">
-                                        <li><a href="#">Accessories</a></li>
-                                        <li><a href="#">Babies</a></li>
-                                        <li><a href="#">Beauty</a></li>
-                                        <li><a href="#">Decoration</a></li>
-                                        <li><a href="#">Electronics</a></li>
-                                        <li><a href="#">Fashion</a></li>
-                                        <li><a href="#">Food</a></li>
-                                        <li><a href="#">Furniture</a></li>
-                                        <li><a href="#">Kitchen</a></li>
-                                        <li><a href="#">Medical</a></li>
-                                        <li><a href="#">Sports</a></li>
-                                        <li><a href="#">Watches</a></li>
+
+                                        {% for i in categorys %}
+                                        <li><a href="#">{{i.name}}</a></li>
+                                        {% endfor %}
+                                        
                                     </ul>
                                 </div>
                                 <!-- End of Collapsible Widget -->
@@ -217,13 +210,10 @@
                                 <div class="widget widget-collapsible">
                                     <h3 class="widget-title"><span>Brand</span></h3>
                                     <ul class="widget-body filter-items item-check mt-1">
-                                        <li><a href="#">Elegant Auto Group</a></li>
-                                        <li><a href="#">Green Grass</a></li>
-                                        <li><a href="#">Node Js</a></li>
-                                        <li><a href="#">NS8</a></li>
-                                        <li><a href="#">Red</a></li>
-                                        <li><a href="#">Skysuite Tech</a></li>
-                                        <li><a href="#">Sterling</a></li>
+                                        {% for i in vendors_list %}
+                                        <li><a href="#">{{i.Boutique_name}}</a></li>
+                                        {% endfor %}
+                               
                                     </ul>
                                 </div>
                                 <!-- End of Collapsible Widget -->

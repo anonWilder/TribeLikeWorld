@@ -4,6 +4,7 @@ from django.urls import path,include
 from django.conf.urls.static import static
 from django.conf import settings
 from users import views as view
+from .views import terms
 # from Like.views import index
 
 
