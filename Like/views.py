@@ -11,7 +11,7 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
 from .models import *
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from users.models import *
 from django.contrib import messages
 from django.utils.decorators import method_decorator
@@ -23,7 +23,8 @@ import uuid
 import random
 import string
 import requests
-
+from django.core import serializers
+import json
 
 import stripe
 # import Paystack
@@ -1085,7 +1086,7 @@ def sell_here(request):
 @login_required
 def ListItem(request):
 	if request.user.is_authenticated:
-		order = Order.objects.get(user=self.request.user, ordered=False)
+		order = Order.objects.get(user=request.user, ordered=False)
 	else:
 		order = False
 	vendors_list = BOUTIQUE_REQUEST.objects.filter(user=request.user).order_by('-id')
@@ -1121,6 +1122,26 @@ def ListItem(request):
 		messages.success(request, f'Request has been sent Successfully !')
 		return redirect('/successfully')
 	return render(request, "dashboard/list-item.html",{"vendors_list":vendors_list,'order':order,"category_list":category_list,"subcategory_list":subcategory_list})
+
+
+@login_required
+def all_soled_iteam(request,pk):
+	objects = Order.objects.filter(user_id=request.user.id)
+
+
+	id_ = request.user.id
+	ordered_list = PayoutUserList.objects.all()
+	objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pk)
+	Boutique_ = Item.objects.filter(Boutique_name=objects, ).order_by('-timestamp')
+	
+
+	# ordered_list = OrderItem.objects.filter(user=objects).order_by('-timestamp')
+	# objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pk)
+	# Boutique_ = Item.objects.filter(Boutique_name=objects).order_by('-timestamp')
+	# ordered_list = OrderItem.objects.filter(item=Boutique_, ordered=True).order_by('-timestamp')
+	print(ordered_list)
+	return render(request,"dashboard/all-soled.html")
+
 
 @login_required
 def sell_form(request):
@@ -1170,7 +1191,7 @@ def how_to_sell(request):
 
 def vendors(request):
 	if request.user.is_authenticated:
-		order = Order.objects.get(user=self.request.user, ordered=False)
+		order = Order.objects.get(user=request.user, ordered=False)
 	else:
 		order = False
 	vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
@@ -1183,7 +1204,7 @@ def vendors(request):
 
 def VendorDetailView(request, pk):
 	if request.user.is_authenticated:
-		order = Order.objects.get(user=self.request.user, ordered=False)
+		order = Order.objects.get(user=request.user, ordered=False)
 	else:
 		order = False
 	objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pk)
@@ -1257,33 +1278,47 @@ def Dashboard_draft_details(request,pk):
 def Statics(request):
 	return render(request, "dashboard/statics.html")
 
-
+@login_required
 def payout(request):
+	ordered_list = PayoutUserList.objects.all()
+	data = serializers.serialize("json", ordered_list)
+	data = json.loads(data)
+	# return JsonResponse(data,safe=False)
+	list_ = data[0]['fields']
+	extra = {"amount": {"value": 9.87, "currency": "USD"}}
+	dest = list_.copy()
+	list_.update(extra)
 	headers = {
 		'Content-Type': 'application/json',
-		'Authorization': 'Bearer A101.OLQiCyqOpVwigKQQDu3CYlamZ1KTKQmhrbAZK85RIy4IiWh9d_up_lTadp_lfXdV.P3gvkY3PO28akjKYaDorm12QdfK',
+		'Authorization': 'Bearer A21AAIPhFcyl-7RCv9QeM_8pTqZvGlJBjc1bMauRoiWd8AD8CFlC9w3bOYr4K3oI4ON6OyTA7y1mBdGcyxI49LMTBZ9U0l5ew',
 	}
-
 	data = { 
 		"sender_batch_header": {
-		"sender_batch_id": "Payouts_2020_100007",
-		"email_subject": "You have a payout!",
-		"email_message": "You have received a payout! Thanks for using our service!"
+			"sender_batch_id": "Payouts_2020_100009",
+			"email_subject": "You have a payout!",
+			"email_message": "You have received a payout! Thanks for using our service!"
 		}, 
 		"items": [
 			{
 				"recipient_type": "EMAIL",
-				"amount": { "value": "9.87", "currency": "USD" },
+				"amount": {
+					"value": "10.00",
+					"currency": "USD"
+				},
 				"note": "Thanks for your patronage!",
-				"sender_item_id": "201403140001",
-				"receiver": "receiver@example.com",
-				"recipient_wallet": "RECIPIENT_SELECTED",
+				"sender_item_id": "2014031400801",
+				"receiver": "kwebify1@gmail.com",
 				"notification_language": "en-US"
-			} 
-		] 
+			}
+		]
 	}
-
-	response = requests.post('https://api-m.sandbox.paypal.com/v1/payments/payouts', headers=headers, data=data)
+	response = requests.post('https://api.sandbox.paypal.com/v1/payments/payouts', headers=headers, data=data)
+	# if response.status_code == 200:
+	print("ll",response.text)
+	print("ld",response)
+	result = response.json()
+	print("lg",result)
+		# return JsonResponse(result,safe=False)
 
 
 # def news(request):

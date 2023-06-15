@@ -341,3 +341,18 @@ class Top_Brands(models.Model):
 
     def __str__(self):
         return self.id
+
+
+
+class PayoutUserList(models.Model):
+    recipient_type = models.CharField(max_length=10, default="EMAIL")
+    note = models.CharField(max_length=200, default="Thanks for your patronage!")
+    sender_item_id = models.CharField(max_length=200, default="201403140001")
+    receiver = models.CharField(max_length=200, default="receiver@example.com")
+    recipient_wallet = models.CharField(max_length=200, default="RECIPIENT_SELECTED")
+    notification_language = models.CharField(max_length=200, default="en-US")
+
+    def __str__(self):
+        return self.receiver
+
+     

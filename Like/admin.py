@@ -73,6 +73,8 @@ admin.site.register(contactUs)
 admin.site.register(BOUTIQUE_REQUEST)
 admin.site.register(counter)
 admin.site.register(Top_Brands)
+admin.site.register(PayoutUserList)
+
 
 class PostImageAdmin(admin.StackedInline):
     model = PostImage

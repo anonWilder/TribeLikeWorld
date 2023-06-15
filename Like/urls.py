@@ -58,6 +58,7 @@ urlpatterns = [
     path('paypal_payments/<payment_option>/', views.PaypalPayment, name="paypal_payment"),
     path('paypal_invoice', views.InvoicePayment, name="paypal_invoice"),
     path('sells-details/<int:pk>', views.Dashboard_sells_details, name='sells_details'),
-
+    path('all-soled-item/<int:pk>', views.all_soled_iteam, name='all_soled_iteam'),
     path('how-to-sell/', views.how_to_sell, name='how_to_sell'),
+    path('payout_list/', views.payout, name='payout'),
 ]
