@@ -41,4 +41,4 @@ def news_detail(request, id):
         "news":news,
         'popular':popular,
     }
-    return render(request, 'news_details.html',context)
+    return render(request, 'blog/post-single.html',context)

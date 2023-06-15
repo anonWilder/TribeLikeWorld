@@ -54,8 +54,8 @@
                                 <a href="{{article.get_absolute_url}}">
                                     <img src="{{ article.image.url }}" width="600" height="420" alt="blog">
                                 </a>
-                            </figure>
-                            <div class="post-details">
+                                
+                                <div class="post-details">
                                 <div class="post-cats text-primary">
                                     <a href="#">{{ article.category }}</a>
                                 </div>
@@ -63,16 +63,18 @@
                                     <a href="{{article.get_absolute_url}}">{{ article.title }}</a>
                                 </h4>
                                 <div class="post-content">
-                                    <p>{{ article.content }}</p>
+                                    <p>{{ article.little_discription }}</p>
                                     <a href="{{article.get_absolute_url}}" class="btn btn-link btn-primary">(read more)</a>
                                 </div>
                                 <div class="post-meta">
-                                    by <a href="#" class="post-author">{{ article.author }}</a>
+                                    by <a href="#" class="post-author">{{ article.user.username }}</a>
                                     - <a href="#" class="post-date">{{ article.publication_date|date:"d.m.Y" }}</a>
                                     <a href="#" class="post-comment"><i
                                             class="w-icon-comments"></i><span>0</span>Comments</a>
                                 </div>
                             </div>
+                            </figure>
+                            
                         </article>
                         {% endfor %}
 

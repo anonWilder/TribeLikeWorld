@@ -31,12 +31,12 @@ class New(models.Model):
 	def __str__(self):
 		return self.title
 
+	# def get_absolute_url(self):
+	# 	return reverse('news_detail', kwargs={
+	# 		'id': self.id
+	# 	})
 	def get_absolute_url(self):
-		return reverse('news_detail', kwargs={
-			'id': self.id
-		})
-	def get_absolute_url(self):
-		return reverse('new:forum_details', args=[self.id])
+		return reverse('new:news_detail', args=[self.id])
 
 	def num_likes(self):
 		return self.likes.count()
