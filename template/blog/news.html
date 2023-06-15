@@ -48,10 +48,10 @@
                         'layoutMode': 'fitRows'
                     }">
 
-                        {% for article in blog_articles %}
+                        {% for article in news %}
                         <article class="post post-grid-type grid-item overlay-zoom {{ article.category }}">
                             <figure class="post-media br-sm">
-                                <a href="post-single.html">
+                                <a href="{{article.get_absolute_url}}">
                                     <img src="{{ article.image.url }}" width="600" height="420" alt="blog">
                                 </a>
                             </figure>
@@ -60,11 +60,11 @@
                                     <a href="#">{{ article.category }}</a>
                                 </div>
                                 <h4 class="post-title">
-                                    <a href="post-single.html">{{ article.title }}</a>
+                                    <a href="{{article.get_absolute_url}}">{{ article.title }}</a>
                                 </h4>
                                 <div class="post-content">
                                     <p>{{ article.content }}</p>
-                                    <a href="post-single.html" class="btn btn-link btn-primary">(read more)</a>
+                                    <a href="{{article.get_absolute_url}}" class="btn btn-link btn-primary">(read more)</a>
                                 </div>
                                 <div class="post-meta">
                                     by <a href="#" class="post-author">{{ article.author }}</a>
