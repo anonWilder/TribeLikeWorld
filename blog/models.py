@@ -2,15 +2,15 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-class Tags(models.Model):
-	name = models.CharField(max_length=300)
+class Category(models.Model):
+	title = models.CharField(max_length=20)
 
 	class Meta:
-		verbose_name = 'tag'
-		verbose_name_plural = 'tags'
+		verbose_name = 'category'
+		verbose_name_plural = 'categories'
 
 	def __str__(self):
-		return self.name
+		return self.title
 
 class New(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -23,8 +23,7 @@ class New(models.Model):
 	popular = models.BooleanField(default=False)
 	approved = models.BooleanField(default=False)
 	likes=models.ManyToManyField(User, related_name="love", blank=True)
-	# dislikes=models.ManyToManyField(User, related_name="q_disliked", blank=True)
-	tags = models.ManyToManyField(Tags)
+	categories = models.ManyToManyField(Category)
 	date_updated = models.DateTimeField(auto_now=True)
 	date_created = models.DateTimeField(auto_now_add=True)
 
