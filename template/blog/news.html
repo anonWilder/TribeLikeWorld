@@ -1,110 +1,87 @@
 {% load static %}
-{% include 'head-search.html' %}
+<!-- {% include 'head-search.html' %} -->
 
-<div class="page-wrapper">
-    <!-- Start of Header -->
-
-    <!-- Start of Main -->
-    <main class="main">
-        <!-- Start of Page Header -->
-        <div class="page-header">
-            <div class="container">
-                <h1 class="page-title mb-0">Editorial</h1>
-            </div>
+<!-- Start of Main -->
+<main class="main">
+    <!-- Start of Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <h1 class="page-title mb-0">Editorial</h1>
         </div>
-        <!-- End of Page Header -->
+    </div>
+    <!-- End of Page Header -->
 
-        <!-- Start of Breadcrumb -->
-        <nav class="breadcrumb-nav mb-6">
-            <div class="container">
-                <ul class="breadcrumb">
-                    <li><a href="demo1.html">Home</a></li>
-                    <li><a href="blog.html">Blog</a></li>
-                    <li>Editorial</li>
-                </ul>
-            </div>
-        </nav>
-        <!-- End of Breadcrumb -->
+    <!-- Start of Breadcrumb -->
+    <nav class="breadcrumb-nav mb-6">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="demo1.html">Home</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li>Editorial</li>
+            </ul>
+        </div>
+    </nav>
+    <!-- End of Breadcrumb -->
 
-        <!-- Start of Page Content -->
-        <div class="page-content">
-            <div class="container">
-                <!-- <ul class="nav-filters filter-underline blog-filters mb-4">
-                        <li><a href="#" class="nav-filter active" data-filter="*">All Blog Posts <span>6</span></a></li>
-                        <li><a href="#" class="nav-filter" data-filter=".clothes">Clothes <span>1</span></a></li>
-                        <li><a href="#" class="nav-filter" data-filter=".entertainment">Entertainment <span>1</span></a>
-                        </li>
-                        <li><a href="#" class="nav-filter" data-filter=".fashion">Fashion <span>2</span></a></li>
-                        <li><a href="#" class="nav-filter" data-filter=".lifestyle">Lifestyle <span>3</span></a></li>
-                        <li><a href="#" class="nav-filter" data-filter=".others">Others <span>2</span></a></li>
-                        <li><a href="#" class="nav-filter" data-filter=".shoes">Shoes <span>1</span></a></li>
-                        <li><a href="#" class="nav-filter" data-filter=".technology">Technology <span>1</span></a></li>
-                    </ul> -->
+    <!-- Start of Page Content -->
+    <div class="page-content">
+        <div class="container">
+            <div class="row grid cols-sm-2 mb-2" data-grid-options="{
+                    'layoutMode': 'fitRows'
+                }">
 
-                <div class="row grid cols-sm-2 mb-2" data-grid-options="{
-                        'layoutMode': 'fitRows'
-                    }">
+                {% for article in news %}
+                <article class="post post-grid-type grid-item overlay-zoom {{ article.category }}">
+                    <figure class="post-media br-sm">
+                        <a href="{{article.get_absolute_url}}">
+                            <img src="{{ article.image.url }}" style="width: 600px; height: 400px;" alt="blog">
+                        </a>
 
-                    {% for article in news %}
-                    <article class="post post-grid-type grid-item overlay-zoom {{ article.category }}">
-                        <figure class="post-media br-sm">
-                            <a href="{{article.get_absolute_url}}">
-                                <img src="{{ article.image.url }}" style="width: 600; height: 420;" width="600" height="420" alt="blog">
-                            </a>
-
-                            <div class="post-details">
-                                <div class="post-cats text-primary">
-                                    <a href="{{article.get_absolute_url}}">{{ article.categories }}</a>
-                                </div>
-                                <h4 class="post-title">
-                                    <a href="{{article.get_absolute_url}}">{{ article.title }}</a>
-                                </h4>
-                                <div class="post-content">
-                                    <p>{{ article.little_discription }}</p>
-                                    <a href="{{article.get_absolute_url}}" class="btn btn-link btn-primary">(read
-                                        more)</a>
-                                </div>
-                                <div class="post-meta">
-                                    by <a href="#" class="post-author">{{ article.user.username }}</a>
-                                    - <a href="#" class="post-date">{{ article.publication_date|date:"d.m.Y" }}</a>
-                                    <a href="#" class="post-comment"><i
-                                            class="w-icon-comments"></i><span>0</span>Comments</a>
-                                </div>
+                        <div class="post-details">
+                            <!-- <div class="post-cats text-primary">
+                                <a href="{{article.get_absolute_url}}">{{ article.categories }}</a>
+                            </div> -->
+                            <h4 class="post-title">
+                                <a href="{{article.get_absolute_url}}">{{ article.title }}</a>
+                            </h4>
+                            <div class="post-content">
+                                <p>{{ article.little_discription }}</p>
+                                <a href="{{article.get_absolute_url}}" class="btn btn-link btn-primary">(read
+                                    more)</a>
                             </div>
-                        </figure>
+                            <div class="post-meta">
+                                by <a href="#" class="post-author">{{ article.user.username }}</a>
+                                - <a href="#" class="post-date">{{ article.publication_date|date:"d.m.Y" }}</a>
+                                <a href="#" class="post-comment"><i
+                                        class="w-icon-comments"></i><span>0</span>Comments</a>
+                            </div>
+                        </div>
+                    </figure>
 
-                    </article>
-                    {% endfor %}
-                </div>
-
-                <ul class="pagination justify-content-center mb-10 pb-2 pt-2">
-                    <li class="prev disabled">
-                        <a href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
-                            <i class="w-icon-long-arrow-left"></i>Prev
-                        </a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="next">
-                        <a href="#" aria-label="Next">
-                            Next<i class="w-icon-long-arrow-right"></i>
-                        </a>
-                    </li>
-                </ul>
+                </article>
+                {% endfor %}
             </div>
+
+            <ul class="pagination justify-content-center mb-10 pb-2 pt-2">
+                <li class="prev disabled">
+                    <a href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                        <i class="w-icon-long-arrow-left"></i>Prev
+                    </a>
+                </li>
+                <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#">2</a>
+                </li>
+                <li class="next">
+                    <a href="#" aria-label="Next">
+                        Next<i class="w-icon-long-arrow-right"></i>
+                    </a>
+                </li>
+            </ul>
         </div>
-        <!-- End of Page Content -->
-    </main>
-    <!-- End of Main -->
-
-    <!-- Start of Footer -->
-    <!-- End of Footer -->
+    </div>
+</main>
 </div>
-
 {% include 'footer.html' %}
-
-</html>
