@@ -37,12 +37,12 @@
                         <div class="main-content post-single-content">
                             <div class="post post-grid post-single">
                                 <figure class="post-media br-sm">
-                                    <img src="assets/images/blog/single/1.jpg" alt="Blog" width="930" height="500" />
+                                    <img src="{{ article.image.url }}" alt="Blog" width="930" height="500" />
                                 </figure>
                                 <div class="post-details">
                                     <div class="post-meta">
-                                        by <a href="#" class="post-author">John Doe</a>
-                                        - <a href="#" class="post-date">03.01.2021</a>
+                                        by <a href="#" class="post-author">{{ article.user.username }}</a>
+                                        - <a href="#" class="post-date">{{ article.publication_date|date:"d.m.Y" }}</a>
                                         <a href="#" class="post-comment"><i class="w-icon-comments"></i><span>0</span>Comments</a>
                                     </div>
                                     <h2 class="post-title"><a href="#">{{news.title}}</a></h2>
@@ -91,11 +91,11 @@
                             <!-- End Tag -->
                             <div class="social-links mb-10">
                                 <div class="social-icons social-no-color border-thin">
-                                    <a href="#" class="social-icon social-facebook w-icon-facebook"></a>
+                                    <!-- <a href="#" class="social-icon social-facebook w-icon-facebook"></a>
                                     <a href="#" class="social-icon social-twitter w-icon-twitter"></a>
-                                    <a href="#" class="social-icon social-pinterest w-icon-pinterest"></a>
+                                    <a href="#" class="social-icon social-pinterest w-icon-pinterest"></a> -->
                                     <a href="#" class="social-icon social-instagram w-icon-instagram"></a>
-                                    <a href="#" class="social-icon social-youtube w-icon-youtube"></a>
+                                    <!-- <a href="#" class="social-icon social-youtube w-icon-youtube"></a> -->
                                 </div>
                             </div>
                             <!-- End Social Links -->
