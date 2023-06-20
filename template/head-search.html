@@ -22,6 +22,8 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- WebFont.js -->
+
+
     <script>
         WebFontConfig = {
             google: { families: ['Poppins:400,500,600,700,800'] }
@@ -228,14 +230,15 @@
             </div>
         </header>
 
-
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                            <script>
-                                $(document).ready(function () {
-                                    $('.category-dropdown').hover(function () {
-                                        $(this).find('.dropdown-box').stop(true, true).slideDown();
-                                    }, function () {
-                                        $(this).find('.dropdown-box').stop(true, true).slideUp();
-                                    });
-                                });
-                            </script>
+        <script>
+            $(document).ready(function () {
+                $('.category-dropdown .dropdown-box').hide();
+
+                $('.category-dropdown').click(function () {
+                    var dropdownBox = $(this).find('.dropdown-box');
+
+                    dropdownBox.slideToggle();
+                });
+            });
+        </script>
