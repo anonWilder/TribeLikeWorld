@@ -1,5 +1,4 @@
    {% load static %}
-   {% load crispy_forms_tags %}
    <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +10,7 @@
     <meta name="author" content="">
     <link rel="icon" href="https://specie-admin-template.multipurposethemes.com/images/favicon.ico">
 
-    <title>Bittechfx – Cryptocurrency & bitcoin Sign up</title>
+    <title>Tribe Like – Sign up</title>
    <!-- Vendors Style-->
 
 
@@ -273,7 +272,7 @@ a.ssolink {
   <html>
 <head>
   <meta charset="utf-8">
-  <title>Bittechfx: Sign in</title>
+  <title>Tribe like: Sign in</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
@@ -314,9 +313,9 @@ a.ssolink {
       </div>
       <div class="box-root padding-top--24 flex-flex flex-direction--column" style="flex-grow: 1; z-index: 9;">
         <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-          <h1><a href="/" rel="dofollow">Bittechfx</a></h1>
+          <h1><a href="/" rel="dofollow">Tribe Like</a></h1>
         </div>
-{% include 'crypto/messages.html' %}
+
         <div class="formbg-outer">
           <div class="formbg">
             <div class="formbg-inner padding-horizontal--48">
@@ -337,7 +336,7 @@ a.ssolink {
                   <input type="hidden" name="body" value="">
                   <input type="hidden" name="number" value="0000000">
                   <input type="hidden" name="statuse" value="awaiting">
-                  {{form|crispy}}
+                  {{form}}
                   <!-- 
                   <label for="email">First Name</label>
                   <input type="text" name="first_name"> -->

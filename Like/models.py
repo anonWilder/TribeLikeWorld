@@ -85,6 +85,14 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+class Userinfo(models.Model):
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	country = models.CharField(max_length=500)
+	phone = models.CharField(max_length=500)
+	date = models.DateTimeField(auto_now=True)
+
+	def __str__(self):
+		return self.user.username
 
 # Create your models here.
 class Item(models.Model):

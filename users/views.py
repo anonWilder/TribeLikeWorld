@@ -29,7 +29,7 @@ def update_user_data(user):
 
 
 def register(request):
-	detail = Details()
+	# detail = Details()
 	# private_key = random_key()
 	# public_key = privtopub(private_key)
 	# address = pubtoaddr(public_key)
@@ -64,10 +64,10 @@ def register(request):
 				emails = form.cleaned_data.get('email')
 				instances = Userinfo.objects.create(user = instance, country=countrys, phone=phones)
 				instances.save()
-				inst = Userwallet.objects.create(user = instance, deposited=depositeds, profit=profits, bonus=bonuss, ref_bonus=ref_bonuss, balance=balances)
-				inst.save()
-				instes = kycs.objects.create(user = instance, id_type=id_typ, id_front=id_frot, id_back=id_bak, id_body=id_bdy, id_number=id_nuber, status=statu)
-				instes.save()
+				# inst = Userwallet.objects.create(user = instance, deposited=depositeds, profit=profits, bonus=bonuss, ref_bonus=ref_bonuss, balance=balances)
+				# inst.save()
+				# instes = kycs.objects.create(user = instance, id_type=id_typ, id_front=id_frot, id_back=id_bak, id_body=id_bdy, id_number=id_nuber, status=statu)
+				# instes.save()
 				template = render_to_string('users/signup_massage.html',{
 					"user": username,
 					"email": emails
@@ -92,10 +92,10 @@ def register(request):
 				emails = form.cleaned_data.get('email')
 				instance = Userinfo.objects.create(user = obj, country=countrys, phone=phones)
 				instance.save()
-				inst = Userwallet.objects.create(user = obj, deposited=depositeds, profit=profits, bonus=bonuss, ref_bonus=ref_bonuss, balance=balances)
-				inst.save()
-				instes = kycs.objects.create(user = obj, id_type=id_typ, id_front=id_frot, id_back=id_bak, id_body=id_bdy, id_number=id_nuber, status=statu)
-				instes.save()
+				# inst = Userwallet.objects.create(user = obj, deposited=depositeds, profit=profits, bonus=bonuss, ref_bonus=ref_bonuss, balance=balances)
+				# inst.save()
+				# instes = kycs.objects.create(user = obj, id_type=id_typ, id_front=id_frot, id_back=id_bak, id_body=id_bdy, id_number=id_nuber, status=statu)
+				# instes.save()
 				template = render_to_string('users/signup_massage.html',{
 					"user": username,
 					"email": emails
@@ -110,7 +110,7 @@ def register(request):
 				return redirect('/login')
 	else:
 		form = UserRegisterForm()
-	return render(request, 'users/register.html', {'detail': detail,'form':form})
+	return render(request, 'users/register.html', {'form':form})
 
 
 # def register(request):
