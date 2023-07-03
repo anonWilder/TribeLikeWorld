@@ -15,9 +15,9 @@ from django.http import HttpResponse,JsonResponse
 from users.models import *
 from django.contrib import messages
 from django.utils.decorators import method_decorator
+from django.utils.html import strip_tags
 from django.template.loader import render_to_string
-from django.core.mail import EmailMessage
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage,EmailMultiAlternatives,send_mail
 from paypal.standard.forms import PayPalPaymentsForm
 import uuid
 import random
@@ -38,7 +38,7 @@ def create_ref_code():
 
 def products(request):
 	if request.user.is_authenticated:
-		order = Order.objects.get(user=self.request.user, ordered=False)
+		order = Order.objects.get(user=request.user, ordered=False)
 	else:
 		order = False
 	context = {
@@ -1118,7 +1118,7 @@ def ListItem(request):
 			"email": 'francisdaniel140@gmail.com'
 		})
 			
-		send_mail('From Like Wise',
+		send_mail('From Tribe Like',
 		template,
 		settings.EMAIL_HOST_USER,
 		['francisdaniel140@gmail.com','likegroupinc@gmail.com'],
@@ -1150,42 +1150,50 @@ def all_soled_iteam(request,pk):
 @login_required
 def sell_form(request):
 	if request.user.is_authenticated:
-		order = Order.objects.get(user=self.request.user, ordered=False)
+		order = Order.objects.get(user=request.user, ordered=False)
 	else:
 		order = False
 	if request.method == "POST":
-		pod = BOUTIQUE_REQUEST()
-		pod.user=request.user
-		pod.Boutique_name = request.POST.get("Boutique_name")
-		pod.items_to_sell = request.POST.get("items_to_sell")
-		pod.number =  request.POST.get("number")
-		pod.where_else_you_sell = request.POST.get("where_else_you_sell")
-		pod.social_media =  request.POST.get("social_media")
-		pod.about_your_business = request.POST.get("about_your_business")
-		pod.hear_about_us = request.POST.get("hear_about_us")
-		if len(request.FILES) != 0:
-			pod.brand_logo = request.FILES["brand_logo"]
-			pod.brand_banner = request.FILES["brand_banner"]
-			pod.products_image1 = request.FILES["products_image1"]
-			pod.products_image2 = request.FILES["products_image2"]
-			pod.products_image3 = request.FILES["products_image3"]
-			pod.products_image4 = request.FILES["products_image4"]
-		pod.save()
-		messages.success(request, f'Request has been sent Successfully !')
-		 
-		template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html',{
-			# "email": email
-			"email": 'francisdaniel140@gmail.com'
-		})
+		user_email =  request.user.email
+		# pod = BOUTIQUE_REQUEST()
+		# pod.user=request.user
+		# pod.Boutique_name = request.POST.get("Boutique_name")
+		# pod.items_to_sell = request.POST.get("items_to_sell")
+		# pod.number =  request.POST.get("number")
+		# pod.where_else_you_sell = request.POST.get("where_else_you_sell")
+		# pod.social_media =  request.POST.get("social_media")
+		# pod.about_your_business = request.POST.get("about_your_business")
+		# pod.hear_about_us = request.POST.get("hear_about_us")
+		# if len(request.FILES) != 0:
+		# 	pod.brand_logo = request.FILES["brand_logo"]
+		# 	pod.brand_banner = request.FILES["brand_banner"]
+		# 	pod.products_image1 = request.FILES["products_image1"]
+		# 	pod.products_image2 = request.FILES["products_image2"]
+		# 	pod.products_image3 = request.FILES["products_image3"]
+		# 	pod.products_image4 = request.FILES["products_image4"]
+		# pod.save()
+		
+		subject = 'From Tribe Like'
+		from_email = settings.EMAIL_HOST_USER
+		recipient_list = [user_email,'tribelikeventures@gmail.com']
+		template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html',{"title":"text file","email": user_email})
+		cont = strip_tags(template)
+		email = EmailMultiAlternatives(subject,cont, from_email, recipient_list)
+		email.attach_alternative(template, "text/html")
 			
-		send_mail('From Like Wise',
-		template,
-		settings.EMAIL_HOST_USER,
-		['francisdaniel140@gmail.com','likegroupinc@gmail.com'],
-		)
+		image_path = 'http://127.0.0.1:8000/static/images/t.png'
+		with open(image_path, 'rb') as f:
+			image_data = f.read()
+			email.attach("http://127.0.0.1:8000/static/images/tribe_like_fun_2.png", image_data, "image/jpg")
+
+		# Set the Content-ID header for the embedded image
+		email.mixed_subtype = 'related'
+		email.attach_related(image_data, 'image/jpg', 'unique_cid')
+		email.send()
 		messages.success(request, f'Request has been sent Successfully !')
 		return redirect('/successfully')
-	return render(request,"sell_form.html",{'order':order})
+	else:
+		return render(request,"sell_form.html",{'order':order})
 
 def successfully(request):
 	return render(request,"successful.html")
@@ -1243,7 +1251,6 @@ def terms(request):
 
 @login_required
 def Dashboard_sells(request):
-
 	BOUTIQUE_ = BOUTIQUE_REQUEST.objects.filter(user=request.user).filter(approved=True).order_by('-id')
 	vendors_list = BOUTIQUE_[0:4]
 	vendors_list2 = BOUTIQUE_[4:8]
@@ -1281,6 +1288,17 @@ def Dashboard_draft_details(request,pk):
 	Boutique_ = Item.objects.filter(Boutique_name=objects).order_by('-timestamp')
 	return render(request,"dashboard/details-draft.html")
 
+
+
+def Dashboard_buys(request,pk):
+		# user = request.user.pk
+	objects = get_object_or_404(Order, pk=pk)
+	# print(objects)
+	# oders = Order.objects.filter(user_id=request.user.id, ordered=True).order_by('-start_date')
+	model2_data = objects.OrderItem.all()
+	for i in model2_data:
+		print(i)
+	return render(request,"dashboard/buys.html",{'buys':oders})
 
 def Statics(request):
 	return render(request, "dashboard/statics.html")

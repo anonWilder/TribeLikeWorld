@@ -1,0 +1,253 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Chat</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+
+        <!-- <link rel="stylesheet" href="{% static 'css/messages.css' %}"> -->
+		
+        
+        
+{% load static %}
+{% include "dashboard/base.html" %}
+{% include "dashboard/navbar.html" %}
+        <!-- Page content start  -->
+        <div class="page-content">
+
+            <!-- Header start -->
+            {% include "dashboard/navtop.html" %}
+            <!-- Header end -->
+
+            <!-- Page header start -->
+            <div class="page-header">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active">Chat</li>
+                </ol>
+
+                <ul class="app-actions">
+                    <li>
+                        <a href="#" id="reportrange">
+                            <span class="range-text"></span>
+                            <i class="icon-chevron-down"></i>	
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="icon-export"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Page header end -->
+            
+            <!-- Main container start -->
+            <div class="main-container">
+
+                <!-- Row start -->
+                <div class="row gutters">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="chat-section">
+                            <!-- Row start -->
+                            <div class="row no-gutters">
+                                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-4 col-3">
+                                    <div class="users-container">
+                                        <div class="chat-search-box">
+                                            <div class="input-group">
+                                                <input class="form-control" placeholder="Search" />
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-primary">
+                                                        <i class="icon-magnifying-glass"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% if user.is_authenticated %}
+                                        <input type="hidden" id="logged-in-user" value="{{ user.id }}">
+                                    {% endif %}
+                                
+                                        <div class="usersContainerScroll">
+                                            <ul class="users contacts">
+                                                {% for thread in Threads %}
+                                                <li class="person {% if forloop.first %}active active-user{% endif %} contact-li" chat-id="chat_{{ thread.id }}" style="cursor: pointer" data-chat="person3">
+                                                    <div class="user d-flex">
+                                                        <img src="{{thread.user.profile.image.url}}" class="rounded-circle user_img">
+                                                        <span class="status busy"></span>
+                                                    </div>
+                                                    <p class="name-time">
+                                                        {% if thread.first_person == user %}
+                                                        <span class="name">{{ thread.second_person.username }}</span>
+                                                        <span class="time">3 hours ago</span>
+                                                    {% else %}
+                                                        <span class="name">{{ thread.first_person.username }}</span>
+                                                        <span class="time">3 hours ago</span>
+                                                    {% endif %}
+                                                    </p>
+                                                </li>
+                                                {% endfor %}
+                                               
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-9 col-lg-8 col-md-8 col-sm-8 col-9">
+
+
+                                    {% for thread in Threads %}
+                                    <div class="messages-wrapper  {% if forloop.first %}hide is_active{% else %}hide{% endif %}" chat-id="chat_{{ thread.id }}" other-user-id="
+                                                {% if thread.first_person == user %}
+                                                    {{ thread.second_person.id }}
+                                                {% else %}
+                                                    {{ thread.first_person.id }}
+                                                {% endif %}
+                                            ">
+
+                                    <div class="active-user-chatting">
+                                        <div class="active-user-info">
+                                            <img src="{{thread.user.profile.image.url}}" class="avatar" alt="avatar" />
+                                            <div class="avatar-info">
+                                                {% if thread.first_person == user %}
+                                                <h5>{{ thread.second_person.username }}</h5>
+                                                {% else %}
+                                                <h5>{{ thread.first_person.username }}</h5>
+                                                {% endif %}
+                                                <div class="typing">{{ thread.chatmessage_thread.all.count }} messages</div>
+                                            </div>
+                                        </div>
+                                        <div class="chat-actions">
+                                            <a href="#" data-toggle="modal" data-target="#videoCall">
+                                                <i class="icon-video"></i>
+                                            </a>
+                                            <a href="#" data-toggle="modal" data-target="#audioCall">
+                                                <i class="icon-phone1"></i>
+                                            </a>
+                                        </div>
+
+                                        <!-- Audio Call Modal -->
+                                        <div class="modal fade" id="audioCall" tabindex="-1" role="dialog" aria-labelledby="audioCallLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <div class="call-container">
+                                                            <div class="current-user">
+                                                                <img src="img/user21.png" alt="Avatar" >
+                                                            </div>
+                                                            <h5 class="calling-user-name">
+                                                                Amy Hood <span class="calling">Calling...</span>
+                                                            </h5>
+                                                            <div class="calling-btns">
+                                                                <button class="btn btn-secondary" data-dismiss="modal">
+                                                                    <i class="icon-x"></i>
+                                                                </button>
+                                                                <button class="btn btn-primary">
+                                                                    <i class="icon-phone1"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Video Call Modal -->
+                                        <div class="modal fade" id="videoCall" tabindex="-1" role="dialog" aria-labelledby="videoCallLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <div class="call-container">
+                                                            <div class="current-user">
+                                                                <img src="img/user22.png" alt="Avatar" >
+                                                            </div>
+                                                            <h5 class="calling-user-name">
+                                                                Zhenya Rynzhuk <span class="calling">Calling...</span>
+                                                            </h5>
+                                                            <div class="calling-btns">
+                                                                <button class="btn btn-secondary" data-dismiss="modal">
+                                                                    <i class="icon-x"></i>
+                                                                </button>
+                                                                <button class="btn btn-primary">
+                                                                    <i class="icon-video"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="chat-container">
+                                        <div class="chatContainerScroll">
+                                            <ul class="chat-box msg_card_body">
+                                                   <!------- messages ------->
+                                            {% for chat in thread.chatmessage_thread.all %}
+                                            {% if chat.user == user %}
+                                                <li class='chat-left d-flex mb-4 replied'>
+                                                    <div class='chat-avatar'>
+                                                        <img src="{{chat.user.profile.image.url}}" alt="Le Rouge Admin" />
+                                                        <div class='chat-name'>{{chat.user.username}}</div>
+                                                    </div>
+                                                    <div class='chat-text'>
+                                                        <p> {{ chat.message }}</p>
+                                                        <div class='chat-hour'>{{ chat.timestamp|date:"d D" }}, {{ chat.timestamp|time:"H:i" }} <span class='icon-done_all'></span></div>
+                                                    </div>
+                                                </li>
+                                                {% else %}
+                                                <li class='chat-right d-flex mb-4 received'>
+                                                    <div class='chat-text'>
+                                                        <p>{{ chat.message }}</p>
+                                                        <div class='chat-hour'>{{ chat.timestamp|date:"d D" }}, {{ chat.timestamp|time:"H:i" }} <span class='icon-done_all'></span></div>
+                                                    </div>
+                                                    <div class='chat-avatar'>
+                                                        <img src="{{chat.user.profile.image.url}}" alt="Le Rouge Admin" />
+                                                        <div class='chat-name'>{{chat.user.username}}</div>
+                                                    </div>
+                                                </li>
+                                                <li class="divider">Dec 18, 2019</li>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        {% endfor %}
+
+                                    </div>
+                              
+                                        <div class="chat-form">
+                                            <form id="send-message-form">
+                                            <div class="form-group">
+                                                <textarea class="form-control type_msg" type="text" name="" id="input-message" placeholder="Type your message here..."></textarea>
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="icon-send"></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                               
+                            </div>
+                            <!-- Row end -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Row end -->
+
+            </div>
+            <!-- Main container end -->
+
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+
+        <script src="{% static 'js/messages.js' %}"></script>
+        <!-- Page content end -->
+        {% include "dashboard/footer.html" %}

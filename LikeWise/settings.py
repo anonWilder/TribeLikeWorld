@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-@x$e$0h_x_e2ydn39fxlo35z4h3@^v^x@#y1pd&cy4+!!7wx7x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    "daphne",
     'django.contrib.staticfiles',
     'Like',
     'users',
@@ -49,6 +50,8 @@ INSTALLED_APPS = [
     'tinymce',
     'blog',
     'paypal.standard.ipn',
+    'channels',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -80,8 +83,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'LikeWise.wsgi.application'
-
-
+ASGI_APPLICATION = 'LikeWise.asgi.application'
+# ASGI_APPLICATION = 'LikeWise.routing.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -208,10 +211,28 @@ MESSAGE_TAGS = {
 # EMAIL_USE_TLS = False
 # EMAIL_USE_SSL = True
 
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.titan.email'
+EMAIL_HOST = 'mail.privateemail.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'admin@bitechfx.com'
-EMAIL_HOST_PASSWORD = 'FxAdmin101'
+EMAIL_HOST_USER = 'info@tribelikeworld.com'
+EMAIL_HOST_PASSWORD = '78ikenna'
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.titan.email'
+# EMAIL_PORT = 465
+# EMAIL_HOST_USER = 'admin@bitechfx.com'
+# EMAIL_HOST_PASSWORD = 'FxAdmin101'
+# EMAIL_USE_TLS = False
+# EMAIL_USE_SSL = True
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        # 'CONFIG': {
+        #     'hosts': [('127.0.0.1', 6379)],
+        # }
+    },
+}

@@ -24,6 +24,7 @@ urlpatterns = [
     # path('<str:ref_code>/', index, name="index"),
     path('tinymce/', include('tinymce.urls')),
     path('paypal', include('paypal.standard.ipn.urls')),
+    path('chat/', include('chat.urls'))
 ]
 
 if settings.DEBUG:

@@ -43,12 +43,6 @@ def register(request):
 		countrys = request.POST['country']
 		phones = request.POST['phone']
 
-		depositeds = request.POST['depositedr']
-		profits = request.POST['profitr']
-		bonuss = request.POST['bonusr']
-		ref_bonuss = request.POST['ref_bonusr']
-		balances = request.POST['balancer']
-
 		id_typ = request.POST['type']
 		id_frot = request.POST['front']
 		id_bak = request.POST['back']
@@ -100,7 +94,7 @@ def register(request):
 					"user": username,
 					"email": emails
 				})
-				send_mail('From Bittechfx',
+				send_mail('From Tribe Like',
 				template,
 				settings.EMAIL_HOST_USER,
 				[emails],
