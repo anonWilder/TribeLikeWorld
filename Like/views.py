@@ -25,7 +25,6 @@ import string
 import requests
 from django.core import serializers
 import json
-
 import stripe
 # import Paystack
 
@@ -409,6 +408,8 @@ def PaypalPayment(request,payment_option,):
 		order = False
 	amount = order.get_total()
 	
+	# 	tax_fee = 3.49
+	# amount = int(order.get_total() + tax_fee)
 	
 	context = {
 		'order': order,
@@ -433,10 +434,10 @@ def PaypalPayment(request,payment_option,):
 
 
 def InvoicePayment(request):
-	if request.user.is_authenticated:
-		order = Order.objects.get(user=request.user, ordered=False)
-	else:
-		order = False
+	# if request.user.is_authenticated:
+	# 	order = Order.objects.get(user=request.user, ordered=False)
+	# else:
+	order = 0
 	orderid = request.POST.get('orderid')
 	orderid = request.POST['orderid']
 	try:
@@ -523,10 +524,10 @@ class HomeView(ListView):
 
 class IndexView(View):
 	def get(self, request, *args, **kwargs):
-		if request.user.is_authenticated:
-			order = Order.objects.get(user=self.request.user, ordered=False)
-		else:
-			order = False
+		# if request.user.is_authenticated:
+		# 	order = Order.objects.get(user=self.request.user, ordered=False)
+		# else:
+		order = 0
 		featured_post = Item.objects.filter(futured=True,draft=True).order_by('-timestamp')[:10]
 		category = Main_Category.objects.all().order_by('-id')
 		latest = Item.objects.filter(seasson='NEW ARRIVALS').order_by('-timestamp')[0:10]
@@ -625,9 +626,11 @@ def ItemDetailView(request, pk):
 @login_required
 def add_to_cart(request, pk):
 	item = get_object_or_404(Item, id=pk)
+	Boutique_ = get_object_or_404(BOUTIQUE_REQUEST, id=pk)
 	order_item, created = OrderItem.objects.get_or_create(
 		item=item,
 		user=request.user,
+		Boutique_nam = Boutique_,
 		ordered=False
 	)
 	order_qs = Order.objects.filter(user=request.user, ordered=False)
@@ -1018,10 +1021,10 @@ def about_us(request):
 	return render(request,'about-us.html')
 
 def contact(request):
-	if request.user.is_authenticated:
-		order = Order.objects.get(user=self.request.user, ordered=False)
-	else:
-		order = False
+	# if request.user.is_authenticated:
+	# 	order = Order.objects.get(user=self.request.user, ordered=False)
+	# else:
+	order = 0
 	if request.method == "POST":
 		name = request.POST.get("name")
 		email = request.POST.get("email")
@@ -1069,17 +1072,17 @@ def contact(request):
 # 	return render(request,'reservation.html',{'res':res})
 
 def shop(request):
-	if request.user.is_authenticated:
-		order = Order.objects.get(user=request.user, ordered=False)
-	else:
-		order = False
+	# if request.user.is_authenticated:
+	# 	order = Order.objects.get(user=request.user, ordered=False)
+	# else:
+	order = 0
 	category = Main_Category.objects.all().order_by('-id')
 	shops = Item.objects.all().order_by('-timestamp')
 	vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
 	const = {
 		'order':order,
 		"shops":shops,
-		"categorys":category,
+		"category":category,
 		"vendors_list":vendors_list,
 	}
 	return render(request,"shop.html",const)
@@ -1089,16 +1092,17 @@ def sell_here(request):
 
 @login_required
 def ListItem(request):
-	if request.user.is_authenticated:
-		order = Order.objects.get(user=request.user, ordered=False)
-	else:
-		order = False
+	# if request.user.is_authenticated:
+	# 	order = Order.objects.get(user=request.user, ordered=False)
+	# else:
+	order = 0
 	vendors_list = BOUTIQUE_REQUEST.objects.filter(user=request.user).order_by('-id')
 	category_list = Category.objects.all().order_by('-id')
+	category = Main_Category.objects.all().order_by('-id')
 	subcategory_list = Sub_Category.objects.all().order_by('-id')
 	if request.method == "POST":
 		pod = Item()
-		pod.user=UserProfile.objects.get(user=request.user)
+		pod.user=request.user
 		pod.title = request.POST.get("title")
 		pod.price = request.POST.get("price")
 		pod.discount_price =  request.POST.get("discount_price")
@@ -1125,7 +1129,7 @@ def ListItem(request):
 		)
 		messages.success(request, f'Request has been sent Successfully !')
 		return redirect('/successfully')
-	return render(request, "dashboard/list-item.html",{"vendors_list":vendors_list,'order':order,"category_list":category_list,"subcategory_list":subcategory_list})
+	return render(request, "dashboard/list-item.html",{"vendors_list":vendors_list,'order':order,'category':category,"category_list":category_list,"subcategory_list":subcategory_list})
 
 
 @login_required
@@ -1149,29 +1153,31 @@ def all_soled_iteam(request,pk):
 
 @login_required
 def sell_form(request):
-	if request.user.is_authenticated:
-		order = Order.objects.get(user=request.user, ordered=False)
-	else:
-		order = False
+	category = Main_Category.objects.all().order_by('-id')
+	# if request.user.is_authenticated:
+	# 	order = Order.objects.get(user=request.user, ordered=False)
+	# else:
+	order = 0
 	if request.method == "POST":
 		user_email =  request.user.email
-		# pod = BOUTIQUE_REQUEST()
-		# pod.user=request.user
-		# pod.Boutique_name = request.POST.get("Boutique_name")
-		# pod.items_to_sell = request.POST.get("items_to_sell")
-		# pod.number =  request.POST.get("number")
-		# pod.where_else_you_sell = request.POST.get("where_else_you_sell")
-		# pod.social_media =  request.POST.get("social_media")
-		# pod.about_your_business = request.POST.get("about_your_business")
-		# pod.hear_about_us = request.POST.get("hear_about_us")
-		# if len(request.FILES) != 0:
-		# 	pod.brand_logo = request.FILES["brand_logo"]
-		# 	pod.brand_banner = request.FILES["brand_banner"]
-		# 	pod.products_image1 = request.FILES["products_image1"]
-		# 	pod.products_image2 = request.FILES["products_image2"]
-		# 	pod.products_image3 = request.FILES["products_image3"]
-		# 	pod.products_image4 = request.FILES["products_image4"]
-		# pod.save()
+		pod = BOUTIQUE_REQUEST()
+		pod.user=request.user
+		pod.Boutique_name = request.POST.get("Boutique_name")
+		pod.items_to_sell = request.POST.get("items_to_sell")
+		pod.number =  request.POST.get("number")
+		pod.where_else_you_sell = request.POST.get("where_else_you_sell")
+		pod.social_media =  request.POST.get("social_media")
+		pod.country =  request.POST.get("country")
+		pod.about_your_business = request.POST.get("about_your_business")
+		pod.hear_about_us = request.POST.get("hear_about_us")
+		if len(request.FILES) != 0:
+			pod.brand_logo = request.FILES["brand_logo"]
+			pod.brand_banner = request.FILES["brand_banner"]
+			pod.products_image1 = request.FILES["products_image1"]
+			pod.products_image2 = request.FILES["products_image2"]
+			pod.products_image3 = request.FILES["products_image3"]
+			pod.products_image4 = request.FILES["products_image4"]
+		pod.save()
 		
 		subject = 'From Tribe Like'
 		from_email = settings.EMAIL_HOST_USER
@@ -1193,7 +1199,7 @@ def sell_form(request):
 		messages.success(request, f'Request has been sent Successfully !')
 		return redirect('/successfully')
 	else:
-		return render(request,"sell_form.html",{'order':order})
+		return render(request,"sell_form.html",{'order':order,'category':category})
 
 def successfully(request):
 	return render(request,"successful.html")
@@ -1202,23 +1208,36 @@ def how_to_sell(request):
     return render(request, 'how-to-sell.html')
 
 def vendors(request):
-	if request.user.is_authenticated:
-		order = Order.objects.get(user=request.user, ordered=False)
-	else:
-		order = False
+	# if request.user.is_authenticated:
+	# 	if Order.objects.get(user=request.user, ordered=False) == None:
+	# 		order
+	# 	order = Order.objects.get(user=request.user, ordered=False)
+	# else:
+	order = 0
+	category = Main_Category.objects.all().order_by('-id')
 	vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
 	vendors_count = BOUTIQUE_REQUEST.objects.filter(approved=True)
 	# for i in vendors_count:
 	#     n = i.user
 	#     print(n.count())
 	# single_count = vendors_count.filter(user=request.user).count()
-	return render(request,"vendors.html",{'order':order,'vendors_list':vendors_list})
+	return render(request,"vendors.html",{'order':order,'vendors_list':vendors_list,'category':category})
+
+def country_filter(request):
+	order = 0
+	category = Main_Category.objects.all().order_by('-id')
+	countrys = request.GET.get('country')
+	if countrys:
+		vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True, country=countrys).order_by('-id')
+		vendors_count = BOUTIQUE_REQUEST.objects.filter(approved=True)
+	return render(request,"vendorsfilter.html",{'order':order,'vendors_list':vendors_list,'category':category})
 
 def VendorDetailView(request, pk):
-	if request.user.is_authenticated:
-		order = Order.objects.get(user=request.user, ordered=False)
-	else:
-		order = False
+	# if request.user.is_authenticated:
+	# 	order = Order.objects.get(user=request.user, ordered=False)
+	# else:
+	order = 0
+	category = Main_Category.objects.all().order_by('-id')
 	objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pk)
 	# print(objects)
 	latest = Item.objects.filter(Boutique_name=objects).order_by('-timestamp')
@@ -1228,6 +1247,7 @@ def VendorDetailView(request, pk):
 	featured_post = Item.objects.filter(futured=True).order_by('-timestamp')[:3]
 	context = {
 		'object': objects,
+		'category':category,
 		'latest': latest,
 		'order':order,
 		'futureds': featured_post
@@ -1248,6 +1268,28 @@ def contact(request):
 
 def terms(request):
 	return render(request,"terms.html")
+
+
+@login_required
+def Dashboard(request):
+	
+	objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pk)
+	Boutique_ = Item.objects.filter(Boutique_name=objects).order_by('-timestamp')
+	
+	# items =  Item.objects.filter(user_id=request.user.id)
+	# soled =  OrderItem.objects.filter(item=items, ordered=False)
+	# print("hhhhhh"+soled)
+	BOUTIQUE_ = BOUTIQUE_REQUEST.objects.filter(user=request.user).filter(approved=True).order_by('-id')
+	vendors_list = BOUTIQUE_[0:4]
+	vendors_list2 = BOUTIQUE_[4:8]
+	vendors_list3 = BOUTIQUE_[8:12]
+	context = {
+		"vendors_list":vendors_list,
+		"vendors_list2":vendors_list2,
+		"vendors_list3":vendors_list3,
+	}
+	return render(request,"dashboard/dashboad.html",context)
+
 
 @login_required
 def Dashboard_sells(request):
@@ -1300,8 +1342,13 @@ def Dashboard_buys(request,pk):
 		print(i)
 	return render(request,"dashboard/buys.html",{'buys':oders})
 
+@login_required
 def Statics(request):
 	return render(request, "dashboard/statics.html")
+
+@login_required
+def Content(request):
+	return render(request, "dashboard/content.html")
 
 @login_required
 def payout(request):
@@ -1346,6 +1393,69 @@ def payout(request):
 		# return JsonResponse(result,safe=False)
 
 
+
+
+
+def paypal_payout(request):
+    # PayPal API endpoint
+    endpoint = 'https://api.paypal.com/v1/payments/payouts'
+
+    # PayPal access token
+    access_token = '<YOUR_PAYPAL_ACCESS_TOKEN>'
+
+    # Prepare the request headers
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    # Prepare the payout data
+    payout_data = {
+        "sender_batch_header": {
+            "sender_batch_id": "<UNIQUE_SENDER_BATCH_ID>",
+            "email_subject": "Payment from XYZ Store"
+        },
+        "items": [
+            {
+                "recipient_type": "EMAIL",
+                "amount": {
+                    "value": "10.00",
+                    "currency": "USD"
+                },
+                "note": "Thank you for your service!",
+                "receiver": "<VENDOR_1_EMAIL>"
+            },
+            {
+                "recipient_type": "EMAIL",
+                "amount": {
+                    "value": "15.00",
+                    "currency": "USD"
+                },
+                "note": "Payment for recent purchase",
+                "receiver": "<VENDOR_2_EMAIL>"
+            },
+            # Add more vendor payouts as needed
+        ]
+    }
+
+    # Convert the payout data to JSON
+    payload = json.dumps(payout_data)
+
+    # Send the POST request to PayPal Payouts API
+    response = requests.post(endpoint, headers=headers, data=payload)
+
+    # Handle the response
+    if response.status_code == 201:
+        # Payout successful
+        response_data = response.json()
+        payout_batch_id = response_data['batch_header']['payout_batch_id']
+        return HttpResponse(f"Payout successful! Batch ID: {payout_batch_id}")
+    else:
+        # Payout failed
+        error_message = response.json()['message']
+        return HttpResponse(f"Payout failed! Error: {error_message}")
+
+
 # def news(request):
 #     return render(request,"news.html")
 
@@ -1367,3 +1477,4 @@ def single_post(request, slug):
 
 def terms_view(request):
     return render(request, 'terms.html')
+	

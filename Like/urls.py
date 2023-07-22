@@ -50,7 +50,10 @@ urlpatterns = [
     # path('news-page/', views.news, name="news"),
     # path('news-details/', views.news_details, name="news_details"),
     path('vendor-Details/<int:pk>', views.VendorDetailView, name='vendors'),
+    path('filler/', views.country_filter, name='filler'),
+    
     path('shop/', views.shop, name="shop"),
+    path('dashboard/', views.Dashboard, name="Dashboard"),
     path('dashboard_sells/', views.Dashboard_sells, name="Dashboard_sells"),
     path('draft_sells/', views.Dashboard_draft, name="Dashboard_draft"),
     path('payment-completed/', views.payment_completed_view, name="payment-completed"),
@@ -65,4 +68,6 @@ urlpatterns = [
     path('buys/<int:pk>', views.Dashboard_buys, name='buys'),
     path('terms/', views.terms, name='terms'),
     path('payout_list/', views.paypal_payout, name='payout'),
+    path('content/', views.Content, name='content'),
+    
 ]

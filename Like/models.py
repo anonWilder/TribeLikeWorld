@@ -3,12 +3,12 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Sum
 from django.shortcuts import reverse
-from django_countries.fields import CountryField
 from users.models import Profile as profile
 from django.contrib.auth.models import User
 from tinymce.models import HTMLField
 from .utils import generate_ref_code
-
+from django_countries.fields import CountryField
+from django_countries.widgets import CountrySelectWidget
 from django.utils import timezone
 from django.utils.text import slugify
 
@@ -100,9 +100,10 @@ class Item(models.Model):
     preview_price = models.CharField(max_length=100,default="0.00")
     draft =  models.BooleanField(default=True)
     price = models.FloatField()
-    user = models.ForeignKey(to=profile, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     # item_type = models.CharField(max_length=50, choices=(
     #     ('1', 'p'), ('0', 't')), default='1')
+    shiping_fee = models.FloatField(default="0.00", max_length=20)
     discount_price = models.FloatField(blank=True, null=True)
     seasson = models.CharField(choices=LABEL_CHOICES, max_length=150, default='NEW ARRIVALS')
     # slug = models.SlugField(max_length=250, unique=True)
@@ -151,11 +152,12 @@ class BOUTIQUE_REQUEST(models.Model):
     about_your_business = models.TextField()
     brand_logo = models.ImageField(blank=True,null=True)
     brand_banner = models.ImageField(blank=True,null=True)
+    country = models.CharField(max_length=140)
     hear_about_us = models.CharField(max_length=900)
-    products_image1 = models.ImageField(blank=True,null=True)
-    products_image2 = models.ImageField(blank=True,null=True)
-    products_image3 = models.ImageField(blank=True,null=True)
-    products_image4 = models.ImageField(blank=True,null=True)
+    products_image1 = models.ImageField(blank=True,null=True,default="null")
+    products_image2 = models.ImageField(blank=True,null=True,default="null")
+    products_image3 = models.ImageField(blank=True,null=True,default="null")
+    products_image4 = models.ImageField(blank=True,null=True,default="null")
 
     def __str__(self):
         return f'{self.Boutique_name}'
@@ -184,6 +186,7 @@ class OrderItem(models.Model):
                              on_delete=models.CASCADE)
     ordered = models.BooleanField(default=False)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    Boutique_nam = models.ForeignKey(BOUTIQUE_REQUEST, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
@@ -220,6 +223,7 @@ class Order(models.Model):
         'Payment', on_delete=models.SET_NULL, blank=True, null=True)
     coupon = models.ForeignKey(
         'Coupon', on_delete=models.SET_NULL, blank=True, null=True)
+    tax_fee = models.FloatField(default="0.89", max_length=20)
     being_delivered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)
@@ -243,6 +247,10 @@ class Order(models.Model):
         total = 0
         for order_item in self.items.all():
             total += order_item.get_final_price()
+            total += order_item.item.shiping_fee
+        if self.tax_fee:
+            # (num * per) / 100
+            total += self.tax_fee
         if self.coupon:
             total -= self.coupon.amount
         return total
