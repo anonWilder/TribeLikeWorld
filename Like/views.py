@@ -1273,12 +1273,12 @@ def terms(request):
 @login_required
 def Dashboard(request):
 	
-	objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pk)
-	Boutique_ = Item.objects.filter(Boutique_name=objects).order_by('-timestamp')
-	
+	objects = get_object_or_404(BOUTIQUE_REQUEST, pk='1')
+	#Boutique_ = Item.objects.filter(Boutique_name=objects).order_by('-timestamp')
+	# print("this ggggg",Boutique_)
 	# items =  Item.objects.filter(user_id=request.user.id)
-	# soled =  OrderItem.objects.filter(item=items, ordered=False)
-	# print("hhhhhh"+soled)
+	soled =  OrderItem.objects.filter(Boutique_nam=objects, ordered=False)
+	print("hhhhhh",soled)
 	BOUTIQUE_ = BOUTIQUE_REQUEST.objects.filter(user=request.user).filter(approved=True).order_by('-id')
 	vendors_list = BOUTIQUE_[0:4]
 	vendors_list2 = BOUTIQUE_[4:8]
