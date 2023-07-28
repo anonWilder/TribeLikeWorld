@@ -39,7 +39,7 @@
                         <div class="col-lg-4 col-sm-6">
                             <div class="widget widget-about">
                                 <a href="demo1.html" class="logo-footer">
-                                    <img src="{% static 'assets/images/logo.png' %}" alt="logo-footer" width="144"
+                                    <img src="{% static 'transtribe.png' %}" alt="logo-footer" width="144"
                                         height="45" />
                                 </a>
                                 <div class="widget-body">
@@ -118,24 +118,24 @@
 
     <!-- Start of Sticky Footer -->
     <div class="sticky-footer sticky-content fix-bottom">
-        <a href="demo1.html" class="sticky-link active">
+        <a href="/" class="sticky-link active">
             <i class="w-icon-home"></i>
             <p>Home</p>
         </a>
-        <a href="shop-banner-sidebar.html" class="sticky-link">
+        <a href="/shop" class="sticky-link">
             <i class="w-icon-category"></i>
             <p>Shop</p>
         </a>
-        <a href="my-account.html" class="sticky-link">
+        <a href="/login" class="sticky-link">
             <i class="w-icon-account"></i>
             <p>Account</p>
         </a>
         <div class="cart-dropdown dir-up">
-            <a href="cart.html" class="sticky-link">
+            <a href="/order-summary" class="sticky-link">
                 <i class="w-icon-cart"></i>
                 <p>Cart</p>
             </a>
-            <div class="dropdown-box">
+            <!-- <div class="dropdown-box">
                 <div class="products">
                     <div class="product product-cart">
                         <div class="product-detail">
@@ -189,7 +189,7 @@
                     <a href="cart.html" class="btn btn-dark btn-outline btn-rounded">View Cart</a>
                     <a href="checkout.html" class="btn btn-primary  btn-rounded">Checkout</a>
                 </div>
-            </div>
+            </div> -->
             <!-- End of Dropdown Box -->
         </div>
 
@@ -247,10 +247,10 @@
             <div class="tab-content">
                 <div class="tab-pane active" id="main-menu">
                     <ul class="mobile-menu">
-                        <li><a href="demo1.html">Home</a></li>
+                        <li><a href="/">Home</a></li>
                         <li>
-                            <a href="shop-banner-sidebar.html">Shop</a>
-                            <ul>
+                            <a href="/shop">Shop</a>
+                            <!-- <ul>
                                 <li>
                                     <a href="#">Shop Pages</a>
                                     <ul>
@@ -308,11 +308,11 @@
                                         <li><a href="product-sticky-both.html">Sticky Both</a></li>
                                     </ul>
                                 </li>
-                            </ul>
+                            </ul> -->
                         </li>
                         <li>
-                            <a href="vendor-dokan-store.html">Vendor</a>
-                            <ul>
+                            <a href="/all-vendors/">Brands</a>
+                            <!-- <ul>
                                 <li>
                                     <a href="#">Store Listing</a>
                                     <ul>
@@ -331,11 +331,11 @@
                                         <li><a href="vendor-wc-store-product-grid.html">Vendor Store 4</a></li>
                                     </ul>
                                 </li>
-                            </ul>
+                            </ul> -->
                         </li>
                         <li>
-                            <a href="blog.html">Blog</a>
-                            <ul>
+                            <a href="/news-page">Editorial</a>
+                            <!-- <ul>
                                 <li><a href="blog.html">Classic</a></li>
                                 <li><a href="blog-listing.html">Listing</a></li>
                                 <li>
@@ -366,11 +366,11 @@
                                 <li>
                                     <a href="post-single.html">Single Post</a>
                                 </li>
-                            </ul>
+                            </ul> -->
                         </li>
                         <li>
-                            <a href="about-us.html">Pages</a>
-                            <ul>
+                            <a href="about-us.html">About</a>
+                            <!-- <ul>
 
                                 <li><a href="about-us.html">About Us</a></li>
                                 <li><a href="become-a-vendor.html">Become A Vendor</a></li>
@@ -383,11 +383,11 @@
                                 <li><a href="cart.html">Cart</a></li>
                                 <li><a href="checkout.html">Checkout</a></li>
                                 <li><a href="my-account.html">My Account</a></li>
-                            </ul>
+                            </ul> -->
                         </li>
                         <li>
-                            <a href="elements.html">Elements</a>
-                            <ul>
+                            <a href="/how-to-sell/">How to sell</a>
+                            <!-- <ul>
                                 <li><a href="element-products.html">Products</a></li>
                                 <li><a href="element-titles.html">Titles</a></li>
                                 <li><a href="element-typography.html">Typography</a></li>
@@ -403,12 +403,42 @@
                                 <li><a href="element-vendors.html">Vendors</a></li>
                                 <li><a href="element-icon-boxes.html">Icon Boxes</a></li>
                                 <li><a href="element-icons.html">Icons</a></li>
-                            </ul>
+                            </ul> -->
                         </li>
+                        <li>
+                            <a href="/contact">Contact</a>
+                        </li>
+                        <!-- <li>
+                            <a href="https://likeandco.net/">Like and Co Retail</a>
+                        </li> -->
                     </ul>
                 </div>
                 <div class="tab-pane" id="categories">
                     <ul class="mobile-menu">
+                        {% for main_cat in category %}
+                        <li>
+                            <a href="#">
+                                {{main_cat.name}}
+                            </a>
+                            <!-- <ul class="#">
+
+                                {% for cat in main_cat.category_set.all %}
+                                <li>
+                                    <h4 class="#">{{cat.name}}</h4>
+                                    <hr class="divider">
+                                    <ul>
+                                        {% for sub_cat in cat.sub_category_set.all %}
+                                        <li><a href="#">{{sub_cat.name}}</a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endfor %}
+                            </ul> -->
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <!-- <ul class="mobile-menu">
                         <li>
                             <a href="shop-fullwidth-banner.html">
                                 <i class="w-icon-tshirt2"></i>Fashion
@@ -674,7 +704,7 @@
                                 View All Categories<i class="w-icon-angle-right"></i>
                             </a>
                         </li>
-                    </ul>
+                    </ul> -->
                 </div>
             </div>
         </div>

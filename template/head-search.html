@@ -23,6 +23,16 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- WebFont.js -->
 
+    <!-- HIDE ON SMALL SCREENS -->
+    <style>
+        /* CSS for screens 767px and below */
+        @media (max-width: 767px) {
+            /* Add a CSS class to hide the container */
+            .hide-on-small-screens {
+                display: none;
+            }
+        }
+    </style>
 
     <script>
         WebFontConfig = {
@@ -114,7 +124,7 @@
                         <a href="#" class="mobile-menu-toggle  w-icon-hamburger" aria-label="menu-toggle">
                         </a>
                         <a href="/" class="logo ml-lg-0">
-                            <img src="{% static 'assets/images/logo.png' %}" alt="logo" width="144" height="45" />
+                            <img src="{% static 'transtribe.png' %}" alt="logo" width="144" height="45" />
                         </a>
                         <form method="get" action="/search/"
                             class="header-search hs-expanded hs-round d-none d-md-flex input-wrapper">

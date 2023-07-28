@@ -23,9 +23,6 @@ def news(request):
     }
     return render(request,"blog/news.html",constant)
 
-
-
-
 def news_detail(request, id):
     news = get_object_or_404(New, id=id)
     popular = New.objects.filter(popular=True).order_by('-date_updated')[0:3]

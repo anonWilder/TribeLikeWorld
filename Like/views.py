@@ -1018,7 +1018,11 @@ def list_category(request, slug):
 
 
 def about_us(request):
-	return render(request,'about-us.html')
+	category = Main_Category.objects.all().order_by('-id')
+	const = {
+		"category":category,
+	}
+	return render(request,'about-us.html',const)
 
 def contact(request):
 	# if request.user.is_authenticated:
@@ -1088,7 +1092,11 @@ def shop(request):
 	return render(request,"shop.html",const)
 
 def sell_here(request):
-	return render(request,"sell_here.html")
+	category = Main_Category.objects.all().order_by('-id')
+	const = {
+		"category":category,
+	}
+	return render(request,"sell_here.html",const)
 
 @login_required
 def ListItem(request):
@@ -1205,7 +1213,11 @@ def successfully(request):
 	return render(request,"successful.html")
 
 def how_to_sell(request):
-    return render(request, 'how-to-sell.html')
+	category = Main_Category.objects.all().order_by('-id')
+	const = {
+		"category":category,
+	}
+	return render(request,'how-to-sell.html',const)
 
 def vendors(request):
 	# if request.user.is_authenticated:
@@ -1255,16 +1267,21 @@ def VendorDetailView(request, pk):
 	return render(request, 'vendor_details.html', context)
 
 def about_us(request):
+	category = Main_Category.objects.all().order_by('-id')
 	if request.user.is_authenticated:
 		order = Order.objects.get(user=self.request.user, ordered=False)
 	else:
 		order = False
 	counters = counter.objects.all()
-	return render(request,"about-us.html",{'order':order,'counter':counters})
+	return render(request,"about-us.html",{'order':order,'counter':counters, "category":category})
 
 
 def contact(request):
-	return render(request,"contact.html")
+	category = Main_Category.objects.all().order_by('-id')
+	const = {
+		"category":category,
+	}
+	return render(request,"contact.html",const)
 
 def terms(request):
 	return render(request,"terms.html")
