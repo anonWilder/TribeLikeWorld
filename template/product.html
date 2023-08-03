@@ -113,10 +113,10 @@
 
                                         <div class="product-price">
                                             {%if object.discount_price %}
-                                            <del class="old-price">₦{{object.price}} </del>
-                                             <ins class="new-price"> ₦{{object.discount_price}}</ins>
+                                            <del class="old-price">${{object.price}} </del>
+                                             <ins class="new-price"> ${{object.discount_price}}</ins>
                                             {% else %}
-                                            <ins class="new-price"> ₦{{object.price}}</ins>
+                                            <ins class="new-price"> ${{object.price}}</ins>
                                             {% endif %}
                                           </div>
 
@@ -130,14 +130,17 @@
 
                                         <div class="product-short-desc">
                                             <ul class="list-type-check list-style-none">
-                                                <li>Ultrices eros in cursus turpis massa cursus mattis.</li>
-                                                <li>Volutpat ac tincidunt vitae semper quis lectus.</li>
-                                                <li>Aliquam id diam maecenas ultricies mi eget mauris.</li>
+                                                <li>{{ object.feature1 }}</li>
+                                                    <li>{{ object.feature2 }}</li>
+                                                    <li>{{ object.feature3 }}</li>
                                             </ul>
                                         </div>
+
+                                    
+                                        
                                     </div>
                                     <div class="col-md-6">
-                                        <div
+                                        <!-- <div
                                             class="product-form product-variation-form product-color-swatch product-variations mt-1">
                                             <label>Color:</label>
                                             <div class="d-flex align-items-center">
@@ -157,11 +160,11 @@
                                                 <a href="#" class="size">Large</a>
                                                 <a href="#" class="size">Extra Large</a>
                                             </div>
-                                        </div>
-
+                                        </div> -->
+<!-- 
                                         <div class="product-variation-price">
                                             <span></span>
-                                        </div>
+                                        </div> -->
 
                                         <hr class="product-divider mb-5">
 
@@ -221,26 +224,20 @@
                                     <li class="nav-item">
                                         <a href="#product-tab-vendor" class="nav-link">Vendor Info</a>
                                     </li>
-                                    <li class="nav-item">
+                                    <!-- <li class="nav-item">
                                         <a href="#product-tab-reviews" class="nav-link">Customer Reviews (3)</a>
-                                    </li>
+                                    </li> -->
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="product-tab-description">
                                         <div class="row mb-4">
                                             <div class="col-md-6 mb-5">
                                                 <h4 class="title tab-pane-title font-weight-bold mb-2">Detail</h4>
-                                                <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                                                    sed do eiusmod tempor incididunt arcu cursus vitae congue mauris.
-                                                    Sagittis id consectetur purus ut. Tellus rutrum tellus pelle Vel
-                                                    pretium lectus quam id leo in vitae turpis massa.</p>
+                                                <p class="mb-4">{{object.description}}</p>
                                                 <ul class="list-type-check">
-                                                    <li>Nunc nec porttitor turpis. In eu risus enim. In vitae mollis
-                                                        elit.
-                                                    </li>
-                                                    <li>Vivamus finibus vel mauris ut vehicula.</li>
-                                                    <li>Nullam a magna porttitor, dictum risus nec, faucibus sapien.
-                                                    </li>
+                                                    <li>{{object.feature1}}</li>
+                                                    <li>{{object.feature2}}</li>
+                                                    <li>{{object.feature3}}</li>
                                                 </ul>
                                             </div>
                                             <div class="col-md-6 mb-5">
@@ -259,22 +256,16 @@
                                         </div>
                                         <div class="row cols-md-3">
                                             <div class="mb-3">
-                                                <h5 class="sub-title font-weight-bold"><span class="mr-3">1.</span>Free
-                                                    Shipping &amp; Return</h5>
-                                                <p class="detail pl-5">We offer free shipping for products on orders
-                                                    above 50$ and offer free delivery for all orders in US.</p>
+                                                <h5 class="sub-title font-weight-bold"><span class="mr-3">1.</span>{{object.offerhead1}}</h5>
+                                                <p class="detail pl-5">{{object.offerbody1}}</p>
                                             </div>
                                             <div class="mb-3">
-                                                <h5 class="sub-title font-weight-bold"><span>2.</span>Free and Easy
-                                                    Returns</h5>
-                                                <p class="detail pl-5">We guarantee our products and you could get back
-                                                    all of your money anytime you want in 30 days.</p>
+                                                <h5 class="sub-title font-weight-bold"><span>2.</span>{{object.offerhead2}}</h5>
+                                                <p class="detail pl-5">{{object.offerbody2}}</p>
                                             </div>
                                             <div class="mb-3">
-                                                <h5 class="sub-title font-weight-bold"><span>3.</span>Special Financing
-                                                </h5>
-                                                <p class="detail pl-5">Get 20%-50% off items over 50$ for a month or
-                                                    over 250$ for a year with our special credit card.</p>
+                                                <h5 class="sub-title font-weight-bold"><span>3.</span>{{object.offerhead3}}</h5>
+                                                <p class="detail pl-5">{{object.offerbody3}}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -282,19 +273,19 @@
                                         <ul class="list-none">
                                             <li>
                                                 <label>Model</label>
-                                                <p>Skysuite 320</p>
+                                                <p>{{object.model_name}}</p>
                                             </li>
                                             <li>
                                                 <label>Color</label>
-                                                <p>Black</p>
+                                                <p>{{object.color_name}}</p>
                                             </li>
                                             <li>
                                                 <label>Size</label>
-                                                <p>Large, Small</p>
+                                                <p>{{object.size_type}}</p>
                                             </li>
                                             <li>
                                                 <label>Guarantee Time</label>
-                                                <p>3 Months</p>
+                                                <p>{{object.Guaranteed_time}}</p>
                                             </li>
                                         </ul>
                                     </div>
@@ -365,7 +356,7 @@
                                             habitant morbi tristique senectus et. In dictum non consectetur a erat. Nunc
                                             scelerisque viverra mauris in aliquam sem fringilla.</p>
                                     </div>
-                                    <div class="tab-pane" id="product-tab-reviews">
+                                    <!-- <div class="tab-pane" id="product-tab-reviews">
                                         <div class="row mb-4">
                                             <div class="col-xl-4 col-lg-5 mb-4">
                                                 <div class="ratings-wrapper">
@@ -951,7 +942,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <section class="vendor-product-section">

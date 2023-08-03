@@ -123,6 +123,24 @@ class Item(models.Model):
     # image_path = models.CharField(max_length=200)
     # category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
 
+    feature1 = models.CharField(max_length=300, default='none')
+    feature2 = models.CharField(max_length=300, default='none')
+    feature3 = models.CharField(max_length=300, default='none')
+
+    offerhead1 = models.CharField(max_length=300, default='none')
+    offerbody1 = models.TextField(default='none')
+    
+    offerhead2 = models.CharField(max_length=300, default='none')
+    offerbody2 = models.TextField(default='none')
+
+    offerhead3 = models.CharField(max_length=300, default='none')
+    offerbody3 = models.TextField(default='none')
+
+    model_name = models.CharField(max_length=300, default='none')
+    color_name = models.CharField(max_length=300, default='none')
+    size_type = models.CharField(max_length=300, default='none')
+    Guaranteed_time = models.CharField(max_length=300, default='none')
+
     def __str__(self): 
         return f'{self.title} - {self.pk}'
 
