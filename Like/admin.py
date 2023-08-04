@@ -7,14 +7,14 @@ from .models import ContactMessageEntry
 
 class ContactFormEntryAdmin(admin.ModelAdmin):
     list_display = ('name','email', 'message')
-
+class ContactMessageEntryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'message')
 
 
 admin.site.register(ContactFormEntry, ContactFormEntryAdmin)
-admin.site.register(ContactMessageEntry)
+admin.site.register(ContactMessageEntry, ContactMessageEntryAdmin)
 
-class ContactMessageEntryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'message')
+
 
 admin.site.site_header = "Like Wise"
 admin.site.site_title = "Like Wise"
