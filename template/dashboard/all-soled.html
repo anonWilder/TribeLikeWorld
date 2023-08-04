@@ -1,0 +1,102 @@
+
+{% load static %}
+{% include "dashboard/base.html" %}
+{% include "dashboard/navbar.html" %}
+			
+    <!-- Sidebar wrapper start -->
+   
+    <!-- Sidebar wrapper end -->
+
+    <!-- Page content start  -->
+    <div class="page-content">
+
+        <!-- Header start -->
+        {% include "dashboard/navtop.html" %}
+        <!-- Header end -->
+
+        <!-- Page header start -->
+        <div class="page-header">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item"><a href="/dashboard_sells">Brands</a></li>
+                <li class="breadcrumb-item active">Brands Items</li>
+            </ol>
+
+            <ul class="app-actions">
+                <li>
+                    <a href="#" id="reportrange">
+                        <span class="range-text"></span>
+                        <i class="icon-chevron-down"></i>	
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="icon-export"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- Page header end -->
+        
+        <!-- Main container start -->
+        <div class="main-container">
+
+            <!-- Row start -->
+            <div class="row gutters">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+
+
+
+                    <div class="table-container">
+                        <div class="table-responsive">
+                            <table class="table custom-table m-0" id="copy-print-csv">
+                                <thead>
+                                    <tr>
+                                        <th>Images / Item Name</th>
+                                        <th>Boutique name</th>
+                                        <th>Discount</th>
+                                        <th>Price</th>
+                                        <th>quantity </th>
+                                        <th>Order from</th>
+                                        <th>Date/Time Created</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for Boutique_ in Boutique_ %}
+                                    <tr>
+                                        <td><img src="{{Boutique_.item.image.url}}" class="flag-img" alt="{{Boutique_.item}}" />
+                                            <img src="{{Boutique_.item.image2.url}}" class="flag-img" alt="{{Boutique_.item}}" />{{Boutique_.item}}</td>
+                                        <td>{{Boutique_.Boutique_nam}}</td>
+                                        <td>{{Boutique_.item.discount_price}}</td>
+                                        <td>{{Boutique_.item.price}}</td>
+                                       <td><span class="badge badge-success">{{Boutique_.quantity}}</span></td>
+                                    
+
+                                        <td>{{Boutique_.user}}</td>
+                                        <td>{{Boutique_.item.timestamp}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                   
+                                </tbody>
+                                <tfoot>
+                                    <!-- <tr>
+                                        <td colspan="5" class="text-center">Data retrieved from <a href="#" class="link">Le Rouge</a> and <a href="#" class="link">unify</a>.</td>
+                                    </tr> -->
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+
+                
+
+                </div>
+            </div>
+            <!-- Row end -->
+
+        </div>
+        <!-- Main container end -->
+
+    </div>
+    <!-- Page content end -->
+{% include "dashboard/footer.html" %}

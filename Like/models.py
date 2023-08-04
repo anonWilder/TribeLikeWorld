@@ -168,7 +168,7 @@ class BOUTIQUE_REQUEST(models.Model):
         })
     
     def get_absolute_urls(self):
-        return reverse("core:sells_details", kwargs={
+        return reverse("core:dashboard", kwargs={
             'pk': self.pk
         })
 
@@ -248,9 +248,9 @@ class Order(models.Model):
         for order_item in self.items.all():
             total += order_item.get_final_price()
             total += order_item.item.shiping_fee
-        if self.tax_fee:
+        # if self.tax_fee:
             # (num * per) / 100
-            total += self.tax_fee
+            # total += self.tax_fee
         if self.coupon:
             total -= self.coupon.amount
         return total

@@ -81,7 +81,7 @@
 		<script src="{% static 'dashboard/vendor/apex/apexcharts.min.js' %}"></script>
 		<script src="{% static 'dashboard/vendor/apex/ecommerce-dashboard/by-device.js' %}"></script>
 		<script src="{% static 'dashboard/vendor/apex/ecommerce-dashboard/avg-handle-time.js' %}"></script>
-		<script src="{% static 'dashboard/vendor/apex/ecommerce-dashboard/by-channel.js' %}"></script>
+		<!-- <script src="{% static 'dashboard/vendor/apex/ecommerce-dashboard/by-channel.js' %}"></script> -->
 		<script src="{% static 'dashboard/vendor/apex/ecommerce-dashboard/orders-visits-bouncerate.js' %}"></script>
 		<script src="{% static 'dashboard/vendor/apex/ecommerce-dashboard/sales.js' %}"></script>
 		<script src="{% static 'dashboard/vendor/apex/ecommerce-dashboard/sales2.js' %}"></script>
@@ -92,6 +92,45 @@
 		<script src="{% static 'dashboard/vendor/apex/sales/mixed-line-column.js' %}"></script>
 		<script src="{% static 'dashboard/vendor/apex/sales/column-visitors.js' %}"></script>
 
-
+		<script>
+			var options = {
+				chart: {
+					height: 240,
+					type: 'bar',
+					toolbar: {
+						show: false,
+					},
+				},
+				plotOptions: {
+					bar: {
+						horizontal: true,
+					}
+				},
+				dataLabels: {
+					enabled: false
+				},
+				series: [{
+					data: [2000, 3000, 4000, 5000, 6000]
+				}],
+				colors: ['#ee0000', '#999999'],
+				xaxis: {
+					categories: ["Organic", "Search", "TV Ads", "Social", "Video"],
+				},
+				tooltip: {
+					y: {
+						formatter: function(val) {
+							return val + ' Visits'
+						}
+					}
+				},
+			}
+		
+			var chart = new ApexCharts(
+				document.querySelector("#by-channel"),
+				options
+			);
+		
+			chart.render();
+			</script>
 	</body>
 </html>

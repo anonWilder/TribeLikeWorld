@@ -26,6 +26,9 @@ import requests
 from django.core import serializers
 import json
 import stripe
+from django.core.exceptions import MultipleObjectsReturned
+import subprocess
+import time
 # import Paystack
 
 # paystack.api_key = settings.PAYSTACK_SECRET_KEY
@@ -626,7 +629,7 @@ def ItemDetailView(request, pk):
 @login_required
 def add_to_cart(request, pk):
 	item = get_object_or_404(Item, id=pk)
-	Boutique_ = get_object_or_404(BOUTIQUE_REQUEST, id=pk)
+	Boutique_ = item.Boutique_name
 	order_item, created = OrderItem.objects.get_or_create(
 		item=item,
 		user=request.user,
@@ -1108,15 +1111,23 @@ def ListItem(request):
 	category_list = Category.objects.all().order_by('-id')
 	category = Main_Category.objects.all().order_by('-id')
 	subcategory_list = Sub_Category.objects.all().order_by('-id')
+	
 	if request.method == "POST":
 		pod = Item()
 		pod.user=request.user
 		pod.title = request.POST.get("title")
 		pod.price = request.POST.get("price")
-		pod.discount_price =  request.POST.get("discount_price")
-		pod.Boutique_name =  request.POST.get("Boutique_name")
-		pod.category = request.POST.get("category")
-		pod.sub_category = request.POST.get("sub_category")
+		pod.discount_price = request.POST.get("discount_price")
+		pod.shiping_fee =  request.POST.get("shiping_fee")
+		boutique_name =  request.POST.get("Boutique_name")
+		pod.Boutique_name = BOUTIQUE_REQUEST.objects.get(Boutique_name=boutique_name)
+		category = request.POST.get("category")
+		pod.category = Category.objects.get(name=category)
+		sub_categorys = request.POST.get("sub_category")
+		try:
+			pod.sub_category = Sub_Category.objects.get(name=sub_categorys)
+		except Sub_Category.MultipleObjectsReturned:
+			pod.sub_category = Sub_Category.objects.filter(name=sub_categorys).first()
 		pod.overview = request.POST.get("overview")
 		pod.description = request.POST.get("description")
 		if len(request.FILES) != 0:
@@ -1141,22 +1152,26 @@ def ListItem(request):
 
 
 @login_required
-def all_soled_iteam(request,pk):
-	objects = Order.objects.filter(user_id=request.user.id)
+def all_soled_iteam(request):
+	pks = request.session['pk']
+	objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pks)
+	# print("this ggggg",Boutique_)
+	Boutique_ =  OrderItem.objects.filter(Boutique_nam=objects, ordered=True)
+	print("hhhhhh",Boutique_)
 
 
-	id_ = request.user.id
-	ordered_list = PayoutUserList.objects.all()
-	objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pk)
-	Boutique_ = Item.objects.filter(Boutique_name=objects, ).order_by('-timestamp')
+	# objects = Order.objects.filter(user_id=request.user.id)
+	# id_ = request.user.id
+	# ordered_list = PayoutUserList.objects.all()
+	# objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pk)
+	# Boutique_ = Item.objects.filter(Boutique_name=objects, ).order_by('-timestamp')
 	
 
 	# ordered_list = OrderItem.objects.filter(user=objects).order_by('-timestamp')
 	# objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pk)
 	# Boutique_ = Item.objects.filter(Boutique_name=objects).order_by('-timestamp')
 	# ordered_list = OrderItem.objects.filter(item=Boutique_, ordered=True).order_by('-timestamp')
-	print(ordered_list)
-	return render(request,"dashboard/all-soled.html")
+	return render(request,"dashboard/all-soled.html",{"Boutique_":Boutique_})
 
 
 @login_required
@@ -1288,13 +1303,12 @@ def terms(request):
 
 
 @login_required
-def Dashboard(request):
-	
-	objects = get_object_or_404(BOUTIQUE_REQUEST, pk='1')
-	#Boutique_ = Item.objects.filter(Boutique_name=objects).order_by('-timestamp')
+def Dashboard(request,pk):
+	request.session['pk'] = pk
+	pks = request.session['pk']
+	objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pks)
 	# print("this ggggg",Boutique_)
-	# items =  Item.objects.filter(user_id=request.user.id)
-	soled =  OrderItem.objects.filter(Boutique_nam=objects, ordered=False)
+	soled =  OrderItem.objects.filter(Boutique_nam=objects, ordered=True)
 	print("hhhhhh",soled)
 	BOUTIQUE_ = BOUTIQUE_REQUEST.objects.filter(user=request.user).filter(approved=True).order_by('-id')
 	vendors_list = BOUTIQUE_[0:4]
@@ -1311,18 +1325,14 @@ def Dashboard(request):
 @login_required
 def Dashboard_sells(request):
 	BOUTIQUE_ = BOUTIQUE_REQUEST.objects.filter(user=request.user).filter(approved=True).order_by('-id')
-	vendors_list = BOUTIQUE_[0:4]
-	vendors_list2 = BOUTIQUE_[4:8]
-	vendors_list3 = BOUTIQUE_[8:12]
 	context = {
-		"vendors_list":vendors_list,
-		"vendors_list2":vendors_list2,
-		"vendors_list3":vendors_list3,
+		"vendors_list":BOUTIQUE_,
 	}
 	return render(request,"dashboard/sells.html",context)
 
 @login_required
-def Dashboard_sells_details(request,pk):
+def Dashboard_sells_details(request):
+	pk = request.session['pk']
 	objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pk)
 	Boutique_ = Item.objects.filter(Boutique_name=objects).order_by('-timestamp')
 	return render(request,"dashboard/details-sells.html",{"Boutique_":Boutique_})
@@ -1361,7 +1371,24 @@ def Dashboard_buys(request,pk):
 
 @login_required
 def Statics(request):
-	return render(request, "dashboard/statics.html")
+	pks = request.session['pk']
+	objects = get_object_or_404(BOUTIQUE_REQUEST, pk=pks)
+	# print("this ggggg",Boutique_)
+	total_orderd =  OrderItem.objects.filter(Boutique_nam=objects, ordered=True)
+	bt = []
+	for i in total_orderd:
+		list_ = i.Boutique_nam
+	print(bt)
+	total_unorderd =  OrderItem.objects.filter(Boutique_nam=objects, ordered=False)
+	# delivered =  Order.objects.filter(Boutique_nam=objects, being_delivered=False)
+	data ={
+		"total_orderd":total_orderd.count(),
+		"total_unorderd":total_unorderd.count(),
+		"total_orderd_chart":total_orderd,
+		"total_unorderd_chart":total_unorderd
+	}
+	print("hhhhhh",data['total_orderd_chart'])
+	return render(request, "dashboard/statics.html",data)
 
 @login_required
 def Content(request):
@@ -1414,63 +1441,63 @@ def payout(request):
 
 
 def paypal_payout(request):
-    # PayPal API endpoint
-    endpoint = 'https://api.paypal.com/v1/payments/payouts'
+	# PayPal API endpoint
+	endpoint = 'https://api.paypal.com/v1/payments/payouts'
 
-    # PayPal access token
-    access_token = '<YOUR_PAYPAL_ACCESS_TOKEN>'
+	# PayPal access token
+	access_token = '<YOUR_PAYPAL_ACCESS_TOKEN>'
 
-    # Prepare the request headers
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {access_token}'
-    }
+	# Prepare the request headers
+	headers = {
+		'Content-Type': 'application/json',
+		'Authorization': f'Bearer {access_token}'
+	}
 
-    # Prepare the payout data
-    payout_data = {
-        "sender_batch_header": {
-            "sender_batch_id": "<UNIQUE_SENDER_BATCH_ID>",
-            "email_subject": "Payment from XYZ Store"
-        },
-        "items": [
-            {
-                "recipient_type": "EMAIL",
-                "amount": {
-                    "value": "10.00",
-                    "currency": "USD"
-                },
-                "note": "Thank you for your service!",
-                "receiver": "<VENDOR_1_EMAIL>"
-            },
-            {
-                "recipient_type": "EMAIL",
-                "amount": {
-                    "value": "15.00",
-                    "currency": "USD"
-                },
-                "note": "Payment for recent purchase",
-                "receiver": "<VENDOR_2_EMAIL>"
-            },
-            # Add more vendor payouts as needed
-        ]
-    }
+	# Prepare the payout data
+	payout_data = {
+		"sender_batch_header": {
+			"sender_batch_id": "<UNIQUE_SENDER_BATCH_ID>",
+			"email_subject": "Payment from XYZ Store"
+		},
+		"items": [
+			{
+				"recipient_type": "EMAIL",
+				"amount": {
+					"value": "10.00",
+					"currency": "USD"
+				},
+				"note": "Thank you for your service!",
+				"receiver": "<VENDOR_1_EMAIL>"
+			},
+			{
+				"recipient_type": "EMAIL",
+				"amount": {
+					"value": "15.00",
+					"currency": "USD"
+				},
+				"note": "Payment for recent purchase",
+				"receiver": "<VENDOR_2_EMAIL>"
+			},
+			# Add more vendor payouts as needed
+		]
+	}
 
-    # Convert the payout data to JSON
-    payload = json.dumps(payout_data)
+	# Convert the payout data to JSON
+	payload = json.dumps(payout_data)
 
-    # Send the POST request to PayPal Payouts API
-    response = requests.post(endpoint, headers=headers, data=payload)
+	# Send the POST request to PayPal Payouts API
+	response = requests.post(endpoint, headers=headers, data=payload)
 
-    # Handle the response
-    if response.status_code == 201:
-        # Payout successful
-        response_data = response.json()
-        payout_batch_id = response_data['batch_header']['payout_batch_id']
-        return HttpResponse(f"Payout successful! Batch ID: {payout_batch_id}")
-    else:
-        # Payout failed
-        error_message = response.json()['message']
-        return HttpResponse(f"Payout failed! Error: {error_message}")
+	# Handle the response
+	if response.status_code == 201:
+		# Payout successful
+		response_data = response.json()
+		payout_batch_id = response_data['batch_header']['payout_batch_id']
+		return HttpResponse(f"Payout successful! Batch ID: {payout_batch_id}")
+	else:
+		# Payout failed
+		error_message = response.json()['message']
+		return HttpResponse(f"Payout failed! Error: {error_message}")
 
 
 # def news(request):
@@ -1484,14 +1511,54 @@ def single_page(request):
 	return render(request, "post-single.html")
 
 def editorial_page(request):
-    blog_posts = BlogPost.objects.all()
-    return render(request, 'news.html', {'blog_posts': blog_posts})
+	blog_posts = BlogPost.objects.all()
+	return render(request, 'news.html', {'blog_posts': blog_posts})
 
 def single_post(request, slug):
-    post = get_object_or_404(BlogPost, slug=slug)
-    return render(request, 'post-single.html', {'post': post})
+	post = get_object_or_404(BlogPost, slug=slug)
+	return render(request, 'post-single.html', {'post': post})
 
 
 def terms_view(request):
-    return render(request, 'terms.html')
+	return render(request, 'terms.html')
 	
+
+
+import requests
+import subprocess
+import time
+
+
+ODOO_SERVER_URL = "http://164.92.155.135:2000/Login/"  # Replace with your Odoo server URL
+ODOO_SERVER_COMMAND = "sudo systemctl restart apache2"
+
+def is_server_up(url):
+	try:
+		response = requests.get(url)
+		return response.status_code == 502
+	except requests.ConnectionError:
+		return False
+
+def restart_odoo_server(command):
+	os.system("sudo service apache2 restart")  # Adjust this command based on your OS and Apache setup
+	# subprocess.run(["systemctl", "restart", "apache2"])
+	# subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+def main():
+	while True:
+		if not is_server_up(ODOO_SERVER_URL):
+			print("Odoo server is down. Restarting...")
+			restart_odoo_server(ODOO_SERVER_COMMAND)
+		time.sleep(60)  # Adjust the interval as needed (e.g., every 60 seconds)
+
+if __name__ == "__main__":
+	main()
+
+
+def User_dashboad(request):
+	soled = Order.objects.filter(user=request.user, ordered=True)
+	# main()
+	for i in soled:
+
+		print(i.items)
+	return render(request, 'user-dashboard/bought-iteam.html',{"buys":soled})
