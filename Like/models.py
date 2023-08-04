@@ -108,6 +108,10 @@ class Item(models.Model):
     seasson = models.CharField(choices=LABEL_CHOICES, max_length=150, default='NEW ARRIVALS')
     # slug = models.SlugField(max_length=250, unique=True)
     Boutique_name = models.ForeignKey('BOUTIQUE_REQUEST', on_delete=models.CASCADE)
+    about_your_business = models.TextField(blank=True, null=True)
+
+
+
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     sub_category = models.ForeignKey(Sub_Category, on_delete=models.CASCADE,default=False)
     overview = models.TextField(default='False')

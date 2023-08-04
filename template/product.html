@@ -15,7 +15,7 @@
                     <li><a href="product-default.html">Products</a></li>
                     <li>Gallery</li>
                 </ul>
-                <ul class="product-nav list-style-none">
+                <!-- <ul class="product-nav list-style-none">
                     <li class="product-nav-prev">
                         <a href="#">
                             <i class="w-icon-angle-left"></i>
@@ -36,7 +36,7 @@
                             <span class="product-name">Fabulous Sound Speaker</span>
                         </span>
                     </li>
-                </ul>
+                </ul> -->
             </nav>
             <!-- End of Breadcrumb -->
 
@@ -73,7 +73,7 @@
                                             </div>
                                             <div class="swiper-slide">
                                                 <figure class="product-image">
-                                                    <img src="{% static 'assets/images/products/gallery/3-800x900.jpg' %}"
+                                                    <img src="{{object.image.url}}"
                                                         data-zoom-image="{% static 'assets/images/products/gallery/3-800x900.jpg' %}"
                                                         alt="Smart Watch" width="800" height="900">
                                                     <a href="#" class="product-gallery-btn product-image-full"><i
@@ -96,17 +96,17 @@
                                     <div class="col-md-6">
                                         <h1 class="product-title">{{object.title}}</h1>
                                         <div class="product-bm-wrapper">
-                                            <figure class="brand">
+                                            <!-- <figure class="brand">
                                                 <img src="{{object.user.image.url}}" alt="Brand"
                                                     width="102" height="48" />
-                                            </figure>
+                                            </figure> -->
                                             <div class="product-meta">
                                                 <div class="product-categories">
                                                     Category:
                                                     <span class="product-category"><a href="#">{{object.category}}</a></span>
                                                 </div>
                                                 <div class="product-sku">
-                                                    SKU: <span>MS46891340</span>
+                                                    SKU: <span>{{object.stock_keeping_unit}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -120,21 +120,21 @@
                                             {% endif %}
                                           </div>
 
-                                        <div class="ratings-container">
+                                        <!-- <div class="ratings-container">
                                             <div class="ratings-full">
                                                 <span class="ratings" style="width: 80%;"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
                                             <a href="#product-tab-reviews" class="rating-reviews">(3 Reviews)</a>
-                                        </div>
+                                        </div> -->
 
-                                        <div class="product-short-desc">
+                                        <!-- <div class="product-short-desc">
                                             <ul class="list-type-check list-style-none">
                                                 <li>{{ object.feature1 }}</li>
                                                     <li>{{ object.feature2 }}</li>
                                                     <li>{{ object.feature3 }}</li>
                                             </ul>
-                                        </div>
+                                        </div> -->
 
                                     
                                         
@@ -248,7 +248,7 @@
                                                                 alt="banner" width="610" height="300"
                                                                 style="background-color: #bebebe;">
                                                         </a>
-                                                        <a class="btn-play-video btn-iframe"
+                                                        <a class=" btn-iframe"
                                                             href="{% static 'assets/video/memory-of-a-woman.mp4"></a>
                                                     </figure>
                                                 </div>
@@ -307,29 +307,28 @@
                                                         </a>
                                                     </figure>
                                                     <div>
-                                                        <div class="vendor-name"><a href="#">Jone Doe</a></div>
-                                                        <div class="ratings-container">
+                                                        <div class="vendor-name"><a href="#">{{object.Boutique_name}}</a></div>
+                                                        <!-- <div class="ratings-container">
                                                             <div class="ratings-full">
                                                                 <span class="ratings" style="width: 90%;"></span>
                                                                 <span class="tooltiptext tooltip-top"></span>
                                                             </div>
                                                             <a href="#" class="rating-reviews">(32 Reviews)</a>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </div>
                                                 <ul class="vendor-info list-style-none">
                                                     <li class="store-name">
                                                         <label>Store Name:</label>
-                                                        <span class="detail">OAIO Store</span>
+                                                        <span class="detail">{{object.Boutique_name}}</span>
                                                     </li>
                                                     <li class="store-address">
                                                         <label>Address:</label>
-                                                        <span class="detail">Steven Street, El Carjon, CA 92020, United
-                                                            States (US)</span>
+                                                        <span class="detail">{{object.Boutique_name.where_else_you_sell}}</span>
                                                     </li>
                                                     <li class="store-phone">
                                                         <label>Phone:</label>
-                                                        <a href="#tel:">1234567890</a>
+                                                        <a href="#tel:">{{object.Boutique_name.number}}</a>
                                                     </li>
                                                 </ul>
                                                 <a href="vendor-dokan-store.html"
@@ -337,24 +336,8 @@
                                                     Store<i class="w-icon-long-arrow-right"></i></a>
                                             </div>
                                         </div>
-                                        <p class="mb-5"><strong class="text-dark">L</strong>orem ipsum dolor sit amet,
-                                            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                                            dolore magna aliqua.
-                                            Venenatis tellus in metus vulputate eu scelerisque felis. Vel pretium
-                                            lectus quam id leo in vitae turpis massa. Nunc id cursus metus aliquam.
-                                            Libero id faucibus nisl tincidunt eget. Aliquam id diam maecenas ultricies
-                                            mi eget mauris. Volutpat ac tincidunt vitae semper quis lectus. Vestibulum
-                                            mattis ullamcorper velit sed. A arcu cursus vitae congue mauris.
-                                        </p>
-                                        <p class="mb-2"><strong class="text-dark">A</strong> arcu cursus vitae congue
-                                            mauris. Sagittis id consectetur purus
-                                            ut. Tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla.
-                                            Diam in
-                                            arcu cursus euismod quis. Eget sit amet tellus cras adipiscing enim eu. In
-                                            fermentum et sollicitudin ac orci phasellus. A condimentum vitae sapien
-                                            pellentesque
-                                            habitant morbi tristique senectus et. In dictum non consectetur a erat. Nunc
-                                            scelerisque viverra mauris in aliquam sem fringilla.</p>
+                                        <p class="mb-5">{{object.Boutique_name.about_your_business}}</p>
+                                        
                                     </div>
                                     <!-- <div class="tab-pane" id="product-tab-reviews">
                                         <div class="row mb-4">
