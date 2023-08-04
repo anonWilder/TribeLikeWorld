@@ -96,10 +96,10 @@
                                     <div class="col-md-6">
                                         <h1 class="product-title">{{object.title}}</h1>
                                         <div class="product-bm-wrapper">
-                                            <!-- <figure class="brand">
-                                                <img src="{{object.user.image.url}}" alt="Brand"
+                                            <figure class="brand">
+                                                <img src="{{object.Boutique_name.brand_logo.url}}" alt="Brand"
                                                     width="102" height="48" />
-                                            </figure> -->
+                                            </figure>
                                             <div class="product-meta">
                                                 <div class="product-categories">
                                                     Category:
@@ -293,7 +293,7 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6 mb-4">
                                                 <figure class="vendor-banner br-sm">
-                                                    <img src="{{object.boutique_name.brand_banner.url}}"
+                                                    <img src="{{object.Boutique_name.brand_banner.url}}"
                                                         alt="Vendor Banner" width="610" height="295"
                                                         style="background-color: #353B55;" />
                                                 </figure>
@@ -308,7 +308,7 @@
                                                     </figure> -->
                                                     <figure class="vendor-logo mr-4">
                                                         <a href="#">
-                                                            <img src="{{ object.boutique_name.brand_logo.url }}" alt="Vendor Logo" width="80" height="80" />
+                                                            <img src="{{ object.Boutique_name.brand_logo.url }}" alt="Vendor Logo" width="80" height="80" />
                                                         </a>
                                                     </figure>
                                                     
@@ -337,7 +337,7 @@
                                                         <a href="#tel:">{{object.Boutique_name.number}}</a>
                                                     </li>
                                                 </ul>
-                                                <a href="vendor-dokan-store.html"
+                                                <a href="{{i.get_absolute_url}}"
                                                     class="btn btn-dark btn-link btn-underline btn-icon-right">Visit
                                                     Store<i class="w-icon-long-arrow-right"></i></a>
                                             </div>

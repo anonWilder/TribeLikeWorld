@@ -146,6 +146,7 @@ class Item(models.Model):
     color_name = models.CharField(max_length=300, default='none')
     size_type = models.CharField(max_length=300, default='none')
     Guaranteed_time = models.CharField(max_length=300, default='none')
+    stock_keeping_unit = models.CharField(max_length=300, default='none')
 
     def __str__(self): 
         return f'{self.title} - {self.pk}'
