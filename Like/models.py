@@ -38,6 +38,10 @@ class Main_Category(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
+
    
 class Category(models.Model):
     Main_Category = models.ForeignKey(Main_Category,on_delete=models.CASCADE,default=False)
@@ -414,3 +418,24 @@ class BlogArticle(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+
+class ContactMessageEntry(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+
+class ContactFormEntry(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+        

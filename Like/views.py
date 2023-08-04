@@ -8,8 +8,9 @@ from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.views.generic import ListView, DetailView, View
 from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
 from django.utils import timezone
-from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
+from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm, ContactForm, ContactMessage
 from .models import *
 from django.http import HttpResponse,JsonResponse
 from users.models import *
@@ -1255,6 +1256,14 @@ def VendorDetailView(request, pk):
 	latest = Item.objects.filter(Boutique_name=objects).order_by('-timestamp')
 	# print("this it",latest)
 
+
+	if request.method == 'POST':
+		form = ContactForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect('/successfully/') 
+
+
 	# object = Item.objects.filter(item=post)order.items.filter(item__id=item.id).exists():
 	featured_post = Item.objects.filter(futured=True).order_by('-timestamp')[:3]
 	context = {
@@ -1262,9 +1271,28 @@ def VendorDetailView(request, pk):
 		'category':category,
 		'latest': latest,
 		'order':order,
-		'futureds': featured_post
+		'futureds': featured_post,
+		'form': ContactForm()
 	}
 	return render(request, 'vendor_details.html', context)
+
+
+def contact(request):
+	category = Main_Category.objects.all().order_by('-id')
+	
+	if request.method == 'POST':
+		form = ContactMessage(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect('/successfully/')
+
+	const = {
+		"category":category,
+	}
+	context = {
+		'form': ContactMessage()
+	}
+	return render(request,"contact.html",const)
 
 def about_us(request):
 	category = Main_Category.objects.all().order_by('-id')
@@ -1276,12 +1304,7 @@ def about_us(request):
 	return render(request,"about-us.html",{'order':order,'counter':counters, "category":category})
 
 
-def contact(request):
-	category = Main_Category.objects.all().order_by('-id')
-	const = {
-		"category":category,
-	}
-	return render(request,"contact.html",const)
+
 
 def terms(request):
 	return render(request,"terms.html")

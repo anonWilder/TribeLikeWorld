@@ -2,6 +2,8 @@ from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 from tinymce.widgets import TinyMCE
+from .models import ContactFormEntry
+from .models import ContactMessageEntry
 
 
 PAYMENT_CHOICES = (
@@ -64,3 +66,14 @@ class PaymentForm(forms.Form):
     paystackToken = forms.CharField(required=False)
     save = forms.BooleanField(required=False)
     use_default = forms.BooleanField(required=False)
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = ContactFormEntry
+        fields = ['name', 'email', 'message']
+
+
+class ContactMessage(forms.ModelForm):
+    class Meta:
+        model = ContactMessageEntry
+        fields = ['name', 'email', 'message']
