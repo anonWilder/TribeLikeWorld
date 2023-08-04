@@ -109,6 +109,8 @@ class Item(models.Model):
     # slug = models.SlugField(max_length=250, unique=True)
     Boutique_name = models.ForeignKey('BOUTIQUE_REQUEST', on_delete=models.CASCADE)
     about_your_business = models.TextField(blank=True, null=True)
+    brand_logo = models.ImageField(blank=True, null=True)
+    brand_banner = models.ImageField(blank=True, null=True)
 
 
 

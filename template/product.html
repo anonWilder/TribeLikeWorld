@@ -293,19 +293,25 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6 mb-4">
                                                 <figure class="vendor-banner br-sm">
-                                                    <img src="{% static 'assets/images/products/vendor-banner.jpg' %}"
+                                                    <img src="{{object.boutique_name.brand_banner.url}}"
                                                         alt="Vendor Banner" width="610" height="295"
                                                         style="background-color: #353B55;" />
                                                 </figure>
                                             </div>
                                             <div class="col-md-6 pl-2 pl-md-6 mb-4">
                                                 <div class="vendor-user">
-                                                    <figure class="vendor-logo mr-4">
+                                                    <!-- <figure class="vendor-logo mr-4">
                                                         <a href="#">
                                                             <img src="{% static 'assets/images/products/vendor-logo.jpg' %}"
                                                                 alt="Vendor Logo" width="80" height="80" />
                                                         </a>
+                                                    </figure> -->
+                                                    <figure class="vendor-logo mr-4">
+                                                        <a href="#">
+                                                            <img src="{{ object.boutique_name.brand_logo.url }}" alt="Vendor Logo" width="80" height="80" />
+                                                        </a>
                                                     </figure>
+                                                    
                                                     <div>
                                                         <div class="vendor-name"><a href="#">{{object.Boutique_name}}</a></div>
                                                         <!-- <div class="ratings-container">
