@@ -139,11 +139,11 @@
                         <div class="header-call d-xs-show d-lg-flex align-items-center">
                             <div class="call-info d-lg-show"> </div>
                         </div>
-                        <a class="compare label-down link d-xs-show"
+                        {% comment %} <a class="compare label-down link d-xs-show"
                             href="https://instagram.com/tribe_like?igshid=YjNmNGQ3MDY=">
                             <i class="w-icon-instagram"></i>
                             <!-- <span class="compare-label d-lg-show">Compare</span> -->
-                        </a>
+                        </a> {% endcomment %}
                         <div class="dropdown cart-dropdown cart-offcanvas mr-0 mr-lg-2">
                             {% if user.is_authenticated %}
                             <i class="w-icon-cart"></i>
@@ -225,9 +225,9 @@
                                     <li>
                                         <a href="/contact/">Contact</a>
                                     </li>
-                                    <li>
+                                    {% comment %} <li>
                                         <a href="https://likeandco.net/" _blank>Like and Co Retail</a>
-                                    </li>
+                                    </li> {% endcomment %}
                                 </ul>
                             </nav>
                         </div>

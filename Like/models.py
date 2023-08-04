@@ -38,6 +38,10 @@ class Main_Category(models.Model):
 
     def __str__(self):
         return self.name
+
+
+
+
    
 class Category(models.Model):
     Main_Category = models.ForeignKey(Main_Category,on_delete=models.CASCADE,default=False)
@@ -108,6 +112,12 @@ class Item(models.Model):
     seasson = models.CharField(choices=LABEL_CHOICES, max_length=150, default='NEW ARRIVALS')
     # slug = models.SlugField(max_length=250, unique=True)
     Boutique_name = models.ForeignKey('BOUTIQUE_REQUEST', on_delete=models.CASCADE)
+    about_your_business = models.TextField(blank=True, null=True)
+    brand_logo = models.ImageField(blank=True, null=True)
+    brand_banner = models.ImageField(blank=True, null=True)
+
+
+
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     sub_category = models.ForeignKey(Sub_Category, on_delete=models.CASCADE,default=False)
     overview = models.TextField(default='False')
@@ -122,6 +132,25 @@ class Item(models.Model):
     item_created_date = models.DateField(auto_now=True)
     # image_path = models.CharField(max_length=200)
     # category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
+
+    feature1 = models.CharField(max_length=300, default='none')
+    feature2 = models.CharField(max_length=300, default='none')
+    feature3 = models.CharField(max_length=300, default='none')
+
+    offerhead1 = models.CharField(max_length=300, default='none')
+    offerbody1 = models.TextField(default='none')
+    
+    offerhead2 = models.CharField(max_length=300, default='none')
+    offerbody2 = models.TextField(default='none')
+
+    offerhead3 = models.CharField(max_length=300, default='none')
+    offerbody3 = models.TextField(default='none')
+
+    model_name = models.CharField(max_length=300, default='none')
+    color_name = models.CharField(max_length=300, default='none')
+    size_type = models.CharField(max_length=300, default='none')
+    Guaranteed_time = models.CharField(max_length=300, default='none')
+    stock_keeping_unit = models.CharField(max_length=300, default='none')
 
     def __str__(self): 
         return f'{self.title} - {self.pk}'
@@ -389,3 +418,24 @@ class BlogArticle(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+
+class ContactMessageEntry(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+
+class ContactFormEntry(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+        

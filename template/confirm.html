@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation</title>
+    
+<style>
+    body{
+  background : #f5f5f7;
+  padding-left: 30px;
+}
+
+a{
+  margin-top: 200px;
+  display: block;
+  text-decoration : none;
+}
+
+.intro{
+  margin-top: 100px;
+}
+
+$ok : #2fc2a5;
+
+@mixin transitions($time, $easing, $delay:0s) {
+  -webkit-transition: all $time $easing $delay;
+     -moz-transition: all $time $easing $delay;
+      -ms-transition: all $time $easing $delay;
+       -o-transition: all $time $easing $delay;
+          transition: all $time $easing $delay;
+}
+       
+@mixin animation($name, $time) {
+  -webkit-animation: $name $time 1;
+     -moz-animation: $name $time 1;
+       -o-animation: $name $time 1;
+          animation: $name $time 1;
+  -webkit-animation-direction: alternate;
+          animation-direction: alternate;
+  -webkit-animation-fill-mode: forwards; 
+  
+}
+        
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content; 
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  } 
+}
+
+@mixin simple-transform($scalex: false, $scaley :false, $rotate: false, $trans-x: false, $trans-y: false){
+  $trans: unquote("");
+ 
+  $trans: $trans scale($scalex, $scaley);
+  $trans: $trans rotateZ($rotate);
+  $trans: $trans translate($trans-x, $trans-y);
+
+  transform: $trans;
+
+}
+.container{
+  position: relative;
+}
+
+.wrapper-burger {
+  text-align: center;
+  margin: 20px auto 20px auto;
+  height: 50px;
+}
+
+.burger {
+  height: 30px;
+  width: 33px;
+  cursor: pointer;
+  margin: 0 auto;
+  display: block;
+
+  .one,
+  .two,
+  .three {
+    margin-top: 3px;
+    background: $ok;
+    width: 33px;
+    height: 4px;
+    position: absolute;
+    border-radius: 2px;
+    @include transitions(0.2s, ease-in-out);
+  }
+      
+  .one { 
+    @include animation(layer-one, 2.3333s); 
+  }
+
+  .two { 
+    margin-top: 13px; 
+    transform-origin : 33px, 0;
+    @include animation(layer-two, 2.3333s); 
+  }
+  
+  .three { 
+    margin-top: 23px;
+    @include animation(layer-three, 2.3333s);
+  }
+}
+            
+// Animation for the top layer
+@include keyframes(layer-one) {
+  0% {
+     @include simple-transform(1, 1, 0deg, 0, 0);
+  }
+  26.5% {
+     @include simple-transform(1, 1, 0deg, 0, 0);
+  }
+  33% {
+     @include simple-transform(1, 1, 25deg, 0, 0);
+  }
+  40% {
+     @include simple-transform(1, 1, -60deg, 0, 14px);
+  }
+  60% {
+     @include simple-transform(1, 1, -45deg, 0, 14px);
+    width: 33px;
+  } 
+  100% {
+     @include simple-transform(1, 1, -45deg, 5px, 18px );
+    width: 36px;
+  } 
+}
+
+// Animation for the bottom layer
+@include keyframes(layer-three) {
+  0% {
+    @include simple-transform(1, 1, 0deg, 0, 0);
+  }
+  26.5% {
+    @include simple-transform(1, 1, 0deg, 0, 0);
+  }
+  33% {
+    @include simple-transform(1, 1, -25deg, 0, 0);
+  }
+  40% {
+    @include simple-transform(1, 1, 60deg, 0, -14px);
+  }
+  60% {
+    @include simple-transform(1, 1, 45deg, 0, -14px);
+    width: 33px;
+  } 
+  100% {
+    @include simple-transform(1, 1, 45deg, -1px, -6px );
+    width: 23px;
+  } 
+}
+
+
+// Animation for the middle layer
+@include keyframes(layer-two) {
+  0% {
+    transform: translateX(0) scaleX(1);
+  }
+  26.5% {
+    transform: translateX(0) scaleX(1);
+  }
+  33% {
+    transform: translateX(-10px) scaleX(0.95);
+  }
+  36.5% {
+    transform: translateX(28px) scaleX(1);
+  }
+  44% {
+    transform: translateX(28px) scaleX(0);
+  } 
+  100% {
+    transform: translateX(28px) scaleX(0);
+  } 
+}
+
+// ----------
+// CIRCLE
+// ----------
+.circle {
+  width: 60px;
+  height: 60px;
+  border: 4px solid $ok;
+  border-radius: 60px;
+  display: block;
+  position: absolute;
+  left: 50%;
+  margin-left: -25px;
+  margin-top: -49px;
+  @include transitions(0.2s, ease-in-out);
+  @include animation(circle-anim, 2.3333s);
+}
+
+
+@include keyframes(circle-anim) {
+  0% {
+    transform: rotate(90deg);
+    clip: rect(0px, 0px, 0px, 0px);
+  }
+  26.5% {
+    transform: rotate(90deg);
+    clip: rect(0px, 0px, 0px, 0px);
+  }
+  33% {
+    transform: rotate(90deg);
+    clip: rect(0px, 0px, 0px, 0px);
+  }
+  60% {
+    transform: rotate(120deg);
+    clip: rect(0px, 35px, 35px, 0px);
+  }
+  100% {
+    transform: rotate(-360deg);
+    clip: rect(auto, auto, auto, auto);
+  } 
+}
+</style>
+
+</head>
+
+<body>
+
+    <div class="intro"></div>
+
+    <div class="container">
+        <div class="wrapper-burguer">
+            <div class="burger">
+                <div class="one"></div>
+                <div class="two"></div>
+                <div class="three"></div>
+            </div>
+
+            <div class="circle"></div>
+        </div>
+    </div>
+
+
+    
+</body>
+
+</html>

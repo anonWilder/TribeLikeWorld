@@ -1,8 +1,20 @@
 from django.contrib import admin
-
 from .models import BlogArticle
-
 from .models import *
+from django.contrib import admin
+from .models import ContactFormEntry
+from .models import ContactMessageEntry
+
+class ContactFormEntryAdmin(admin.ModelAdmin):
+    list_display = ('name','email', 'message')
+class ContactMessageEntryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'message')
+
+
+admin.site.register(ContactFormEntry, ContactFormEntryAdmin)
+admin.site.register(ContactMessageEntry, ContactMessageEntryAdmin)
+
+
 
 admin.site.site_header = "Like Wise"
 admin.site.site_title = "Like Wise"
@@ -99,3 +111,9 @@ class BlogArticleAdmin(admin.ModelAdmin):
     list_filter = ('category', 'author')
     search_fields = ('title', 'content', 'author')
     prepopulated_fields = {'slug': ('title',)}
+
+
+
+
+
+

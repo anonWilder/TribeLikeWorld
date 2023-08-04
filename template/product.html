@@ -15,7 +15,7 @@
                     <li><a href="product-default.html">Products</a></li>
                     <li>Gallery</li>
                 </ul>
-                <ul class="product-nav list-style-none">
+                <!-- <ul class="product-nav list-style-none">
                     <li class="product-nav-prev">
                         <a href="#">
                             <i class="w-icon-angle-left"></i>
@@ -36,7 +36,7 @@
                             <span class="product-name">Fabulous Sound Speaker</span>
                         </span>
                     </li>
-                </ul>
+                </ul> -->
             </nav>
             <!-- End of Breadcrumb -->
 
@@ -73,7 +73,7 @@
                                             </div>
                                             <div class="swiper-slide">
                                                 <figure class="product-image">
-                                                    <img src="{% static 'assets/images/products/gallery/3-800x900.jpg' %}"
+                                                    <img src="{{object.image.url}}"
                                                         data-zoom-image="{% static 'assets/images/products/gallery/3-800x900.jpg' %}"
                                                         alt="Smart Watch" width="800" height="900">
                                                     <a href="#" class="product-gallery-btn product-image-full"><i
@@ -97,7 +97,7 @@
                                         <h1 class="product-title">{{object.title}}</h1>
                                         <div class="product-bm-wrapper">
                                             <figure class="brand">
-                                                <img src="{{object.user.image.url}}" alt="Brand"
+                                                <img src="{{object.Boutique_name.brand_logo.url}}" alt="Brand"
                                                     width="102" height="48" />
                                             </figure>
                                             <div class="product-meta">
@@ -106,38 +106,41 @@
                                                     <span class="product-category"><a href="#">{{object.category}}</a></span>
                                                 </div>
                                                 <div class="product-sku">
-                                                    SKU: <span>MS46891340</span>
+                                                    SKU: <span>{{object.stock_keeping_unit}}</span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="product-price">
                                             {%if object.discount_price %}
-                                            <del class="old-price">₦{{object.price}} </del>
-                                             <ins class="new-price"> ₦{{object.discount_price}}</ins>
+                                            <del class="old-price">${{object.price}} </del>
+                                             <ins class="new-price"> ${{object.discount_price}}</ins>
                                             {% else %}
-                                            <ins class="new-price"> ₦{{object.price}}</ins>
+                                            <ins class="new-price"> ${{object.price}}</ins>
                                             {% endif %}
                                           </div>
 
-                                        <div class="ratings-container">
+                                        <!-- <div class="ratings-container">
                                             <div class="ratings-full">
                                                 <span class="ratings" style="width: 80%;"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
                                             <a href="#product-tab-reviews" class="rating-reviews">(3 Reviews)</a>
-                                        </div>
+                                        </div> -->
 
-                                        <div class="product-short-desc">
+                                        <!-- <div class="product-short-desc">
                                             <ul class="list-type-check list-style-none">
-                                                <li>Ultrices eros in cursus turpis massa cursus mattis.</li>
-                                                <li>Volutpat ac tincidunt vitae semper quis lectus.</li>
-                                                <li>Aliquam id diam maecenas ultricies mi eget mauris.</li>
+                                                <li>{{ object.feature1 }}</li>
+                                                    <li>{{ object.feature2 }}</li>
+                                                    <li>{{ object.feature3 }}</li>
                                             </ul>
-                                        </div>
+                                        </div> -->
+
+                                    
+                                        
                                     </div>
                                     <div class="col-md-6">
-                                        <div
+                                        <!-- <div
                                             class="product-form product-variation-form product-color-swatch product-variations mt-1">
                                             <label>Color:</label>
                                             <div class="d-flex align-items-center">
@@ -157,11 +160,11 @@
                                                 <a href="#" class="size">Large</a>
                                                 <a href="#" class="size">Extra Large</a>
                                             </div>
-                                        </div>
-
+                                        </div> -->
+<!-- 
                                         <div class="product-variation-price">
                                             <span></span>
-                                        </div>
+                                        </div> -->
 
                                         <hr class="product-divider mb-5">
 
@@ -221,37 +224,31 @@
                                     <li class="nav-item">
                                         <a href="#product-tab-vendor" class="nav-link">Vendor Info</a>
                                     </li>
-                                    <li class="nav-item">
+                                    <!-- <li class="nav-item">
                                         <a href="#product-tab-reviews" class="nav-link">Customer Reviews (3)</a>
-                                    </li>
+                                    </li> -->
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="product-tab-description">
                                         <div class="row mb-4">
                                             <div class="col-md-6 mb-5">
                                                 <h4 class="title tab-pane-title font-weight-bold mb-2">Detail</h4>
-                                                <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                                                    sed do eiusmod tempor incididunt arcu cursus vitae congue mauris.
-                                                    Sagittis id consectetur purus ut. Tellus rutrum tellus pelle Vel
-                                                    pretium lectus quam id leo in vitae turpis massa.</p>
+                                                <p class="mb-4">{{object.description}}</p>
                                                 <ul class="list-type-check">
-                                                    <li>Nunc nec porttitor turpis. In eu risus enim. In vitae mollis
-                                                        elit.
-                                                    </li>
-                                                    <li>Vivamus finibus vel mauris ut vehicula.</li>
-                                                    <li>Nullam a magna porttitor, dictum risus nec, faucibus sapien.
-                                                    </li>
+                                                    <li>{{object.feature1}}</li>
+                                                    <li>{{object.feature2}}</li>
+                                                    <li>{{object.feature3}}</li>
                                                 </ul>
                                             </div>
                                             <div class="col-md-6 mb-5">
                                                 <div class="banner banner-video product-video br-xs">
                                                     <figure class="banner-media">
                                                         <a href="#">
-                                                            <img src="{% static 'assets/images/products/video-banner-610x300.jpg' %}"
+                                                            <img src="{{object.image.url}}"
                                                                 alt="banner" width="610" height="300"
                                                                 style="background-color: #bebebe;">
                                                         </a>
-                                                        <a class="btn-play-video btn-iframe"
+                                                        <a class=" btn-iframe"
                                                             href="{% static 'assets/video/memory-of-a-woman.mp4"></a>
                                                     </figure>
                                                 </div>
@@ -259,22 +256,16 @@
                                         </div>
                                         <div class="row cols-md-3">
                                             <div class="mb-3">
-                                                <h5 class="sub-title font-weight-bold"><span class="mr-3">1.</span>Free
-                                                    Shipping &amp; Return</h5>
-                                                <p class="detail pl-5">We offer free shipping for products on orders
-                                                    above 50$ and offer free delivery for all orders in US.</p>
+                                                <h5 class="sub-title font-weight-bold"><span class="mr-3">1.</span>{{object.offerhead1}}</h5>
+                                                <p class="detail pl-5">{{object.offerbody1}}</p>
                                             </div>
                                             <div class="mb-3">
-                                                <h5 class="sub-title font-weight-bold"><span>2.</span>Free and Easy
-                                                    Returns</h5>
-                                                <p class="detail pl-5">We guarantee our products and you could get back
-                                                    all of your money anytime you want in 30 days.</p>
+                                                <h5 class="sub-title font-weight-bold"><span>2.</span>{{object.offerhead2}}</h5>
+                                                <p class="detail pl-5">{{object.offerbody2}}</p>
                                             </div>
                                             <div class="mb-3">
-                                                <h5 class="sub-title font-weight-bold"><span>3.</span>Special Financing
-                                                </h5>
-                                                <p class="detail pl-5">Get 20%-50% off items over 50$ for a month or
-                                                    over 250$ for a year with our special credit card.</p>
+                                                <h5 class="sub-title font-weight-bold"><span>3.</span>{{object.offerhead3}}</h5>
+                                                <p class="detail pl-5">{{object.offerbody3}}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -282,19 +273,19 @@
                                         <ul class="list-none">
                                             <li>
                                                 <label>Model</label>
-                                                <p>Skysuite 320</p>
+                                                <p>{{object.model_name}}</p>
                                             </li>
                                             <li>
                                                 <label>Color</label>
-                                                <p>Black</p>
+                                                <p>{{object.color_name}}</p>
                                             </li>
                                             <li>
                                                 <label>Size</label>
-                                                <p>Large, Small</p>
+                                                <p>{{object.size_type}}</p>
                                             </li>
                                             <li>
                                                 <label>Guarantee Time</label>
-                                                <p>3 Months</p>
+                                                <p>{{object.Guaranteed_time}}</p>
                                             </li>
                                         </ul>
                                     </div>
@@ -302,70 +293,59 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6 mb-4">
                                                 <figure class="vendor-banner br-sm">
-                                                    <img src="{% static 'assets/images/products/vendor-banner.jpg' %}"
+                                                    <img src="{{object.Boutique_name.brand_banner.url}}"
                                                         alt="Vendor Banner" width="610" height="295"
                                                         style="background-color: #353B55;" />
                                                 </figure>
                                             </div>
                                             <div class="col-md-6 pl-2 pl-md-6 mb-4">
                                                 <div class="vendor-user">
-                                                    <figure class="vendor-logo mr-4">
+                                                    <!-- <figure class="vendor-logo mr-4">
                                                         <a href="#">
                                                             <img src="{% static 'assets/images/products/vendor-logo.jpg' %}"
                                                                 alt="Vendor Logo" width="80" height="80" />
                                                         </a>
+                                                    </figure> -->
+                                                    <figure class="vendor-logo mr-4">
+                                                        <a href="#">
+                                                            <img src="{{ object.Boutique_name.brand_logo.url }}" alt="Vendor Logo" width="80" height="80" />
+                                                        </a>
                                                     </figure>
+                                                    
                                                     <div>
-                                                        <div class="vendor-name"><a href="#">Jone Doe</a></div>
-                                                        <div class="ratings-container">
+                                                        <div class="vendor-name"><a href="#">{{object.Boutique_name}}</a></div>
+                                                        <!-- <div class="ratings-container">
                                                             <div class="ratings-full">
                                                                 <span class="ratings" style="width: 90%;"></span>
                                                                 <span class="tooltiptext tooltip-top"></span>
                                                             </div>
                                                             <a href="#" class="rating-reviews">(32 Reviews)</a>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </div>
                                                 <ul class="vendor-info list-style-none">
                                                     <li class="store-name">
                                                         <label>Store Name:</label>
-                                                        <span class="detail">OAIO Store</span>
+                                                        <span class="detail">{{object.Boutique_name}}</span>
                                                     </li>
                                                     <li class="store-address">
                                                         <label>Address:</label>
-                                                        <span class="detail">Steven Street, El Carjon, CA 92020, United
-                                                            States (US)</span>
+                                                        <span class="detail">{{object.Boutique_name.where_else_you_sell}}</span>
                                                     </li>
                                                     <li class="store-phone">
                                                         <label>Phone:</label>
-                                                        <a href="#tel:">1234567890</a>
+                                                        <a href="#tel:">{{object.Boutique_name.number}}</a>
                                                     </li>
                                                 </ul>
-                                                <a href="vendor-dokan-store.html"
+                                                <a href="{{i.get_absolute_url}}"
                                                     class="btn btn-dark btn-link btn-underline btn-icon-right">Visit
                                                     Store<i class="w-icon-long-arrow-right"></i></a>
                                             </div>
                                         </div>
-                                        <p class="mb-5"><strong class="text-dark">L</strong>orem ipsum dolor sit amet,
-                                            consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                                            dolore magna aliqua.
-                                            Venenatis tellus in metus vulputate eu scelerisque felis. Vel pretium
-                                            lectus quam id leo in vitae turpis massa. Nunc id cursus metus aliquam.
-                                            Libero id faucibus nisl tincidunt eget. Aliquam id diam maecenas ultricies
-                                            mi eget mauris. Volutpat ac tincidunt vitae semper quis lectus. Vestibulum
-                                            mattis ullamcorper velit sed. A arcu cursus vitae congue mauris.
-                                        </p>
-                                        <p class="mb-2"><strong class="text-dark">A</strong> arcu cursus vitae congue
-                                            mauris. Sagittis id consectetur purus
-                                            ut. Tellus rutrum tellus pellentesque eu tincidunt tortor aliquam nulla.
-                                            Diam in
-                                            arcu cursus euismod quis. Eget sit amet tellus cras adipiscing enim eu. In
-                                            fermentum et sollicitudin ac orci phasellus. A condimentum vitae sapien
-                                            pellentesque
-                                            habitant morbi tristique senectus et. In dictum non consectetur a erat. Nunc
-                                            scelerisque viverra mauris in aliquam sem fringilla.</p>
+                                        <p class="mb-5">{{object.Boutique_name.about_your_business}}</p>
+                                        
                                     </div>
-                                    <div class="tab-pane" id="product-tab-reviews">
+                                    <!-- <div class="tab-pane" id="product-tab-reviews">
                                         <div class="row mb-4">
                                             <div class="col-xl-4 col-lg-5 mb-4">
                                                 <div class="ratings-wrapper">
@@ -951,10 +931,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
-                            <section class="vendor-product-section">
+                            <!-- <section class="vendor-product-section">
                                 <div class="title-link-wrapper mb-4">
                                     <h4 class="title text-left">More Products From This Vendor</h4>
                                     <a href="#" class="btn btn-dark btn-link btn-slide-right btn-icon-right">More
@@ -1130,7 +1110,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </section>
+                            </section> -->
                             <!-- <section class="related-product-section">
                                 <div class="title-link-wrapper mb-4">
                                     <h4 class="title">Related Products</h4>
