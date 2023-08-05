@@ -8,8 +8,8 @@ from .models import ContactMessageEntry
 
 PAYMENT_CHOICES = (
     # ('p', 'Paystack'),
-    ('S', 'Stripe'),
-    ('P', 'PayPal')
+    # ('S', 'Stripe'),
+    ('P', 'PayPal / Debit card'),
 )
 
 class TinyMCEWidget(TinyMCE):

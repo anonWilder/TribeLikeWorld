@@ -35,9 +35,9 @@ var options = {
 	},
 	xaxis: {
 		categories: ['Electronics', 'Grocery', 'Beauty', 'Toys'],
-		// labels: {
-	 //    show: false
-	 //  }
+		labels: {
+	    show: false
+	  }
 	},
 	colors: ['#ee0000', '#999999'],
 	markers: {

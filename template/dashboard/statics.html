@@ -68,14 +68,14 @@
                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Sales</div>
+                            <div class="card-title">Ordered Sales</div>
                         </div>
                         <div class="card-body pt-0">
                             <div id="compare-sales"></div>
                             <div class="info-stats3 shade-one-a">
                                 <i class="icon-turned_in"></i>
-                                <h6>Overall Sales</h6>
-                                <h2>75,000</h2>
+                                <h6>Total Ordered Sales</h6>
+                                <h2>{{total_orderd}}</h2>
                             </div>
                         </div>
                     </div>
@@ -83,14 +83,14 @@
                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Income</div>
+                            <div class="card-title">UnOrdered Sales</div>
                         </div>
                         <div class="card-body pt-0">
                             <div id="compare-expenses"></div>
                             <div class="info-stats3 shade-one-a">
                                 <i class="icon-turned_in"></i>
-                                <h6>Overall Income</h6>
-                                <h2>50,000</h2>
+                                <h6>Total UnOrdered Sales</h6>
+                                <h2>{{total_unorderd}}</h2>
                             </div>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                 <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="card h-310">
                         <div class="card-header">
-                            <div class="card-title">By Channel</div>
+                            <div class="card-title">Sales By Boutique</div>
                         </div>
                         <div class="card-body pb-0 pt-0">
                             <div id="by-channel"></div>
@@ -121,20 +121,30 @@
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div class="card h-310">
-                        <div class="card-header">
-                            <div class="card-title">By Device</div>
+                    <div class="risks-block high h-124">
+                        <i class="icon-shopping-bag1"></i>
+                        <div class="risk-details">
+                            <h2>700</h2>
+                            <h5>Orders Pending<span>(High Priority)</span></h5>
                         </div>
-                        <div class="card-body">
-                            <div id="budget"></div>
+                    </div>
+                    <div class="risks-block low h-124">
+                        <i class="icon-shopping-bag1"></i>
+                        <div class="risk-details">
+                            <h2>900</h2>
+                            <h5>Orders Delivered<span>(Success)</span></h5>
                         </div>
                     </div>
                 </div>
+
+                    
+
+
             </div>
             <!-- Row ends -->
 
             <!-- Row starts -->
-            <div class="row gutters">
+            <!-- <div class="row gutters">
                 <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="card h-310">
                         <div class="card-header">
@@ -269,102 +279,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- Row ends -->
 
             <!-- Row starts -->
-            <div class="row gutters">
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div class="risks-block high h-124">
-                        <i class="icon-shopping-bag1"></i>
-                        <div class="risk-details">
-                            <h2>700</h2>
-                            <h5>Orders Pending<span>(High Priority)</span></h5>
-                        </div>
-                    </div>
-                    <div class="risks-block low h-124">
-                        <i class="icon-shopping-bag1"></i>
-                        <div class="risk-details">
-                            <h2>900</h2>
-                            <h5>Orders Delivered<span>(Success)</span></h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12">
-                    <div class="card h-265">
-                        <div class="card-header">
-                            <div class="card-title">Activity</div>
-                        </div>
-                        <div class="card-body">
-                            <div class="projectLog">
-                                <div class="logs-container">
-                                    <div class="logs-body">
-                                        <div class="log-list">
-                                            <i class="icon-check_circle text-danger"></i>
-                                            <div class="log-info">
-                                                <div class="log-title">Product Delivered</div>
-                                                <div class="log-message">Interactive dashboard design</div>
-                                                <div class="log-user">By: <span class="name">Zuairia</span> - On<span class="dt">10/10/2019</span> </div>
-                                            </div>
-                                        </div>
-                                        <div class="log-list">
-                                            <i class="icon-warning1 text-danger"></i>
-                                            <div class="log-info">
-                                                <div class="log-title">Issues fixed</div>
-                                                <div class="log-message">4 high risk tasks overdue</div>
-                                                <div class="log-user">By: <span class="name">Zyan</span> - On<span class="dt">10/15/2019</span> </div>
-                                            </div>
-                                        </div>
-                                        <div class="log-list">
-                                            <i class="icon-calendar text-danger"></i>
-                                            <div class="log-info">
-                                                <div class="log-title">Team Meeting</div>
-                                                <div class="log-message">Discuss on status update</div>
-                                                <div class="log-user">By: <span class="name">Lewis</span> - On<span class="dt">10/18/2019</span> </div>
-                                            </div>
-                                        </div>
-                                        <div class="log-list">
-                                            <i class="icon-message-circle text-info"></i>
-                                            <div class="log-info">
-                                                <div class="log-title">New Comment</div>
-                                                <div class="log-message">Currently 7% over target budget</div>
-                                                <div class="log-user">By: <span class="name">Sayed</span> - On<span class="dt">10/12/2019</span> </div>
-                                            </div>
-                                        </div>
-                                    </div>										
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="card h-265">
-                        <div class="card-header">
-                            <div class="card-title">Summary</div>
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-group">
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Start Date:
-                                    <span class="badge badge-primary badge-pill">09/15/2019</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    End Date:
-                                    <span class="badge badge-primary badge-pill">01/15/2020</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Manager:
-                                    <h6>Zuairia Zaman</h6>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    Overall Status:
-                                    <span class="badge badge-secondary badge-pill">Success</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
+         
             <!-- Row ends -->
 
         </div>
@@ -372,4 +291,6 @@
 
     </div>
     <!-- Page content end -->
+
+    
 {% include "dashboard/footer.html" %}

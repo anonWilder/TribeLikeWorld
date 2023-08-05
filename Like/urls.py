@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.contrib.auth.decorators import login_required
 from .views import (
     # ItemDetailView,
     CheckoutView,
@@ -23,7 +24,7 @@ app_name = 'core'
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('menu/', HomeView.as_view(), name='home'),
-    path('checkout/', CheckoutView.as_view(), name='checkout'),
+    path('checkout/', login_required(CheckoutView.as_view()), name='checkout'),
     path('order-summary/', OrderSummaryView.as_view(), name='order-summary'),
     path('product/<int:pk>', views.ItemDetailView, name='product'),
     path('add-to-cart/<int:pk>', add_to_cart, name='add-to-cart'),
@@ -36,6 +37,7 @@ urlpatterns = [
     path('search/', search, name='search'),
     path('welcome_user/', welcome_user, name='welcome_user'),
 
+    path('User_dashboad/', views.User_dashboad, name="User_dashboad"),
     # path('categories/', views.Categories.as_view(), name='categories'),
     # path('category/<int:pk>', views.CategoryView.as_view(), name='category'),
     path('category/<int:pk>', views.list_category, name='list_category'),
@@ -53,7 +55,7 @@ urlpatterns = [
     path('filler/', views.country_filter, name='filler'),
     
     path('shop/', views.shop, name="shop"),
-    path('dashboard/', views.Dashboard, name="Dashboard"),
+    path('dashboard/<int:pk>', views.Dashboard, name="dashboard"),
     path('dashboard_sells/', views.Dashboard_sells, name="Dashboard_sells"),
     path('draft_sells/', views.Dashboard_draft, name="Dashboard_draft"),
     path('payment-completed/', views.payment_completed_view, name="payment-completed"),
@@ -62,8 +64,8 @@ urlpatterns = [
     path('list-item/', views.ListItem, name="ListItem"),
     path('paypal_payments/<payment_option>/', views.PaypalPayment, name="paypal_payment"),
     path('paypal_invoice', views.InvoicePayment, name="paypal_invoice"),
-    path('sells-details/<int:pk>', views.Dashboard_sells_details, name='sells_details'),
-    path('all-soled-item/<int:pk>', views.all_soled_iteam, name='all_soled_iteam'),
+    path('sells-details/', views.Dashboard_sells_details, name='sells_details'),
+    path('all-soled-item/', views.all_soled_iteam, name='all_soled_iteam'),
     path('how-to-sell/', views.how_to_sell, name='how_to_sell'),
     path('buys/<int:pk>', views.Dashboard_buys, name='buys'),
     path('terms/', views.terms, name='terms'),
