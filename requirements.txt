@@ -50,9 +50,7 @@ soupsieve
 sqlparse
 stripe
 typing_extensions
-twisted-iocpsupport
 Twisted
-twisted-iocpsupport
 txaio
 typing-extensions
 tzdata
