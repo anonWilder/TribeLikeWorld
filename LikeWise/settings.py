@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-@x$e$0h_x_e2ydn39fxlo35z4h3@^v^x@#y1pd&cy4+!!7wx7x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*', 'https://tribelike.up.railway.app']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
