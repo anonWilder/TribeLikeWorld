@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-@x$e$0h_x_e2ydn39fxlo35z4h3@^v^x@#y1pd&cy4+!!7wx7x
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://*.tribelike.up.railway.app','https://*.127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://*.tribelike.up.railway.app','https://*.127.0.0.1', 'https://*.tribelikeworld.com']
 
 # Application definition
 
