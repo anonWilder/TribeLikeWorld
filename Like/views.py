@@ -1203,23 +1203,29 @@ def sell_form(request):
 			pod.products_image4 = request.FILES["products_image4"]
 		pod.save()
 		
-		subject = 'From Tribe Like'
-		from_email = settings.EMAIL_HOST_USER
-		recipient_list = [user_email,'tribelikeventures@gmail.com']
-		template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html',{"title":"text file","email": user_email})
-		cont = strip_tags(template)
-		email = EmailMultiAlternatives(subject,cont, from_email, recipient_list)
-		email.attach_alternative(template, "text/html")
+		# subject = 'From Tribe Like'
+		# from_email = settings.EMAIL_HOST_USER
+		# recipient_list = [user_email,'tribelikeventures@gmail.com']
+		# template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html',{"title":"text file","email": user_email})
+		# cont = strip_tags(template)
+		# email = EmailMultiAlternatives(subject,cont, from_email, recipient_list)
+		# email.attach_alternative(template, "text/html")
 			
-		image_path = 'http://127.0.0.1:8000/static/images/t.png'
-		with open(image_path, 'rb') as f:
-			image_data = f.read()
-			email.attach("http://127.0.0.1:8000/static/images/tribe_like_fun_2.png", image_data, "image/jpg")
+		# image_path = 'http://127.0.0.1:8000/static/images/t.png'
+		# with open(image_path, 'rb') as f:
+		# 	image_data = f.read()
+		# 	email.attach("http://127.0.0.1:8000/static/images/tribe_like_fun_2.png", image_data, "image/jpg")
 
-		# Set the Content-ID header for the embedded image
-		email.mixed_subtype = 'related'
-		email.attach_related(image_data, 'image/jpg', 'unique_cid')
-		email.send()
+		# # Set the Content-ID header for the embedded image
+		# email.mixed_subtype = 'related'
+		# email.attach_related(image_data, 'image/jpg', 'unique_cid')
+		# email.send()
+		template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html',{"title":"text file","email": user_email})
+		send_mail('From Tribe Like',
+		template,
+		settings.EMAIL_HOST_USER,
+		[user_email,'tribelikeventures@gmail.com'],
+		)
 		messages.success(request, f'Request has been sent Successfully !')
 		return redirect('/successfully')
 	else:
