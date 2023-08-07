@@ -23,7 +23,9 @@
                  
                     <form class="form checkout-form" action="#" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        
+                        <div class="form-group place-order pt-6">
+                            <button type="submit" class="btn btn-dark btn-block btn-rounded">Submit Details</button>
+                        </div>
                         
                         <div class="row mb-9">
                             <div class=" pr-lg-4 mb-4">
@@ -609,9 +611,7 @@
                                 </div>
                             </div> -->
                         </div>
-                        <div class="form-group place-order pt-6">
-                            <button type="submit" class="btn btn-dark btn-block btn-rounded">Submit Details</button>
-                        </div>
+                        
                     </form>
                 </div>
             </div>
