@@ -1,0 +1,42 @@
+{% load static %}
+{% include 'head-search.html' %}
+
+
+<main class="main">
+    <!-- Start of Breadcrumb -->
+    <nav class="breadcrumb-nav">
+        <div class="container">
+            <ul class="breadcrumb mb-8">
+                <li><a href="demo1.html">Home</a></li>
+                <li><a href="#">Vendor</a></li>
+                <li><a href="#">WC Vendors</a></li>
+                <li>Store List</li>
+            </ul>
+        </div>
+    </nav>
+    <!-- End of Breadcrumb -->
+
+    <!-- Start of Pgae Contetn -->
+    <div class="page-content mb-4">
+        <div class="container">
+            <div class="row cols-xl-6 cols-lg-5 cols-md-4 cols-sm-3 cols-2">
+
+                {% for post in post %}
+                <div class="vendor-brand-wrap mb-8">
+                    <div class="vendor-brand">
+                        <a href="{{post.get_Category_absolute_url}}">
+                            <figure class="brand">
+                                <img src="assets/images/vendor/brand/1-150x150.jpg" alt="Brand" width="150" height="150">
+                            </figure>
+                            <h4 class="vendor-name">{{post.name}}</h4>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+             
+        </div>
+    </div>
+    <!-- End of Page Content -->
+</main>
+
+{% include 'footer.html' %}

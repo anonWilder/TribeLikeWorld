@@ -38,9 +38,9 @@ urlpatterns = [
     path('welcome_user/', welcome_user, name='welcome_user'),
 
     path('User_dashboad/', views.User_dashboad, name="User_dashboad"),
-    # path('categories/', views.Categories.as_view(), name='categories'),
-    # path('category/<int:pk>', views.CategoryView.as_view(), name='category'),
-    path('category/<int:pk>', views.list_category, name='list_category'),
+    path('categories/<int:id>', views.list_category_item, name='list_category_item'),
+    path('main-category/<int:id>', views.main_category, name='main_category'),
+    path('category/<int:id>', views.list_category, name='list_category'),
     path('about-us/', views.about_us, name='about_us'),
     path('contact/', views.contact, name='contact'),
     path('sell-here/', views.sell_here, name='sell_here'),

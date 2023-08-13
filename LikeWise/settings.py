@@ -30,12 +30,12 @@ SECRET_KEY = 'django-insecure-@x$e$0h_x_e2ydn39fxlo35z4h3@^v^x@#y1pd&cy4+!!7wx7x
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://*.tribelike.up.railway.app','https://*.127.0.0.1', 'https://*.tribelikeworld.com']
+CSRF_TRUSTED_ORIGINS = ['https://*.127.0.0.1', 'https://*.tribelikeworld.com']
 
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
+    #'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -70,7 +70,7 @@ ROOT_URLCONF = 'LikeWise.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['template'],
+        'DIRS': [os.path.join(BASE_DIR,'template')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,12 +89,21 @@ ASGI_APPLICATION = 'LikeWise.asgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+#DATABASES = {
+ #   'default': {
+  #      'ENGINE': 'django.db.backends.sqlite3',
+   #     'NAME': BASE_DIR / 'db.sqlite3',
+   # }
+#}
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+
 
 
 # Password validation
@@ -167,9 +176,9 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 # Extra places for collectstatic to find static files.
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'staticfiles'),
-# )
+#STATICFILES_DIRS = (
+#    os.path.join(BASE_DIR, 'staticfiles'),
+#)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

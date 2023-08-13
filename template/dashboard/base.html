@@ -14,7 +14,8 @@
 		<meta name="author" content="ParkerThemes">
 		<link rel="shortcut icon" href="{% static '/assets/images/item_icon.jpeg' %}" />
 
-		
+				<!-- Notify -->
+			<link rel="stylesheet" href="{% static 'dashboard/vendor/notify/notify-flat.css' %}" />
 		<!-- Data Tables -->
 		<link rel="stylesheet" href="{% static 'dashboard/vendor/datatables/dataTables.bs4.css' %}" />
 		<link rel="stylesheet" href="{% static 'dashboard/vendor/datatables/dataTables.bs4-custom.css' %}" />
@@ -59,8 +60,13 @@
 
 		<!-- Page wrapper start -->
 		<div class="page-wrapper">
-			
-
+			{% if messages %}
+			{% for message in messages %}
+			<!-- <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"> -->
+				
+				<div id="notes"></div>
+			{% endfor %}
+			{% endif %}
 			<!-- Page content start  -->
          
 

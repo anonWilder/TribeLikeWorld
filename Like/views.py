@@ -31,7 +31,8 @@ from django.core.exceptions import MultipleObjectsReturned
 import subprocess
 import time
 # import Paystack
-
+from django.shortcuts import render
+from .models import Main_Category, Order, counter
 # paystack.api_key = settings.PAYSTACK_SECRET_KEY
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -67,6 +68,8 @@ class SearchView(View):
 
 
 def search(request):
+	category = Main_Category.objects.all().order_by('-id')
+	boutique = BOUTIQUE_REQUEST.objects.all().order_by('-id')
 	queryset = Item.objects.all()
 	query = request.GET.get('q')
 	if query:
@@ -75,10 +78,11 @@ def search(request):
 			Q(description__icontains=query)
 		).distinct()
 	context = {
-		'queryset': queryset
+		'queryset':queryset,
+		'boutique':boutique,
+		'category':category
 	}
 	return render(request, 'search_results.html', context)
-
 
 def is_valid_form(values):
 	valid = True
@@ -405,7 +409,7 @@ class PaymentView(View):
 
 @login_required
 def PaypalPayment(request,payment_option,):
-	
+	category = Main_Category.objects.all().order_by('-id')
 	if request.user.is_authenticated:
 		order = Order.objects.get(user=request.user, ordered=False)
 	else:
@@ -419,6 +423,7 @@ def PaypalPayment(request,payment_option,):
 		'order': order,
 		'DISPLAY_COUPON_FORM': False,
 		'amount':amount,
+		'category':category,
 	}
 	# host = request.get_host()
 	
@@ -1005,20 +1010,49 @@ def welcome_user(request):
 		context = {"products": my_products}
 	return render(request, "welcome-user.html", context)
 
-
-def list_category(request, slug):
-	categories = Category.objects.all()
-	post = Item.objects.all()
-	if slug:
-		category = get_object_or_404(Category, slug=slug)
-		post = post.filter(category=category)
-	template = "category.html"
+def main_category(request, id):
+	category = Main_Category.objects.all().order_by('-id')
+	boutique = BOUTIQUE_REQUEST.objects.all().order_by('-id')
+	if id:
+		main_category = get_object_or_404(Main_Category, id=id)
+		post = Category.objects.filter(Main_Category=main_category)
+	template = "main_category.html"
 	context = {
-		'categories': categories,
 		'post': post,
 		'category': category,
+		'boutique':boutique,
 	}
 	return render(request, template, context)
+
+def list_category(request, id):
+	category = Main_Category.objects.all().order_by('-id')
+	boutique = BOUTIQUE_REQUEST.objects.all().order_by('-id')
+	if id:
+		sub_category = get_object_or_404(Sub_Category, id=id)
+		post = Item.objects.filter(sub_category=sub_category)
+	template = "category_details.html"
+	context = {
+		'post': post,
+		'category': category,
+		'boutique':boutique,
+	}
+	return render(request, template, context)
+
+def list_category_item(request, id):
+	category = Main_Category.objects.all().order_by('-id')
+	boutique = BOUTIQUE_REQUEST.objects.all().order_by('-id')
+	if id:
+		categorys = get_object_or_404(Category, id=id)
+		post = Item.objects.filter(category=categorys)
+	template = "category_details.html"
+	context = {
+		'post': post,
+		'category': category,
+		'boutique':boutique,
+	}
+	return render(request, template, context)
+
+
 
 
 def about_us(request):
@@ -1112,45 +1146,46 @@ def ListItem(request):
 	category_list = Category.objects.all().order_by('-id')
 	category = Main_Category.objects.all().order_by('-id')
 	subcategory_list = Sub_Category.objects.all().order_by('-id')
-	
-	if request.method == "POST":
-		pod = Item()
-		pod.user=request.user
-		pod.title = request.POST.get("title")
-		pod.price = request.POST.get("price")
-		pod.discount_price = request.POST.get("discount_price")
-		pod.shiping_fee =  request.POST.get("shiping_fee")
-		boutique_name =  request.POST.get("Boutique_name")
-		pod.Boutique_name = BOUTIQUE_REQUEST.objects.get(Boutique_name=boutique_name)
-		category = request.POST.get("category")
-		pod.category = Category.objects.get(name=category)
-		sub_categorys = request.POST.get("sub_category")
-		try:
-			pod.sub_category = Sub_Category.objects.get(name=sub_categorys)
-		except Sub_Category.MultipleObjectsReturned:
-			pod.sub_category = Sub_Category.objects.filter(name=sub_categorys).first()
-		pod.overview = request.POST.get("overview")
-		pod.description = request.POST.get("description")
-		if len(request.FILES) != 0:
-			pod.image = request.FILES["image"]
-			pod.image2 = request.FILES["image2"]
-		pod.save()
-		messages.success(request, f'Request has been sent Successfully !')
-		 
-		template = render_to_string('emails/ITEM_ADDED_EMAIL_TEM.html',{
-			# "email": email
-			"email": 'francisdaniel140@gmail.com'
-		})
+	try:
+		if request.method == "POST":
+			pod = Item()
+			pod.user=request.user
+			pod.title = request.POST.get("title")
+			pod.price = request.POST.get("price")
+			pod.discount_price = request.POST.get("discount_price")
+			pod.shiping_fee =  request.POST.get("shiping_fee")
+			boutique_name =  request.POST.get("Boutique_name")
+			pod.Boutique_name = BOUTIQUE_REQUEST.objects.get(Boutique_name=boutique_name)
+			category = request.POST.get("category")
+			pod.category = Category.objects.get(name=category)
+			sub_categorys = request.POST.get("sub_category")
+			try:
+				pod.sub_category = Sub_Category.objects.get(name=sub_categorys)
+			except Sub_Category.MultipleObjectsReturned:
+				pod.sub_category = Sub_Category.objects.filter(name=sub_categorys).first()
+			pod.overview = request.POST.get("overview")
+			pod.description = request.POST.get("description")
+			if len(request.FILES) != 0:
+				pod.image = request.FILES["image"]
+				pod.image2 = request.FILES["image2"]
+			pod.save()
+			messages.success(request, f'Request has been sent Successfully !')
 			
-		send_mail('From Tribe Like',
-		template,
-		settings.EMAIL_HOST_USER,
-		['francisdaniel140@gmail.com','likegroupinc@gmail.com'],
-		)
-		messages.success(request, f'Request has been sent Successfully !')
-		return redirect('/successfully')
+			template = render_to_string('emails/ITEM_ADDED_EMAIL_TEM.html',{
+				# "email": email
+				"email": 'francisdaniel140@gmail.com'
+			})
+				
+			send_mail('From Tribe Like',
+			template,
+			settings.EMAIL_HOST_USER,
+			['francisdaniel140@gmail.com','likegroupinc@gmail.com'],
+			)
+			messages.success(request, f'Item Successfully added !')
+	except Exception as e:
+		# send an email to ourselves
+		messages.warning(request, str(e))
 	return render(request, "dashboard/list-item.html",{"vendors_list":vendors_list,'order':order,'category':category,"category_list":category_list,"subcategory_list":subcategory_list})
-
 
 @login_required
 def all_soled_iteam(request):
@@ -1181,55 +1216,59 @@ def sell_form(request):
 	# if request.user.is_authenticated:
 	# 	order = Order.objects.get(user=request.user, ordered=False)
 	# else:
-	order = 0
-	if request.method == "POST":
-		user_email =  request.user.email
-		pod = BOUTIQUE_REQUEST()
-		pod.user=request.user
-		pod.Boutique_name = request.POST.get("Boutique_name")
-		pod.items_to_sell = request.POST.get("items_to_sell")
-		pod.number =  request.POST.get("number")
-		pod.where_else_you_sell = request.POST.get("where_else_you_sell")
-		pod.social_media =  request.POST.get("social_media")
-		pod.country =  request.POST.get("country")
-		pod.about_your_business = request.POST.get("about_your_business")
-		pod.hear_about_us = request.POST.get("hear_about_us")
-		if len(request.FILES) != 0:
-			pod.brand_logo = request.FILES["brand_logo"]
-			pod.brand_banner = request.FILES["brand_banner"]
-			pod.products_image1 = request.FILES["products_image1"]
-			pod.products_image2 = request.FILES["products_image2"]
-			pod.products_image3 = request.FILES["products_image3"]
-			pod.products_image4 = request.FILES["products_image4"]
-		pod.save()
-		
-		# subject = 'From Tribe Like'
-		# from_email = settings.EMAIL_HOST_USER
-		# recipient_list = [user_email,'tribelikeventures@gmail.com']
-		# template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html',{"title":"text file","email": user_email})
-		# cont = strip_tags(template)
-		# email = EmailMultiAlternatives(subject,cont, from_email, recipient_list)
-		# email.attach_alternative(template, "text/html")
+	try:
+		order = 0
+		if request.method == "POST":
+			user_email =  request.user.email
+			pod = BOUTIQUE_REQUEST()
+			pod.user=request.user
+			pod.Boutique_name = request.POST.get("Boutique_name")
+			pod.items_to_sell = request.POST.get("items_to_sell")
+			pod.number =  request.POST.get("number")
+			pod.where_else_you_sell = request.POST.get("where_else_you_sell")
+			pod.social_media =  request.POST.get("social_media")
+			pod.country =  request.POST.get("country")
+			pod.about_your_business = request.POST.get("about_your_business")
+			pod.hear_about_us = request.POST.get("hear_about_us")
+			if len(request.FILES) != 0:
+				pod.brand_logo = request.FILES["brand_logo"]
+				pod.brand_banner = request.FILES["brand_banner"]
+				pod.products_image1 = request.FILES["products_image1"]
+				pod.products_image2 = request.FILES["products_image2"]
+				pod.products_image3 = request.FILES["products_image3"]
+				pod.products_image4 = request.FILES["products_image4"]
+			pod.save()
 			
-		# image_path = 'http://127.0.0.1:8000/static/images/t.png'
-		# with open(image_path, 'rb') as f:
-		# 	image_data = f.read()
-		# 	email.attach("http://127.0.0.1:8000/static/images/tribe_like_fun_2.png", image_data, "image/jpg")
+			# subject = 'From Tribe Like'
+			# from_email = settings.EMAIL_HOST_USER
+			# recipient_list = [user_email,'tribelikeventures@gmail.com']
+			# template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html',{"title":"text file","email": user_email})
+			# cont = strip_tags(template)
+			# email = EmailMultiAlternatives(subject,cont, from_email, recipient_list)
+			# email.attach_alternative(template, "text/html")
+				
+			# image_path = 'http://127.0.0.1:8000/static/images/t.png'
+			# with open(image_path, 'rb') as f:
+			# 	image_data = f.read()
+			# 	email.attach("http://127.0.0.1:8000/static/images/tribe_like_fun_2.png", image_data, "image/jpg")
 
-		# # Set the Content-ID header for the embedded image
-		# email.mixed_subtype = 'related'
-		# email.attach_related(image_data, 'image/jpg', 'unique_cid')
-		# email.send()
-		template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html',{"title":"text file","email": user_email})
-		send_mail('From Tribe Like',
-		template,
-		settings.EMAIL_HOST_USER,
-		[user_email,'tribelikeventures@gmail.com'],
-		)
-		messages.success(request, f'Request has been sent Successfully !')
-		return redirect('/successfully')
-	else:
-		return render(request,"sell_form.html",{'order':order,'category':category})
+			# # Set the Content-ID header for the embedded image
+			# email.mixed_subtype = 'related'
+			# email.attach_related(image_data, 'image/jpg', 'unique_cid')
+			# email.send()
+			template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html',{"title":"text file","email": user_email})
+			send_mail('From Tribe Like',
+			template,
+			settings.EMAIL_HOST_USER,
+			[user_email,'tribelikeventures@gmail.com'],
+			)
+			messages.success(request, f'Request has been sent Successfully !')
+			return redirect('/successfully')
+		else:
+			return render(request,"sell_form.html",{'order':order,'category':category})
+	except Exception as e:
+		# send an email to ourselves
+		messages.warning(request, str(e))
 
 def successfully(request):
 	return render(request,"successful.html")
@@ -1264,7 +1303,7 @@ def country_filter(request):
 	if countrys:
 		vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True, country=countrys).order_by('-id')
 		vendors_count = BOUTIQUE_REQUEST.objects.filter(approved=True)
-	return render(request,"vendorsfilter.html",{'order':order,'vendors_list':vendors_list,'category':category})
+	return render(request,"vendorsfilter.html",{'order':order,'vendors_list':vendors_list,'category':category,"countrys":countrys})
 
 def VendorDetailView(request, pk):
 	# if request.user.is_authenticated:
@@ -1315,15 +1354,28 @@ def contact(request):
 	}
 	return render(request,"contact.html",const)
 
-def about_us(request):
-	category = Main_Category.objects.all().order_by('-id')
-	if request.user.is_authenticated:
-		order = Order.objects.get(user=self.request.user, ordered=False)
-	else:
-		order = False
-	counters = counter.objects.all()
-	return render(request,"about-us.html",{'order':order,'counter':counters, "category":category})
+# def about_us(request):
+# 	category = Main_Category.objects.all().order_by('-id')
+# 	if request.user.is_authenticated:
+# 		order = Order.objects.get(user=self.request.user, ordered=False)
+# 	else:
+# 		order = False
+# 	counters = counter.objects.all()
+# 	return render(request,"about-us.html",{'order':order,'counter':counters, "category":category})
 
+
+
+def about_us(request):
+    category = Main_Category.objects.all().order_by('-id')
+    
+    if request.user.is_authenticated:
+        order = Order.objects.get(user=request.user, ordered=False)
+    else:
+        order = False
+    
+    counters = counter.objects.all()
+    
+    return render(request, "about-us.html", {'order': order, 'counter': counters, 'category': category})
 
 
 

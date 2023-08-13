@@ -86,7 +86,7 @@
                             width="610" height="160" style="background-color: #636363;" />
                     </figure>
                     <div class="banner-content y-50 mt-0">
-                        <center><a href="/brands/" class="btn btn-white btn-link btn-underline btn-icon-right"
+                        <center><a href="/all-vendors/" class="btn btn-white btn-link btn-underline btn-icon-right"
                                 style="margin-top: 100px;margin-left: 200px;padding: 10px; border: 2px solid #fff;">Shop
                                 Now<i class="w-icon-long-arrow-right"></i></a></center>
                         <!-- <div class="banner-price-info text-white font-weight-normal text-capitalize">Only From
@@ -121,12 +121,12 @@
 
                         {% for i in category_icon %}
                         <div class="swiper-slide category category-classic category-absolute overlay-zoom br-xs">
-                            <a href="shop-banner-sidebar.html" class="category-media">
+                            <a href="{{i.get_absolute_main_url}}" class="category-media">
                                 <img src="{{i.icons.url}}" alt="Category" style="border-radius: 50px;width:130px;height: 130px;" width="130" height="130">
                             </a>
                             <div class="category-content">
                                 <h4 class="category-name" style="color: #fff;">{{i.name}}</h4>
-                                <a href="/shop/" class="btn btn-primary btn-link btn-underline">Shop
+                                <a href="{{i.get_absolute_main_url}}" class="btn btn-primary btn-link btn-underline">Shop
                                     Now</a>
                             </div>
                         </div>

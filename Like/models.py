@@ -40,7 +40,8 @@ class Main_Category(models.Model):
         return self.name
 
 
-
+    def get_absolute_main_url(self):
+        return reverse('core:main_category', args=[self.id])
 
    
 class Category(models.Model):
@@ -50,6 +51,9 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_Category_absolute_url(self):
+        return reverse('core:list_category_item', args=[self.id])
 
 class Sub_Category(models.Model):
     category = models.ForeignKey(Category,on_delete=models.CASCADE,default=False)
@@ -61,11 +65,12 @@ class Sub_Category(models.Model):
     #     verbose_name = "category"
     #     verbose_name_plural = 'categories'
 
-    def get_absolute_url(self):
-        return reverse('core:category', args=[self.id])
+    def get_absolute_sud_url(self):
+        return reverse('core:list_category', args=[self.id])
 
     def __str__(self):
         return self.name
+
 
 
 LABEL_CHOICES = (
@@ -271,6 +276,12 @@ class Order(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def ship(self):
+        ship_total = 0
+        for order_items in self.items.all():
+            ship_total += order_items.item.shiping_fee
+        return ship_total
 
     def get_total(self):
         total = 0

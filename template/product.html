@@ -113,10 +113,10 @@
 
                                         <div class="product-price">
                                             {%if object.discount_price %}
-                                            <del class="old-price">${{object.price}} </del>
-                                             <ins class="new-price"> ${{object.discount_price}}</ins>
+                                            <del class="old-price">£{{object.price}} </del>
+                                             <ins class="new-price"> £{{object.discount_price}}</ins>
                                             {% else %}
-                                            <ins class="new-price"> ${{object.price}}</ins>
+                                            <ins class="new-price"> £{{object.price}}</ins>
                                             {% endif %}
                                           </div>
 
@@ -990,7 +990,7 @@
                                                     <a href="product-default.html" class="rating-reviews">(3 reviews)</a>
                                                 </div>
                                                 <div class="product-pa-wrapper">
-                                                    <div class="product-price">$20.00</div>
+                                                    <div class="product-price">£20.00</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1027,8 +1027,8 @@
                                                 </div>
                                                 <div class="product-pa-wrapper">
                                                     <div class="product-price">
-                                                        <ins class="new-price">$480.00</ins><del
-                                                            class="old-price">$534.00</del>
+                                                        <ins class="new-price">£480.00</ins><del
+                                                            class="old-price">£534.00</del>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1064,8 +1064,8 @@
                                                 </div>
                                                 <div class="product-pa-wrapper">
                                                     <div class="product-price">
-                                                        <ins class="new-price">$278.00</ins><del
-                                                            class="old-price">$310.00</del>
+                                                        <ins class="new-price">£278.00</ins><del
+                                                            class="old-price">£310.00</del>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1104,7 +1104,7 @@
                                                     <a href="product-default.html" class="rating-reviews">(5 reviews)</a>
                                                 </div>
                                                 <div class="product-pa-wrapper">
-                                                    <div class="product-price">$40.00</div>
+                                                    <div class="product-price">£40.00</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1162,7 +1162,7 @@
                                                     <a href="product-default.html" class="rating-reviews">(3 reviews)</a>
                                                 </div>
                                                 <div class="product-pa-wrapper">
-                                                    <div class="product-price">$632.00</div>
+                                                    <div class="product-price">£632.00</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1197,8 +1197,8 @@
                                                 </div>
                                                 <div class="product-pa-wrapper">
                                                     <div class="product-price">
-                                                        <ins class="new-price">$263.00</ins><del
-                                                            class="old-price">$300.00</del>
+                                                        <ins class="new-price">£263.00</ins><del
+                                                            class="old-price">£300.00</del>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1235,7 +1235,7 @@
                                                     <a href="product-default.html" class="rating-reviews">(8 reviews)</a>
                                                 </div>
                                                 <div class="product-pa-wrapper">
-                                                    <div class="product-price">$23.00</div>
+                                                    <div class="product-price">£23.00</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1269,7 +1269,7 @@
                                                     <a href="product-default.html" class="rating-reviews">(9 reviews)</a>
                                                 </div>
                                                 <div class="product-pa-wrapper">
-                                                    <div class="product-price">$50.00</div>
+                                                    <div class="product-price">£50.00</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1278,20 +1278,20 @@
                             </section> -->
                         </div>
                         <!-- End of Main Content -->
-                        <aside class="sidebar product-sidebar sidebar-fixed right-sidebar sticky-sidebar-wrapper">
+                        <!-- <aside class="sidebar product-sidebar sidebar-fixed right-sidebar sticky-sidebar-wrapper">
                             <div class="sidebar-overlay"></div>
                             <a class="sidebar-close" href="#"><i class="close-icon"></i></a>
                             <a href="#" class="sidebar-toggle d-flex d-lg-none"><i class="fas fa-chevron-left"></i></a>
                             <div class="sidebar-content scrollable">
                                 <div class="sticky-sidebar">
-                                    <!-- <div class="widget widget-icon-box mb-6">
+                                     <div class="widget widget-icon-box mb-6">
                                         <div class="icon-box icon-box-side">
                                             <span class="icon-box-icon text-dark">
                                                 <i class="w-icon-truck"></i>
                                             </span>
                                             <div class="icon-box-content">
                                                 <h4 class="icon-box-title">Free Shipping & Returns</h4>
-                                                <p>For all orders over $99</p>
+                                                <p>For all orders over £99</p>
                                             </div>
                                         </div>
                                         <div class="icon-box icon-box-side">
@@ -1312,10 +1312,10 @@
                                                 <p>Any back within 30 days</p>
                                             </div>
                                         </div>
-                                    </div> -->
-                                    <!-- End of Widget Icon Box -->
+                                    </div> 
+                                   /* End of Widget Icon Box  */
 
-                                    <!-- <div class="widget widget-banner mb-9">
+                                     <div class="widget widget-banner mb-9">
                                         <div class="banner banner-fixed br-sm">
                                             <figure>
                                                 <img src="{% static 'assets/images/shop/banner3.jpg' %}" alt="Banner" width="266"
@@ -1331,8 +1331,8 @@
                                                     Ultimate Sale</h4>
                                             </div>
                                         </div>
-                                    </div> -->
-                                    <!-- End of Widget Banner -->
+                                    </div> 
+                                    /* End of Widget Banner */ 
 
                                     <div class="widget widget-products">
                                         <div class="title-link-wrapper mb-2">
@@ -1379,7 +1379,7 @@
                                                             </div>
                                                         </div>
                                                         {% endfor %}
-                                                        <!-- <div class="product product-widget">
+                                                         <div class="product product-widget">
                                                             <figure class="product-media">
                                                                 <a href="#">
                                                                     <img src="{% static 'assets/images/shop/14.jpg' %}" alt="Product"
@@ -1396,7 +1396,7 @@
                                                                         <span class="tooltiptext tooltip-top"></span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="product-price">$58.00</div>
+                                                                <div class="product-price">£58.00</div>
                                                             </div>
                                                         </div>
                                                         <div class="product product-widget">
@@ -1416,9 +1416,9 @@
                                                                         <span class="tooltiptext tooltip-top"></span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="product-price">$374.00</div>
+                                                                <div class="product-price">£374.00</div>
                                                             </div>
-                                                        </div> -->
+                                                        </div> 
                                                     </div>
 
                                                     <div class="widget-col swiper-slide">
@@ -1460,7 +1460,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </aside>
+                        </aside> -->
                         <!-- End of Sidebar -->
                     </div>
                 </div>

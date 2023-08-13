@@ -175,7 +175,7 @@
                                     <ul class="menu vertical-menu category-menu">
                                         {% for main_cat in category %}
                                         <li>
-                                            <a href="shop-fullwidth-banner.html">
+                                            <a href="{{main_cat.get_absolute_main_url}}">
                                                 <!-- <i class="w-icon-tshirt2"></i> -->
                                                 {{main_cat.name}}
                                             </a>
@@ -187,7 +187,7 @@
                                                     <hr class="divider">
                                                     <ul>
                                                         {% for sub_cat in cat.sub_category_set.all %}
-                                                        <li><a href="#">{{sub_cat.name}}</a>
+                                                        <li><a href="{{sub_cat.get_absolute_sud_url}}">{{sub_cat.name}}</a>
                                                         </li>
                                                         {% endfor %}
                                                     </ul>

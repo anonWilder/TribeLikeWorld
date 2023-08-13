@@ -86,6 +86,12 @@
 		<script src="{% static 'dashboard/vendor/apex/ecommerce-dashboard/sales.js' %}"></script>
 		<script src="{% static 'dashboard/vendor/apex/ecommerce-dashboard/sales2.js' %}"></script>
 
+		
+		<!-- Notify js -->
+		<script src="{% static 'dashboard/js/jquery.easing.1.3.js' %}"></script>
+		<script src="{% static 'dashboard/vendor/notify/notify.js' %}"></script>
+		<script src="{% static 'dashboard/vendor/notify/notify-custom.js' %}"></script>
+
 		<!-- Main JS -->
 		<script src="{% static 'dashboard/js/main.js' %}"></script>
 
@@ -93,6 +99,16 @@
 		<script src="{% static 'dashboard/vendor/apex/sales/column-visitors.js' %}"></script>
 
 		<script>
+			
+			{% if messages %}
+			{% for message in messages %}
+				notes.show("{{ message }}", {
+					type: '{{ message.tags }}',
+					title: '{{user.username}}',
+					icon: '<i class="icon-sentiment_satisfied"></i>'
+			});
+			{% endfor %}
+			{% endif %}
 			var options = {
 				chart: {
 					height: 240,
