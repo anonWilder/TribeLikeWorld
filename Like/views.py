@@ -28,6 +28,10 @@ from django.core import serializers
 import json
 import stripe
 from django.core.exceptions import MultipleObjectsReturned
+
+#html mail required imports
+from .models import Main_Category, BOUTIQUE_REQUEST
+#end for html mail
 import subprocess
 import time
 # import Paystack
@@ -1210,65 +1214,110 @@ def all_soled_iteam(request):
 	return render(request,"dashboard/all-soled.html",{"Boutique_":Boutique_})
 
 
+# @login_required
+# def sell_form(request):
+# 	category = Main_Category.objects.all().order_by('-id')
+# 	# if request.user.is_authenticated:
+# 	# 	order = Order.objects.get(user=request.user, ordered=False)
+# 	# else:
+# 	try:
+# 		order = 0
+# 		if request.method == "POST":
+# 			user_email =  request.user.email
+# 			pod = BOUTIQUE_REQUEST()
+# 			pod.user=request.user
+# 			pod.Boutique_name = request.POST.get("Boutique_name")
+# 			pod.items_to_sell = request.POST.get("items_to_sell")
+# 			pod.number =  request.POST.get("number")
+# 			pod.where_else_you_sell = request.POST.get("where_else_you_sell")
+# 			pod.social_media =  request.POST.get("social_media")
+# 			pod.country =  request.POST.get("country")
+# 			pod.about_your_business = request.POST.get("about_your_business")
+# 			pod.hear_about_us = request.POST.get("hear_about_us")
+# 			if len(request.FILES) != 0:
+# 				pod.brand_logo = request.FILES["brand_logo"]
+# 				pod.brand_banner = request.FILES["brand_banner"]
+# 				pod.products_image1 = request.FILES["products_image1"]
+# 				pod.products_image2 = request.FILES["products_image2"]
+# 				pod.products_image3 = request.FILES["products_image3"]
+# 				pod.products_image4 = request.FILES["products_image4"]
+# 			pod.save()
+			
+# 			# subject = 'From Tribe Like'
+# 			# from_email = settings.EMAIL_HOST_USER
+# 			# recipient_list = [user_email,'tribelikeventures@gmail.com']
+# 			# template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html',{"title":"text file","email": user_email})
+# 			# cont = strip_tags(template)
+# 			# email = EmailMultiAlternatives(subject,cont, from_email, recipient_list)
+# 			# email.attach_alternative(template, "text/html")
+				
+# 			# image_path = 'http://127.0.0.1:8000/static/images/t.png'
+# 			# with open(image_path, 'rb') as f:
+# 			# 	image_data = f.read()
+# 			# 	email.attach("http://127.0.0.1:8000/static/images/tribe_like_fun_2.png", image_data, "image/jpg")
+
+# 			# # Set the Content-ID header for the embedded image
+# 			# email.mixed_subtype = 'related'
+# 			# email.attach_related(image_data, 'image/jpg', 'unique_cid')
+# 			# email.send()
+# 			template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html',{"title":"text file","email": user_email})
+# 			send_mail('From Tribe Like',
+# 			template,
+# 			settings.EMAIL_HOST_USER,
+# 			[user_email,'tribelikeventures@gmail.com'],
+# 			)
+# 			messages.success(request, f'Request has been sent Successfully !')
+# 			return redirect('/successfully')
+# 		else:
+# 			return render(request,"sell_form.html",{'order':order,'category':category})
+# 	except Exception as e:
+# 		# send an email to ourselves
+# 		messages.warning(request, str(e))
+
 @login_required
 def sell_form(request):
-	category = Main_Category.objects.all().order_by('-id')
-	# if request.user.is_authenticated:
-	# 	order = Order.objects.get(user=request.user, ordered=False)
-	# else:
-	try:
-		order = 0
-		if request.method == "POST":
-			user_email =  request.user.email
-			pod = BOUTIQUE_REQUEST()
-			pod.user=request.user
-			pod.Boutique_name = request.POST.get("Boutique_name")
-			pod.items_to_sell = request.POST.get("items_to_sell")
-			pod.number =  request.POST.get("number")
-			pod.where_else_you_sell = request.POST.get("where_else_you_sell")
-			pod.social_media =  request.POST.get("social_media")
-			pod.country =  request.POST.get("country")
-			pod.about_your_business = request.POST.get("about_your_business")
-			pod.hear_about_us = request.POST.get("hear_about_us")
-			if len(request.FILES) != 0:
-				pod.brand_logo = request.FILES["brand_logo"]
-				pod.brand_banner = request.FILES["brand_banner"]
-				pod.products_image1 = request.FILES["products_image1"]
-				pod.products_image2 = request.FILES["products_image2"]
-				pod.products_image3 = request.FILES["products_image3"]
-				pod.products_image4 = request.FILES["products_image4"]
-			pod.save()
-			
-			# subject = 'From Tribe Like'
-			# from_email = settings.EMAIL_HOST_USER
-			# recipient_list = [user_email,'tribelikeventures@gmail.com']
-			# template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html',{"title":"text file","email": user_email})
-			# cont = strip_tags(template)
-			# email = EmailMultiAlternatives(subject,cont, from_email, recipient_list)
-			# email.attach_alternative(template, "text/html")
-				
-			# image_path = 'http://127.0.0.1:8000/static/images/t.png'
-			# with open(image_path, 'rb') as f:
-			# 	image_data = f.read()
-			# 	email.attach("http://127.0.0.1:8000/static/images/tribe_like_fun_2.png", image_data, "image/jpg")
+    category = Main_Category.objects.all().order_by('-id')
+    
+    try:
+        order = 0
+        if request.method == "POST":
+            user_email =  request.user.email
+            pod = BOUTIQUE_REQUEST()
+            pod.user = request.user
+            pod.Boutique_name = request.POST.get("Boutique_name")
+            pod.items_to_sell = request.POST.get("items_to_sell")
+            pod.number =  request.POST.get("number")
+            pod.where_else_you_sell = request.POST.get("where_else_you_sell")
+            pod.social_media =  request.POST.get("social_media")
+            pod.country =  request.POST.get("country")
+            pod.about_your_business = request.POST.get("about_your_business")
+            pod.hear_about_us = request.POST.get("hear_about_us")
+            
+            if len(request.FILES) != 0:
+                pod.brand_logo = request.FILES["brand_logo"]
+                pod.brand_banner = request.FILES["brand_banner"]
+                pod.products_image1 = request.FILES["products_image1"]
+                pod.products_image2 = request.FILES["products_image2"]
+                pod.products_image3 = request.FILES["products_image3"]
+                pod.products_image4 = request.FILES["products_image4"]
+            
+            pod.save()
+            
+            template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html', {"title": "text file", "email": user_email})
+            html_content = template
+            text_content = strip_tags(template)
+            
+            email = EmailMultiAlternatives('From Tribe Like', text_content, settings.EMAIL_HOST_USER, [user_email, 'tribelikeventures@gmail.com'])
+            email.attach_alternative(html_content, "text/html")
+            email.send()
+            
+            messages.success(request, f'Request has been sent Successfully !')
+            return redirect('/successfully')
+        else:
+            return render(request, "sell_form.html", {'order': order, 'category': category})
+    except Exception as e:
+        messages.warning(request, str(e))
 
-			# # Set the Content-ID header for the embedded image
-			# email.mixed_subtype = 'related'
-			# email.attach_related(image_data, 'image/jpg', 'unique_cid')
-			# email.send()
-			template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html',{"title":"text file","email": user_email})
-			send_mail('From Tribe Like',
-			template,
-			settings.EMAIL_HOST_USER,
-			[user_email,'tribelikeventures@gmail.com'],
-			)
-			messages.success(request, f'Request has been sent Successfully !')
-			return redirect('/successfully')
-		else:
-			return render(request,"sell_form.html",{'order':order,'category':category})
-	except Exception as e:
-		# send an email to ourselves
-		messages.warning(request, str(e))
 
 def successfully(request):
 	return render(request,"successful.html")
