@@ -372,7 +372,7 @@
                             </ul> -->
                         </li>
                         <li>
-                            <a href="about-us.html">About</a>
+                            <a href="/about-us/">About</a>
                             <!-- <ul>
 
                                 <li><a href="about-us.html">About Us</a></li>
@@ -423,24 +423,24 @@
                     <ul class="mobile-menu">
                         {% for main_cat in category %}
                         <li>
-                            <a href="#">
+                            <a href="{{main_cat.get_absolute_main_url}}">
                                 {{main_cat.name}}
                             </a>
-                            <!-- <ul class="#">
+                            <ul class="megamenu">
 
                                 {% for cat in main_cat.category_set.all %}
                                 <li>
-                                    <h4 class="#">{{cat.name}}</h4>
+                                    <h4 class="menu-title">{{cat.name}}</h4>
                                     <hr class="divider">
                                     <ul>
                                         {% for sub_cat in cat.sub_category_set.all %}
-                                        <li><a href="#">{{sub_cat.name}}</a>
+                                        <li><a href="{{sub_cat.get_absolute_sud_url}}">{{sub_cat.name}}</a>
                                         </li>
                                         {% endfor %}
                                     </ul>
                                 </li>
                                 {% endfor %}
-                            </ul> -->
+                            </ul>
                         </li>
                         {% endfor %}
                     </ul>
