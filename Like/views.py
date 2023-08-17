@@ -1304,11 +1304,26 @@ def sell_form(request):
             pod.save()
             
             template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html', {"title": "text file", "email": user_email})
-            html_content = template
-            text_content = strip_tags(template)
             
-            email = EmailMultiAlternatives('From Tribe Like', text_content, settings.EMAIL_HOST_USER, [user_email, 'tribelikeventures@gmail.com'])
-            email.attach_alternative(html_content, "text/html")
+            # Attach images to the email
+            email = EmailMultiAlternatives('From Tribe Like', strip_tags(template), settings.EMAIL_HOST_USER, [user_email, 'tribelikeventures@gmail.com'])
+            email.attach_alternative(template, "text/html")
+            
+            # Attach images
+            image_paths = [
+                pod.brand_logo.path,
+                pod.brand_banner.path,
+                pod.products_image1.path,
+                pod.products_image2.path,
+                pod.products_image3.path,
+                pod.products_image4.path,
+            ]
+            for image_path in image_paths:
+                with open(image_path, 'rb') as f:
+                    image_data = f.read()
+                    image_filename = os.path.basename(image_path)
+                    email.attach(image_filename, image_data, 'image/jpg')
+            
             email.send()
             
             messages.success(request, f'Request has been sent Successfully !')
@@ -1317,6 +1332,7 @@ def sell_form(request):
             return render(request, "sell_form.html", {'order': order, 'category': category})
     except Exception as e:
         messages.warning(request, str(e))
+
 
 
 def successfully(request):
