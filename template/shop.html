@@ -1,5 +1,7 @@
 {% load static %}
 {% include 'head-search.html' %}
+{% load currency_filters %}
+{% load currency_tags %}
 
 
 <!-- Start of Main -->
@@ -88,25 +90,25 @@
                                 </figure>
                                 <div class="product-details">
                                     <div class="product-cat">
-                                        <a href="shop-banner-sidebar.html">{{sh.category}}</a>
+                                        <a href="{{sh.get_absolute_url}}">{{sh.category}}</a>
                                     </div>
                                     <h3 class="product-name">
                                         <a href="{{sh.get_absolute_url}}">{{sh.title}}</a>
                                     </h3>
-                                    <div class="ratings-container">
+                               <!--      <div class="ratings-container">
                                         <div class="ratings-full">
                                             <span class="ratings" style="width: 100%;"></span>
                                             <span class="tooltiptext tooltip-top"></span>
                                         </div>
                                         <a href="product-default.html" class="rating-reviews">(3 reviews)</a>
-                                    </div>
+                                    </div> -->
                                     <div class="product-pa-wrapper">
                                         <div class="product-price">
                                             {%if sh.discount_price %}
-                                            <span class="old old-price"><del>£{{sh.price}}</del></span>
-                                            <span class="new new-price">£{{sh.discount_price}}</span>
+                                            <span class="old old-price"><del>£ {{sh.price|floatformat:2}}</del></span>
+                                            <span class="new new-price">£ {{sh.discount_price|floatformat:2}}</span>
                                             {% else %}
-                                            <span class="new new-price">£{{sh.price}}</span>
+                                            <span class="new new-price">£ {{sh.price|floatformat:2}}</span>
                                             {% endif %}
                                         </div>
                                     </div>

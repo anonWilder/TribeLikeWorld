@@ -9,6 +9,7 @@ from .models import ContactMessageEntry
 PAYMENT_CHOICES = (
     # ('p', 'Paystack'),
     # ('S', 'Stripe'),
+    ('F', 'FlutterWave'),
     ('P', 'PayPal / Debit card'),
 )
 

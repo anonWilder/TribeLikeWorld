@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'paypal.standard.ipn',
     'channels',
     'chat',
+    'djangoflutterwave', 
+    'ipware',
 ]
 
 MIDDLEWARE = [
@@ -317,3 +319,12 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 JAZZMIN_SETTINGS["show_ui_builder"] = False
+
+
+#flutterwave keys
+
+# FLW_PRODUCTION_PUBLIC_KEY = 'your_public_key'
+# FLW_PRODUCTION_SECRET_KEY = 'your_secret_key'
+# FLW_SANDBOX_PUBLIC_KEY = 'FLWPUBK_TEST-fb39ed2cf09ab7ccb54e6631f4f05849-X' 
+# FLW_SANDBOX_SECRET_KEY = 'FLWSECK_TEST-3ab020d38f2c71a608ddbc74bdd6bd8f-X'
+# FLW_SANDBOX = True # Set to False when going live

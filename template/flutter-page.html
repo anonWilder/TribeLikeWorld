@@ -1,0 +1,412 @@
+
+{% load static %} 
+{% include 'head-search.html' %}
+<style>
+    
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,900,700,500,300,100);
+*{
+  margin: 0;
+  box-sizing: border-box;
+
+}
+body{
+  background: #E0E0E0;
+  font-family: 'Roboto', sans-serif;
+  background-image: url('');
+  background-repeat: repeat-y;
+  background-size: 100%;
+}
+::selection {background: #f31544; color: #FFF;}
+::moz-selection {background: #f31544; color: #FFF;}
+h1{
+  font-size: 1.5em;
+  color: #222;
+}
+h2{font-size: .9em;}
+h3{
+  font-size: 1.2em;
+  font-weight: 300;
+  line-height: 2em;
+}
+p{
+  font-size: .7em;
+  color: #666;
+  line-height: 1.2em;
+}
+
+#invoiceholder{
+  width:100%;
+  hieght: 100%;
+  padding-top: 50px;
+}
+#headerimage{
+  z-index:-1;
+  position:relative;
+  top: -50px;
+  height: 350px;
+  background-image: url('http://michaeltruong.ca/images/invoicebg.jpg');
+
+  -webkit-box-shadow:inset 0 2px 4px rgba(0,0,0,.15), inset 0 -2px 4px rgba(0,0,0,.15);
+	-moz-box-shadow:inset 0 2px 4px rgba(0,0,0,.15), inset 0 -2px 4px rgba(0,0,0,.15);
+	box-shadow:inset 0 2px 4px rgba(0,0,0,.15), inset 0 -2px 4px rgba(0,0,0,.15);
+  overflow:hidden;
+  background-attachment: fixed;
+  background-size: 1920px 80%;
+  background-position: 50% -90%;
+}
+#invoice{
+  position: relative;
+  top: -290px;
+  margin: 0 auto;
+  width: 700px;
+  background: #FFF;
+}
+
+[id*='invoice-']{ /* Targets all id with 'col-' */
+  border-bottom: 1px solid #EEE;
+  padding: 30px;
+}
+
+#invoice-top{min-height: 120px;}
+#invoice-mid{min-height: 120px;}
+#invoice-bot{ min-height: 250px;}
+
+.logo{
+  float: left;
+	height: 60px;
+	width: 60px;
+	background: url(http://michaeltruong.ca/images/logo1.png) no-repeat;
+	background-size: 60px 60px;
+}
+.clientlogo{
+  float: left;
+	height: 60px;
+	width: 60px;
+	background: url(http://michaeltruong.ca/images/client.jpg) no-repeat;
+	background-size: 60px 60px;
+  border-radius: 50px;
+}
+.info{
+  display: block;
+  float:left;
+  margin-left: 20px;
+}
+.title{
+  float: right;
+}
+.title p{text-align: right;}
+#project{margin-left: 52%;}
+table{
+  width: 100%;
+  border-collapse: collapse;
+}
+td{
+  padding: 5px 0 5px 15px;
+  border: 1px solid #EEE
+}
+.tabletitle{
+  padding: 5px;
+  background: #EEE;
+}
+.service{border: 1px solid #EEE;}
+.item{width: 50%;}
+.itemtext{font-size: .9em;}
+
+#legalcopy{
+  margin-top: 30px;
+}
+form{
+  float:right;
+  margin-top: 30px;
+  text-align: right;
+}
+
+
+.effect2
+{
+  position: relative;
+}
+.effect2:before, .effect2:after
+{
+  z-index: -1;
+  position: absolute;
+  content: "";
+  bottom: 15px;
+  left: 10px;
+  width: 50%;
+  top: 80%;
+  max-width:300px;
+  background: #777;
+  -webkit-box-shadow: 0 15px 10px #777;
+  -moz-box-shadow: 0 15px 10px #777;
+  box-shadow: 0 15px 10px #777;
+  -webkit-transform: rotate(-3deg);
+  -moz-transform: rotate(-3deg);
+  -o-transform: rotate(-3deg);
+  -ms-transform: rotate(-3deg);
+  transform: rotate(-3deg);
+}
+.effect2:after
+{
+  -webkit-transform: rotate(3deg);
+  -moz-transform: rotate(3deg);
+  -o-transform: rotate(3deg);
+  -ms-transform: rotate(3deg);
+  transform: rotate(3deg);
+  right: 10px;
+  left: auto;
+}
+
+
+
+.legal{
+  width:70%;
+}
+</style>
+    <!-- Add meta tags for mobile and IE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <div id="invoiceholder">
+
+        <div id="headerimage"></div>
+        <div id="invoice" class="effect2">
+          
+          <div id="invoice-top">
+            <!-- <div class="logo"></div>
+            <div class="info">
+              <h2>Michael Truong</h2>
+              <p> hello@michaeltruong.ca </br>
+                  289-335-6503
+              </p>
+            </div> -->
+            <!--End Info-->
+            <div class="title">
+              <h1>Invoice #1069</h1>
+              <p>Issued: May 27, 2015</br>
+                 Payment Due: June 27, 2015
+              </p>
+            </div><!--End Title-->
+          </div><!--End InvoiceTop-->
+      
+      
+          
+          <div id="invoice-mid">
+            
+            <div class="clientlogo"></div>
+            <div class="info">
+              <h2>{{user.first_name}} {{user.last_name}}</h2>
+              <p>{{user.email}}</br>
+                 {{user.number}}</br>
+            </div>
+      
+            <!-- <div id="project">
+              <h2>Project Description</h2>
+              <p>Proin cursus, dui non tincidunt elementum, tortor ex feugiat enim, at elementum enim quam vel purus. Curabitur semper malesuada urna ut suscipit.</p>
+            </div>   
+       -->
+          </div><!--End Invoice Mid-->
+          
+          <div id="invoice-bot">
+            
+            <div id="table">
+              <table>
+                <tr class="tabletitle">
+                  <td class="item"><h2>Item Description</h2></td>
+                  <td class="Hours"><h2>Quantity</h2></td>
+                  <td class="Rate"><h2>Price</h2></td>
+                  <td class="subtotal"><h2>Sub-total</h2></td>
+                </tr>
+                
+
+                {% for order_item in object.items.all %}
+                <tr class="service">
+                  <td class="tableitem"><p class="itemtext">{{ order_item.item.title}}</p></td>
+                  <td class="tableitem"><p class="itemtext">{{ order_item.quantity }}</p></td>
+                  <td class="tableitem"><p class="itemtext">{{ order_item.price }}</p></td>
+                  <td class="tableitem"><p class="itemtext">£{{ order_item.get_final_price }}</p></td>
+                </tr>
+                
+                {% endfor %}
+
+                
+                {% if order.coupon %}
+                <tr class="service">
+                  <td class="tableitem"><p class="itemtext">Promo code</p></td>
+                  <td class="tableitem"><p class="itemtext" style="color: green;">{{ order.coupon.code }}</p></td>
+                  <td class="tableitem"><p class="itemtext"></p></td>
+                  <td class="tableitem"><p class="itemtext">-£{{ order.coupon.amount }}</p></td>
+                </tr>
+                {% endif %}
+                
+                  
+                <tr class="tabletitle">
+                  <td></td>
+                  <td></td>
+                  <td class="Rate"><h2><br>Shipping Fee <br><br>Total</h2></td>
+                  <td class="payment"><h2><br>£{{ order.ship }}<br><br>₦‎{{ order.convated }}</h2></td>
+                </tr>
+                
+              </table>
+            </div><!--End Table-->
+            
+            {% csrf_token %}
+            <!-- <div id="paypal-button-container"></div> -->
+            <button type="button" onclick="makePayment()" class="btn btn-primary btn-lg btn-block">
+                Pay with Fluttrwave
+              </button>
+          <form action="/"  target="_top">
+            {% csrf_token %}
+            
+         <button type="image" src="http://michaeltruong.ca/images/paypal.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">Cancel pay</button>
+          </form>
+      
+            
+            <div id="legalcopy">
+              <p class="legal"><strong>Thank you for your business!</strong>  Payment is expected within 31 days; please process this invoice within that time. There will be a 5% interest charge per month on late invoices. 
+              </p>
+            </div>
+            
+          </div><!--End InvoiceBot-->
+        </div><!--End Invoice-->
+      </div><!-- End Invoice Holder-->
+    <!-- Set up a container element for the button -->
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <!-- Include the PayPal JavaScript SDK -->
+   <script src="https://www.paypal.com/sdk/js?client-id=AZSBgC3s4fNzhnYmsnonGXN2qZOsyZvxtsO5vlNWfZ8qq4iwo2iBFBJUINDMaQqTM5cE300owJYXDvHb&currency=GBP&disable-funding=credit"></script> 
+    
+   <!-- test key -->
+  <!-- <script src="https://www.paypal.com/sdk/js?client-id=AaM7MAKgPXa5x2II93LPtW4GSFem4bXpfl8-rPhNxJ3JO9QkDTi6RxNH87kSbIXDct3sEQpCS-yLufXc&currency=GBP&disable-funding=credit"></script>--> 
+     
+    <!-- live key details -->
+    <!-- <script src="https://www.paypal.com/sdk/js?client-id=AZSBgC3s4fNzhnYmsnonGXN2qZOsyZvxtsO5vlNWfZ8qq4iwo2iBFBJUINDMaQqTM5cE300owJYXDvHb&currency=GBP&disable-funding=credit"></script>-->
+     
+     <!-- <script src="https://www.paypal.com/sdk/js?client-id=AQbsM9V1bbvLgBW1OekCYki6xOOI_iRZ9oL8se98GLKpAljCLGg4gPvq3meFxuX7N3Ijgj5P16jFgq14&currency=USD&disable-funding=credit"></script> -->
+   <!--  <script>
+        var total = {{amount}}
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+            style:{
+              layout: 'vertical',
+              color:  'blue',
+              shape:  'rect',
+              label:  'checkout',
+              shape:'rect',
+            },
+            // Call your server to set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units:[{
+                        amount:{
+                            value: parseFloat(total).toFixed(2)
+                        }
+                    }]
+                });
+            },
+
+            // Call your server to finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(){
+                  setTimeout(function () {
+                      // e.preventDefault();
+                      $.ajax({
+                          type:"POST",
+                          url:"/paypal_invoice",
+                          data: {
+                              orderid: data.orderID,
+                              csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                          },
+                          success: function (respons){
+                            if (respons == "Your order was successful!"){
+                                alert(respons)
+                            } else {
+                                alert(respons);
+                            };
+                          },
+                      })
+                  }, 2000)
+                  
+                  // console.log("this the file",data)
+                  // console.log("this the action",actions)
+                  // alert("completed",actions)
+                  alert('Transaction completed by'+ details.payer.none.given_name + '!');
+                });
+            }
+
+        }).render('#paypal-button-container');
+    </script> -->
+       <script>
+        $('#kwebtocoin').on('click', function () {
+        setTimeout(function () {
+            // e.preventDefault();
+            $.ajax({
+                type:"POST",
+                url:"/kwebify/wallettransfer",
+                data: {
+                    amount: $('#fixedprice').val(),
+                    user: $('#user').val(),
+                    email: $('#emails').val(),
+                    accounts: $('#accounts').val(),
+                    debitaccounts: $('#total').val(),
+                    type: $('#type').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success: function (respons){
+                    if (respons == "Success ! your transaction was succesfull"){
+                        alert(respons)
+                    } else {
+                        alert(respons);
+                    };
+                },
+            })
+        }, 2000)
+    })
+    </script>
+        <script>
+        'use strict'
+        $(window).on('load', function () {
+
+            /* ck editor */
+            ClassicEditor
+                .create(document.querySelector('#ckeditor'))
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    </script>
+
+
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<script>
+
+  var dynamicAmount = "{{ order.convated }}"
+  var brand_name = "{{object.Boutique_name}}"
+  var brand_logo = "{{ object.Boutique_name.brand_logo.url }}"
+  
+  function makePayment() {
+    FlutterwaveCheckout({
+      public_key: "FLWPUBK-c070f0c451c63f772c0d4ded4c15e57e-X",
+      tx_ref: "titanic-48981487343MDI0NzMx",
+      amount: dynamicAmount,
+      currency: "NGN",
+      payment_options: "card, ussd",
+      redirect_url: "http://tribelikeworld.com/order_invoice/",
+      meta: {
+        consumer_id: 23,
+        consumer_mac: "92a3-912ba-1192a",
+      },
+      customer: {
+        email: "rose@unsinkableship.com",
+        phone_number: "08102909304",
+        name: "Rose DeWitt Bukater",
+      },
+      customizations: {
+        title: brand_name,
+        description: "Payment for an awesome cruise",
+        logo: brand_logo,
+      },
+    });
+  }
+</script>
+{% include "footer.html" %}

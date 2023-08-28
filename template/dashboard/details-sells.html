@@ -58,6 +58,7 @@
                                         <th>Boutique status</th>
                                         <th>Price</th>
                                         <th>Date/Time Created</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -76,6 +77,7 @@
 
                                         <td>{{Boutique_.price}}</td>
                                         <td>{{Boutique_.timestamp}}</td>
+                                        <td><a href="{% url 'core:update_details' Boutique_.id %}"><span class="badge badge-danger">EDIT</span></a></td>
                                     </tr>
                                     {% endfor %}
                                    

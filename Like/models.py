@@ -120,6 +120,7 @@ class Item(models.Model):
     about_your_business = models.TextField(blank=True, null=True)
     brand_logo = models.ImageField(blank=True, null=True)
     brand_banner = models.ImageField(blank=True, null=True)
+    address = models.CharField(max_length=500, default='Default Business address')
 
 
 
@@ -178,6 +179,7 @@ class Item(models.Model):
 class BOUTIQUE_REQUEST(models.Model):
     user =  models.ForeignKey(User,on_delete=models.CASCADE,default=False)
     Boutique_name = models.CharField(max_length=140)
+    address = models.CharField(max_length=500, default='Default Business address')
     items_to_sell = models.CharField(max_length=200)
     number =  models.CharField(max_length=140)
     where_else_you_sell = models.CharField(max_length=900)

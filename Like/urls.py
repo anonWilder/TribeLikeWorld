@@ -63,13 +63,18 @@ urlpatterns = [
     path('statics/', views.Statics, name="statics"),
     path('list-item/', views.ListItem, name="ListItem"),
     path('paypal_payments/<payment_option>/', views.PaypalPayment, name="paypal_payment"),
+    path('flutter_payments/<payment_option>/', views.FlutterPayment, name="flutter_payment"),
     path('paypal_invoice', views.InvoicePayment, name="paypal_invoice"),
     path('sells-details/', views.Dashboard_sells_details, name='sells_details'),
+     path('update-details/<int:id>/', views.Dashboard_update_details, name='update_details'),
     path('all-soled-item/', views.all_soled_iteam, name='all_soled_iteam'),
     path('how-to-sell/', views.how_to_sell, name='how_to_sell'),
     path('buys/<int:pk>', views.Dashboard_buys, name='buys'),
     path('terms/', views.terms, name='terms'),
     path('payout_list/', views.paypal_payout, name='payout'),
     path('content/', views.Content, name='content'),
+    #
+    path('order_invoice/', views.order_invoice, name='order_invoice')
+    #path('confirm_payment/<str:pk>', views.confirm_payment, name=)
     
 ]

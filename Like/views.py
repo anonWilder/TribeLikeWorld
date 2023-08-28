@@ -22,6 +22,7 @@ from django.core.mail import EmailMessage,EmailMultiAlternatives,send_mail
 from paypal.standard.forms import PayPalPaymentsForm
 import uuid
 import random
+from datetime import datetime
 import string
 import requests
 from django.core import serializers
@@ -96,16 +97,39 @@ def is_valid_form(values):
 	return valid
 
 
+
+def order_invoice(request):
+    order = Order.objects.get(user=request.user, ordered=False)
+    form = CheckoutForm()
+    amount = order.get_total()
+    category = Main_Category.objects.all().order_by('-id')
+    context = {
+        'form': form,
+        'couponform': CouponForm(),
+        'order': order,
+        'DISPLAY_COUPON_FORM': True,
+        'amount': amount,
+        'category': category,
+    }
+    return render(request, 'Tribelikeinvoice.html', context)
+
+
+
+
 class CheckoutView(View):
 	def get(self, *args, **kwargs):
 		try:
 			order = Order.objects.get(user=self.request.user, ordered=False)
 			form = CheckoutForm()
+			amount = order.get_total()
+			category = Main_Category.objects.all().order_by('-id')
 			context = {
 				'form': form,
 				'couponform': CouponForm(),
 				'order': order,
-				'DISPLAY_COUPON_FORM': True
+				'DISPLAY_COUPON_FORM': True,
+				'amount':amount,
+				'category':category,
 			}
 
 			shipping_address_qs = Address.objects.filter(
@@ -253,8 +277,8 @@ class CheckoutView(View):
 
 				payment_option = form.cleaned_data.get('payment_option')
 
-				if payment_option == 'S':
-					return redirect('core:payment', payment_option='Paystack')
+				if payment_option == 'F':
+					return redirect('core:flutter_payment', payment_option='flutter')
 				elif payment_option == 'P':
 					return redirect('core:paypal_payment', payment_option='paypal')
 				else:
@@ -411,6 +435,69 @@ class PaymentView(View):
 		messages.warning(self.request, "Invalid data received")
 		return redirect("/payment/stripe/")
 
+
+
+
+@login_required
+def FlutterPayment(request,payment_option,):
+	category = Main_Category.objects.all().order_by('-id')
+	if request.user.is_authenticated:
+		order = Order.objects.get(user=request.user, ordered=False)
+	else:
+		order = False
+	amount = order.get_total()
+
+	random_value = random.randint(1, 10)
+	current_date = datetime.now()
+
+	result = "tb-" + str(random_value) + current_date.strftime("%Y%m%d%H%M%S")
+
+	
+	from_currency = 'GBP'
+	to_currency = 'NGN'
+	url = "https://openexchangerates.org/api/latest.json?app_id=8d3543acf04f4b29be31f8ed362e8a87&base="+from_currency+"&symbols="+to_currency+"&prettyprint=false&show_alternative=false"
+	headers = {"accept": "application/json"}
+	response = requests.get(url, headers=headers)
+	# print(response.text)
+	response_data = json.loads(response.text)
+	data = response_data['rates']
+	# Extract the exchange rate for NGN
+	converted_price = list(data.values())[0]
+	totals = converted_price * amount
+	convated = float("{:.2f}".format(totals))
+	# 	tax_fee = 3.49
+	# amount = int(order.get_total() + tax_fee)
+	# order = Order.objects.get(user=self.request.user, ordered=False)
+	form = CheckoutForm()
+	context = {
+		'couponform': CouponForm(),
+		'form': form,
+		'order': order,
+		'DISPLAY_COUPON_FORM': False,
+		'amount':amount,
+		'category':category,
+		"convated":convated,
+		"random":result,
+	}
+	# host = request.get_host()
+	
+	# paypal_dic = {
+	# 	'business':settings.PAYPAL_RECEIVER_EMAIL,
+	# 	'amount': amount,
+	# 	'item_name': 'first peince',
+	# 	'invoice':str(uuid.uuid4()),
+	# 	'currency_code':'USD',
+	# 	'notify_url': 'http://{}{}'.format(host, reverse("paypal-ipn")),
+	# 	'return_url': 'http://{}{}'.format(host, reverse("core:payment-completed")),
+	# 	'cancel_return': 'http://{}{}'.format(host, reverse("core:payment-failed")),
+	# }
+	# print("this the ",paypal_dic)
+	# paypal_payment_button = PayPalPaymentsForm(initial=paypal_dic)
+	return render(request,"flutter-page.html",context)
+
+
+
+
 @login_required
 def PaypalPayment(request,payment_option,):
 	category = Main_Category.objects.all().order_by('-id')
@@ -452,7 +539,7 @@ def InvoicePayment(request):
 	# else:
 	order = 0
 	orderid = request.POST.get('orderid')
-	orderid = request.POST['orderid']
+	# orderid = request.POST['orderid']
 	try:
 				# create the payment
 		payment = Payment()
@@ -1281,15 +1368,16 @@ def sell_form(request):
     try:
         order = 0
         if request.method == "POST":
-            user_email =  request.user.email
+            user_email = request.user.email
             pod = BOUTIQUE_REQUEST()
             pod.user = request.user
             pod.Boutique_name = request.POST.get("Boutique_name")
+            pod.address = request.POST.get("address")
             pod.items_to_sell = request.POST.get("items_to_sell")
-            pod.number =  request.POST.get("number")
+            pod.number = request.POST.get("number")
             pod.where_else_you_sell = request.POST.get("where_else_you_sell")
-            pod.social_media =  request.POST.get("social_media")
-            pod.country =  request.POST.get("country")
+            pod.social_media = request.POST.get("social_media")
+            pod.country = request.POST.get("country")
             pod.about_your_business = request.POST.get("about_your_business")
             pod.hear_about_us = request.POST.get("hear_about_us")
             
@@ -1332,6 +1420,66 @@ def sell_form(request):
             return render(request, "sell_form.html", {'order': order, 'category': category})
     except Exception as e:
         messages.warning(request, str(e))
+
+
+# @login_required
+# def sell_form(request):
+#     category = Main_Category.objects.all().order_by('-id')
+    
+#     try:
+#         order = 0
+#         if request.method == "POST":
+#             user_email =  request.user.email
+#             pod = BOUTIQUE_REQUEST()
+#             pod.user = request.user
+#             pod.Boutique_name = request.POST.get("Boutique_name")
+#             pod.items_to_sell = request.POST.get("items_to_sell")
+#             pod.number =  request.POST.get("number")
+#             pod.where_else_you_sell = request.POST.get("where_else_you_sell")
+#             pod.social_media =  request.POST.get("social_media")
+#             pod.country =  request.POST.get("country")
+#             pod.about_your_business = request.POST.get("about_your_business")
+# 	    	pod.hear_about_us = request.POST.get("hear_about_us")
+            
+#             if len(request.FILES) != 0:
+#                 pod.brand_logo = request.FILES["brand_logo"]
+#                 pod.brand_banner = request.FILES["brand_banner"]
+#                 pod.products_image1 = request.FILES["products_image1"]
+#                 pod.products_image2 = request.FILES["products_image2"]
+#                 pod.products_image3 = request.FILES["products_image3"]
+#                 pod.products_image4 = request.FILES["products_image4"]
+            
+#             pod.save()
+            
+#             template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html', {"title": "text file", "email": user_email})
+            
+#             # Attach images to the email
+#             email = EmailMultiAlternatives('From Tribe Like', strip_tags(template), settings.EMAIL_HOST_USER, [user_email, 'tribelikeventures@gmail.com'])
+#             email.attach_alternative(template, "text/html")
+            
+#             # Attach images
+#             image_paths = [
+#                 pod.brand_logo.path,
+#                 pod.brand_banner.path,
+#                 pod.products_image1.path,
+#                 pod.products_image2.path,
+#                 pod.products_image3.path,
+#                 pod.products_image4.path,
+#             ]
+#             for image_path in image_paths:
+#                 with open(image_path, 'rb') as f:
+#                     image_data = f.read()
+#                     image_filename = os.path.basename(image_path)
+#                     email.attach(image_filename, image_data, 'image/jpg')
+            
+#             email.send()
+            
+#             messages.success(request, f'Request has been sent Successfully !')
+#             return redirect('/successfully')
+#         else:
+#             return render(request, "sell_form.html", {'order': order, 'category': category})
+#     except Exception as e:
+#         messages.warning(request, str(e))
 
 
 
@@ -1583,6 +1731,43 @@ def payout(request):
 		# return JsonResponse(result,safe=False)
 
 
+@login_required
+def Dashboard_update_details(request, id):
+	item = get_object_or_404(Item, id=id)
+	vendors_list = BOUTIQUE_REQUEST.objects.filter(user=request.user).order_by('-id')
+	category_list = Category.objects.all().order_by('-id')
+	category = Main_Category.objects.all().order_by('-id')
+	subcategory_list = Sub_Category.objects.all().order_by('-id')
+	try:
+		if request.method == "POST":
+			pod = item
+			pod.user=request.user
+			pod.title = request.POST.get("title")
+			pod.price = request.POST.get("price")
+			pod.discount_price = request.POST.get("discount_price")
+			pod.shiping_fee =  request.POST.get("shiping_fee")
+			boutique_name =  request.POST.get("Boutique_name")
+			pod.Boutique_name = BOUTIQUE_REQUEST.objects.get(Boutique_name=boutique_name)
+			category = request.POST.get("category")
+			pod.category = Category.objects.get(name=category)
+			sub_categorys = request.POST.get("sub_category")
+			try:
+				pod.sub_category = Sub_Category.objects.get(name=sub_categorys)
+			except Sub_Category.MultipleObjectsReturned:
+				pod.sub_category = Sub_Category.objects.filter(name=sub_categorys).first()
+			pod.overview = request.POST.get("overview")
+			pod.description = request.POST.get("description")
+			if len(request.FILES) != 0:
+				pod.image = request.FILES["image"]
+				pod.image2 = request.FILES["image2"]
+			pod.save()
+			messages.success(request, f'Request has been sent Successfully !')
+			return redirect('/sells-details')
+	except Exception as e:
+		# send an email to ourselves
+		messages.warning(request, str(e))
+
+	return render(request,"dashboard/details-update.html",{"item":item,"vendors_list":vendors_list,'category':category,"category_list":category_list,"subcategory_list":subcategory_list})
 
 
 
@@ -1708,3 +1893,39 @@ def User_dashboad(request):
 
 		print(i.items)
 	return render(request, 'user-dashboard/bought-iteam.html',{"buys":soled})
+
+
+# def confirm_payment(request, pk, payment_option):
+# 	category = Main_Category.objects.all().order_by('-id')
+# 	if request.user.is_authenticated:
+# 		order = Order.objects.get(user=request.user, ordered=False)
+# 	else:
+# 		order = False
+# 	amount = order.get_total()
+	
+# 	context = {
+# 		'order': order,
+# 		'DISPLAY_COUPON_FORM': False,
+# 		'amount':amount,
+# 		'category':category,
+# 	}
+# 	return redirect("index")
+
+def confirm_payment(request, pk):
+    category = Main_Category.objects.all().order_by('-id')
+    amount = 0  # Initialize the amount to 0
+
+    if request.user.is_authenticated:
+        order = Order.objects.get(user=request.user, ordered=False)
+        amount = order.get_total()  # Update the amount based on cart contents
+
+    context = {
+        'order': order,
+        'DISPLAY_COUPON_FORM': False,
+        'amount': amount,
+        'category': category,
+    }
+    
+    # Rest of your code...
+
+

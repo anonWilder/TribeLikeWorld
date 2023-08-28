@@ -219,7 +219,7 @@ form{
                 </tr>
                 
 
-                {% for order_item in order.items.all %}
+                {% for order_item in object.items.all %}
                 <tr class="service">
                   <td class="tableitem"><p class="itemtext">{{ order_item.item.title}}</p></td>
                   <td class="tableitem"><p class="itemtext">{{ order_item.quantity }}</p></td>
