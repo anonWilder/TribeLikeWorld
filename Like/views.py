@@ -29,6 +29,7 @@ from django.core import serializers
 import json
 import stripe
 from django.core.exceptions import MultipleObjectsReturned
+import os
 
 #html mail required imports
 from .models import Main_Category, BOUTIQUE_REQUEST
@@ -1420,6 +1421,7 @@ def sell_form(request):
             return render(request, "sell_form.html", {'order': order, 'category': category})
     except Exception as e:
         messages.warning(request, str(e))
+        return render(request, "sell_form.html", {'category': category})
 
 
 # @login_required

@@ -182,10 +182,10 @@ form{
             </div> -->
             <!--End Info-->
             <div class="title">
-              <h1>Invoice #1069</h1>
-              <p>Issued: May 27, 2015</br>
+              <h1>Invoice</h1>
+              <!-- <p>Issued: May 27, 2015</br>
                  Payment Due: June 27, 2015
-              </p>
+              </p> -->
             </div><!--End Title-->
           </div><!--End InvoiceTop-->
       
@@ -244,7 +244,7 @@ form{
                   <td></td>
                   <td></td>
                   <td class="Rate"><h2><br>Shipping Fee <br><br>Total</h2></td>
-                  <td class="payment"><h2><br>£{{ order.ship }}<br><br>₦‎{{ order.convated }}</h2></td>
+                  <td class="payment"><h2><br>£{{ order.ship }}<br><br>₦‎{{ convated }}</h2></td>
                 </tr>
                 
               </table>
@@ -253,7 +253,7 @@ form{
             {% csrf_token %}
             <!-- <div id="paypal-button-container"></div> -->
             <button type="button" onclick="makePayment()" class="btn btn-primary btn-lg btn-block">
-                Pay with Fluttrwave
+                Pay with Flutterwave
               </button>
           <form action="/"  target="_top">
             {% csrf_token %}
@@ -380,14 +380,14 @@ form{
 <script src="https://checkout.flutterwave.com/v3.js"></script>
 <script>
 
-  var dynamicAmount = "{{ order.convated }}"
+  var dynamicAmount = "{{ convated }}"
   var brand_name = "{{object.Boutique_name}}"
   var brand_logo = "{{ object.Boutique_name.brand_logo.url }}"
   
   function makePayment() {
     FlutterwaveCheckout({
       public_key: "FLWPUBK-c070f0c451c63f772c0d4ded4c15e57e-X",
-      tx_ref: "titanic-48981487343MDI0NzMx",
+      tx_ref: "{{random}}",
       amount: dynamicAmount,
       currency: "NGN",
       payment_options: "card, ussd",
@@ -397,9 +397,9 @@ form{
         consumer_mac: "92a3-912ba-1192a",
       },
       customer: {
-        email: "rose@unsinkableship.com",
+        email: "{{user.email}}",
         phone_number: "08102909304",
-        name: "Rose DeWitt Bukater",
+        name: "{{user.first_name}} {{user.last_name}}",
       },
       customizations: {
         title: brand_name,
