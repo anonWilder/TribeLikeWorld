@@ -73,7 +73,7 @@ urlpatterns = [
     path('terms/', views.terms, name='terms'),
     path('payout_list/', views.paypal_payout, name='payout'),
     path('content/', views.Content, name='content'),
-    #
+    path('designers/', views.designer_labels, name='designers'),
     path('order_invoice/', views.order_invoice, name='order_invoice')
     #path('confirm_payment/<str:pk>', views.confirm_payment, name=)
     

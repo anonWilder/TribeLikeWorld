@@ -76,10 +76,10 @@
                         {% for sh in shops %}
                         <div class="product-wrap">
                             <div class="product text-center">
-                                <figure class="product-media">
+                                <figure class="product-media" style="width: 210px;height: 241px">
                                     <a href="{{sh.get_absolute_url}}">
-                                        <img src="{{sh.image.url}}" alt="Product" width="300" height="338" />
-                                        <img src="{{sh.image2.url}}" alt="Product" width="300" height="338" />
+                                        <img style="width: 280px;height: 271px" src="{{sh.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{sh.image2.url}}" alt="Product" width="280" height="271" />
                                     </a>
                                     <div class="product-action-horizontal">
                                         <a href="#" class="btn-product-icon btn-cart w-icon-cart"

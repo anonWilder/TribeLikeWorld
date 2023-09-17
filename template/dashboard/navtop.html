@@ -1,3 +1,4 @@
+{% load static %}
    <!-- Header start -->
    <header class="header">
     <div class="toggle-btns">
@@ -22,7 +23,7 @@
                 <a href="#" id="notifications" data-toggle="dropdown" aria-haspopup="true">
                     <i class="icon-box"></i>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right lrg" aria-labelledby="notifications">
+                <!-- <div class="dropdown-menu dropdown-menu-right lrg" aria-labelledby="notifications">
                     <div class="dropdown-menu-header">
                         Tasks (05)
                     </div>	
@@ -52,14 +53,14 @@
                             </div>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </li>
             <li class="dropdown">
                 <a href="#" id="notifications" data-toggle="dropdown" aria-haspopup="true">
                     <i class="icon-bell"></i>
                     <span class="count-label">8</span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right lrg" aria-labelledby="notifications">
+                <!-- <div class="dropdown-menu dropdown-menu-right lrg" aria-labelledby="notifications">
                     <div class="dropdown-menu-header">
                         Notifications (40)
                     </div>
@@ -79,7 +80,7 @@
                         <li>
                             <a href="#">
                                 <div class="user-img busy">
-                                    <img src="img/user10.png" alt="User">
+                                    <img src="{% static 'dashboard/img/user10.png'%}" alt="User">
                                 </div>
                                 <div class="details">
                                     <div class="user-title">Braxten</div>
@@ -91,7 +92,7 @@
                         <li>
                             <a href="#">
                                 <div class="user-img online">
-                                    <img src="img/user6.png" alt="User">
+                                    <img src="{% static 'dashboard/img/user6.png'%}" alt="User">
                                 </div>
                                 <div class="details">
                                     <div class="user-title">Larkyn</div>
@@ -101,7 +102,7 @@
                             </a>
                         </li>
                     </ul>
-                </div>
+                </div> -->
             </li>
             <li class="dropdown">
                 <a href="#" id="userSettings" class="user-settings" data-toggle="dropdown" aria-haspopup="true">
@@ -131,3 +132,17 @@
     </div>
 </header>
 <!-- Header end -->
+<script>
+    $(document).ready(function () {
+        // Get the toggle button and page wrapper element
+        const toggleButton = document.getElementById("toggle-sidebar");
+        const pageWrapper = document.querySelector(".page-wrapper");
+
+        // Add a click event listener to the toggle button
+        $(toggleButton).click(function () {
+            // Toggle the "toggled" class on the page wrapper
+            $(pageWrapper).toggleClass("toggled");
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

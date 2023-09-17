@@ -30,6 +30,9 @@ import json
 import stripe
 from django.core.exceptions import MultipleObjectsReturned
 import os
+import base64
+import time
+
 
 #html mail required imports
 from .models import Main_Category, BOUTIQUE_REQUEST
@@ -104,6 +107,11 @@ def order_invoice(request):
     form = CheckoutForm()
     amount = order.get_total()
     category = Main_Category.objects.all().order_by('-id')
+    random_value = random.randint(1, 10)
+    current_date = datetime.now()
+    result = "tb-" + str(random_value) + current_date.strftime("%Y%m%d%H%M%S")
+    transaction_id = generate_transaction_id()
+    short_id = generate_short_id()
     context = {
         'form': form,
         'couponform': CouponForm(),
@@ -111,6 +119,9 @@ def order_invoice(request):
         'DISPLAY_COUPON_FORM': True,
         'amount': amount,
         'category': category,
+	    'random': result,
+	    'transaction_id': transaction_id,
+	    'short_id': short_id,
     }
     return render(request, 'Tribelikeinvoice.html', context)
 
@@ -436,6 +447,24 @@ class PaymentView(View):
 		messages.warning(self.request, "Invalid data received")
 		return redirect("/payment/stripe/")
 
+def generate_transaction_id():
+    return str(uuid.uuid4())
+
+
+
+def generate_short_id():
+    # Create a combination of timestamp and random number
+    timestamp = int(time.time())
+    random_number = random.randint(1000, 9999)
+    
+    # Combine and encode the values into a short string
+    combined_value = f"{timestamp}-{random_number}"
+    encoded_value = base64.b64encode(combined_value.encode()).decode('utf-8')
+    
+    # Remove non-alphanumeric characters and limit the length
+    short_id = ''.join(char for char in encoded_value if char.isalnum())[:8]
+    return short_id
+
 
 
 
@@ -715,11 +744,14 @@ def ItemDetailView(request, pk):
 	objects = get_object_or_404(Item, pk=pk)
 	latest = Item.objects.filter(seasson='NEW ARRIVALS').order_by('-timestamp')[0:3]
 	# object = Item.objects.filter(item=post)
+
 	featured_post = Item.objects.filter(futured=True).order_by('-timestamp')[:3]
+	category = Main_Category.objects.all().order_by('-id')
 	context = {
 		'object': objects,
 		'latest': latest,
-		'futureds': featured_post
+		'futureds': featured_post,
+		"category":category,
 	}
 	return render(request, 'product.html', context)
 
@@ -1618,13 +1650,37 @@ def Dashboard(request,pk):
 	return render(request,"dashboard/dashboad.html",context)
 
 
+# @login_required
+# def Dashboard_sells(request):
+# 	BOUTIQUE_ = BOUTIQUE_REQUEST.objects.filter(user=request.user).filter(approved=True).order_by('-id')
+# 	objects = get_object_or_404(BOUTIQUE_REQUEST)
+# 	context = {
+# 		'object': objects,
+# 		"vendors_list":BOUTIQUE_,
+# 	}
+# 	return render(request,"dashboard/sells.html",context)
+
+# from django.shortcuts import get_object_or_404
+
+#added this piece to make passing the address possible
 @login_required
 def Dashboard_sells(request):
-	BOUTIQUE_ = BOUTIQUE_REQUEST.objects.filter(user=request.user).filter(approved=True).order_by('-id')
-	context = {
-		"vendors_list":BOUTIQUE_,
-	}
-	return render(request,"dashboard/sells.html",context)
+    try:
+        
+        objects = BOUTIQUE_REQUEST.objects.filter(user=request.user, approved=True).latest('id')
+    except BOUTIQUE_REQUEST.DoesNotExist:
+        objects = None
+
+    BOUTIQUE_ = BOUTIQUE_REQUEST.objects.filter(user=request.user, approved=True).order_by('-id')
+    
+    context = {
+        'object': objects,
+        "vendors_list": BOUTIQUE_,
+    }
+    
+    return render(request, "dashboard/sells.html", context)
+
+
 
 @login_required
 def Dashboard_sells_details(request):
@@ -1928,6 +1984,9 @@ def confirm_payment(request, pk):
         'category': category,
     }
     
+
+def designer_labels(request):
+	return render(request,"designers.html")
     # Rest of your code...
 
 

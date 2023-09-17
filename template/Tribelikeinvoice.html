@@ -2656,17 +2656,19 @@ hr {
           <div class="tm_invoice_info tm_mb20">
             <div class="tm_invoice_seperator tm_gray_bg"></div>
             <div class="tm_invoice_info_list">
-              <p class="tm_invoice_number tm_m0">Invoice No: <b class="tm_primary_color">#LL93784</b></p>
+              <p class="tm_invoice_number tm_m0">Invoice No: <b class="tm_primary_color">{{ shrot_id }}</b></p>
               <p class="tm_invoice_date tm_m0">Date: <b class="tm_primary_color">01.07.2022</b></p>
             </div>
           </div>
           <div class="tm_invoice_head tm_mb10">
             <div class="tm_invoice_left">
               <p class="tm_mb2"><b class="tm_primary_color">Invoice To:</b></p>
-              <p>{{user.username}}<br>
-                84 Spilman Street, London <br>United Kingdom <br>
-                lowell@gmail.com
-              </p>
+              <p>{{user.first_name}} {{user.last_name}}
+                <!-- <br>
+
+                84 Spilman Street, London <br>United Kingdom <br> -->
+                <br>
+                {{user.email}}</p>
             </div>
             <div class="tm_invoice_right tm_text_right">
               <p class="tm_mb2"><b class="tm_primary_color">Made To:</b></p>

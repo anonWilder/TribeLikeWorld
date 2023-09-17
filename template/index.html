@@ -167,10 +167,10 @@
                     {% for iteam in latest %}
                     <div class="product-wrap">
                         <div class="product text-center">
-                            <figure class="product-media">
-                                <a href="{{iteam.get_absolute_url}}">
-                                    <img src="{{iteam.image.url}}" alt="Product" width="300" height="338" />
-                                    <img src="{{iteam.image2.url}}" alt="Product" width="300" height="338" />
+                           <figure class="product-media" style="width: 210px;height: 241px">
+                                    <a href="{{iteam.get_absolute_url}}">
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image2.url}}" alt="Product" width="280" height="271" />
                                 </a>
                                 <div class="product-action-vertical">
                                     <a href="{{iteam.get_absolute_url}}" class="btn-product-icon btn-cart w-icon-cart"
@@ -213,10 +213,10 @@
                     {% for iteam in best_sell %}
                     <div class="product-wrap">
                         <div class="product text-center">
-                            <figure class="product-media">
-                                <a href="{{iteam.get_absolute_url}}">
-                                    <img src="{{iteam.image.url}}" alt="Product" width="300" height="338" />
-                                    <img src="{{iteam.image2.url}}" alt="Product" width="300" height="338" />
+                             <figure class="product-media" style="width: 210px;height: 241px">
+                                    <a href="{{iteam.get_absolute_url}}">
+                                    <img style="width: 280px;height: 271px" src="{{iteam.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image2.url}}" alt="Product" width="280" height="271" />
                                 </a>
                                 <div class="product-action-vertical">
                                     <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Add to cart"></a>
@@ -259,10 +259,10 @@
                     {% for iteam in most_popular %}
                     <div class="product-wrap">
                         <div class="product text-center">
-                            <figure class="product-media">
-                                <a href="{{iteam.get_absolute_url}}">
-                                    <img src="{{iteam.image.url}}" alt="Product" width="300" height="338" />
-                                    <img src="{{iteam.image2.url}}" alt="Product" width="300" height="338" />
+                            <figure class="product-media" style="width: 210px;height: 241px">
+                                    <a href="{{iteam.get_absolute_url}}">
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image2.url}}" alt="Product" width="280" height="271" />
                                 </a>
                                 <div class="product-action-vertical">
                                     <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Add to cart"></a>
@@ -306,12 +306,10 @@
                     {% for iteam in futureds %}
                     <div class="product-wrap">
                         <div class="product text-center">
-                            <figure class="product-media">
-                                <a href="{{iteam.get_absolute_url}}">
-
-                                    <img src="{{iteam.image.url}}" alt="Product" width="300" height="338" />
-
-                                    <img src="{{iteam.image2.url}}" alt="Product" width="300" height="338" />
+                             <figure class="product-media" style="width: 210px;height: 241px">
+                                    <a href="{{iteam.get_absolute_url}}">
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image2.url}}" alt="Product" width="280" height="271" />
                                 </a>
                                 <div class="product-action-vertical">
                                     <a href="#" class="btn-product-icon btn-cart w-icon-cart" title="Add to cart"></a>
@@ -331,7 +329,7 @@
                                         <span class="ratings" style="width: 100%;"></span>
                                         <span class="tooltiptext tooltip-top"></span>
                                     </div>
-                                    <a href="product-default.html" class="rating-reviews">(8 reviews)</a>
+                                   <!--  <a href="product-default.html" class="rating-reviews">(8 reviews)</a> -->
                                 </div>
                                 <div class="product-price">
                                     {%if iteam.discount_price %}
@@ -412,20 +410,20 @@
                             <div class="swiper-slide product-col">
                                 {% for iteam in men_cloth %}
                                 <div class="product-wrap product text-center">
-                                    <figure class="product-media">
-                                        <a href="{{iteam.get_absolute_url}}">
-                                            <img src="{{iteam.image.url}}" alt="Product" width="216" height="243" />
-                                            <img src="{{iteam.image2.url}}" alt="Product" width="216" height="243" />
+                                     <figure class="product-media" style="width: 210px;height: 241px">
+                                    <a href="{{iteam.get_absolute_url}}">
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image2.url}}" alt="Product" width="280" height="271" />
                                         </a>
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-cart w-icon-cart"
                                                 title="Add to cart"></a>
-                                            <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                                title="Add to wishlist"></a>
+                                            <!-- <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                                                title="Add to wishlist"></a> -->
                                             <a href="#" class="btn-product-icon btn-quickview w-icon-search"
                                                 title="Quickview"></a>
-                                            <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                                title="Add to Compare"></a>
+                                        <!--     <a href="#" class="btn-product-icon btn-compare w-icon-compare"
+                                                title="Add to Compare"></a> -->
                                         </div>
                                     </figure>
                                     <div class="product-details">
@@ -437,8 +435,8 @@
                                                 <span class="ratings" style="width: 60%;"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
-                                            <a href="product-default.html" class="rating-reviews">(3
-                                                reviews)</a>
+                                         <!--    <a href="product-default.html" class="rating-reviews">(3
+                                                reviews)</a> -->
                                         </div>
                                         <div class="product-price">
                                             {%if iteam.discount_price %}
@@ -456,20 +454,20 @@
                             <div class="swiper-slide product-col">
                                 {% for iteam in men_cloth2 %}
                                 <div class="product-wrap product text-center">
-                                    <figure class="product-media">
-                                        <a href="{{iteam.get_absolute_url}}">
-                                            <img src="{{iteam.image.url}}" alt="Product" width="216" height="243" />
-                                            <img src="{{iteam.image2.url}}" alt="Product" width="216" height="243" />
+                                    <figure class="product-media" style="width: 210px;height: 241px">
+                                    <a href="{{iteam.get_absolute_url}}">
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image2.url}}" alt="Product" width="280" height="271" />
                                         </a>
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-cart w-icon-cart"
                                                 title="Add to cart"></a>
-                                            <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                                title="Add to wishlist"></a>
+                                            <!-- <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                                                title="Add to wishlist"></a> -->
                                             <a href="#" class="btn-product-icon btn-quickview w-icon-search"
                                                 title="Quickview"></a>
-                                            <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                                title="Add to Compare"></a>
+                                          <!--   <a href="#" class="btn-product-icon btn-compare w-icon-compare"
+                                                title="Add to Compare"></a> -->
                                         </div>
                                     </figure>
                                     <div class="product-details">
@@ -481,8 +479,8 @@
                                                 <span class="ratings" style="width: 60%;"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
-                                            <a href="product-default.html" class="rating-reviews">(3
-                                                reviews)</a>
+                                     <!--        <a href="product-default.html" class="rating-reviews">(3
+                                                reviews)</a> -->
                                         </div>
                                         <div class="product-price">
                                             {%if iteam.discount_price %}
@@ -500,20 +498,20 @@
                             <div class="swiper-slide product-col">
                                 {% for iteam in men_cloth3 %}
                                 <div class="product-wrap product text-center">
-                                    <figure class="product-media">
-                                        <a href="{{iteam.get_absolute_url}}">
-                                            <img src="{{iteam.image.url}}" alt="Product" width="216" height="243" />
-                                            <img src="{{iteam.image2.url}}" alt="Product" width="216" height="243" />
+                                    <figure class="product-media" style="width: 210px;height: 241px">
+                                    <a href="{{iteam.get_absolute_url}}">
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image2.url}}" alt="Product" width="280" height="271" />
                                         </a>
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-cart w-icon-cart"
                                                 title="Add to cart"></a>
-                                            <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                                title="Add to wishlist"></a>
+                                         <!--    <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                                                title="Add to wishlist"></a> -->
                                             <a href="#" class="btn-product-icon btn-quickview w-icon-search"
                                                 title="Quickview"></a>
-                                            <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                                title="Add to Compare"></a>
+                                          <!--   <a href="#" class="btn-product-icon btn-compare w-icon-compare"
+                                                title="Add to Compare"></a> -->
                                         </div>
                                     </figure>
                                     <div class="product-details">
@@ -525,8 +523,8 @@
                                                 <span class="ratings" style="width: 60%;"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
-                                            <a href="product-default.html" class="rating-reviews">(3
-                                                reviews)</a>
+                                          <!--   <a href="product-default.html" class="rating-reviews">(3
+                                                reviews)</a> -->
                                         </div>
                                         <div class="product-price">
                                             {%if iteam.discount_price %}
@@ -552,12 +550,12 @@
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-cart w-icon-cart"
                                                 title="Add to cart"></a>
-                                            <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                                title="Add to wishlist"></a>
+                                           <!--  <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                                                title="Add to wishlist"></a> -->
                                             <a href="#" class="btn-product-icon btn-quickview w-icon-search"
                                                 title="Quickview"></a>
-                                            <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                                title="Add to Compare"></a>
+                                       <!--      <a href="#" class="btn-product-icon btn-compare w-icon-compare"
+                                                title="Add to Compare"></a> -->
                                         </div>
                                     </figure>
                                     <div class="product-details">
@@ -569,8 +567,8 @@
                                                 <span class="ratings" style="width: 60%;"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
-                                            <a href="product-default.html" class="rating-reviews">(3
-                                                reviews)</a>
+                                         <!--    <a href="product-default.html" class="rating-reviews">(3
+                                                reviews)</a> -->
                                         </div>
                                         <div class="product-price">
                                             {%if iteam.discount_price %}
@@ -625,20 +623,20 @@
                             <div class="swiper-slide product-col">
                                 {% for iteam in women_cloth %}
                                 <div class="product-wrap product text-center">
-                                    <figure class="product-media">
-                                        <a href="{{iteam.get_absolute_url}}">
-                                            <img src="{{iteam.image.url}}" alt="Product" width="216" height="243" />
-                                            <img src="{{iteam.image2.url}}" alt="Product" width="216" height="243" />
+                                    <figure class="product-media" style="width: 210px;height: 241px">
+                                    <a href="{{iteam.get_absolute_url}}">
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image2.url}}" alt="Product" width="280" height="271" />
                                         </a>
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-cart w-icon-cart"
                                                 title="Add to cart"></a>
-                                            <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                                title="Add to wishlist"></a>
+                                          <!--   <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                                                title="Add to wishlist"></a> -->
                                             <a href="#" class="btn-product-icon btn-quickview w-icon-search"
                                                 title="Quickview"></a>
-                                            <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                                title="Add to Compare"></a>
+                                         <!--    <a href="#" class="btn-product-icon btn-compare w-icon-compare"
+                                                title="Add to Compare"></a> -->
                                         </div>
                                     </figure>
                                     <div class="product-details">
@@ -650,8 +648,8 @@
                                                 <span class="ratings" style="width: 60%;"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
-                                            <a href="product-default.html" class="rating-reviews">(3
-                                                reviews)</a>
+                                          <!--   <a href="product-default.html" class="rating-reviews">(3
+                                                reviews)</a> -->
                                         </div>
                                         <div class="product-price">
                                             {%if iteam.discount_price %}
@@ -669,20 +667,20 @@
                             <div class="swiper-slide product-col">
                                 {% for iteam in women_cloth2 %}
                                 <div class="product-wrap product text-center">
-                                    <figure class="product-media">
-                                        <a href="{{iteam.get_absolute_url}}">
-                                            <img src="{{iteam.image.url}}" alt="Product" width="216" height="243" />
-                                            <img src="{{iteam.image2.url}}" alt="Product" width="216" height="243" />
+                                     <figure class="product-media" style="width: 210px;height: 241px">
+                                    <a href="{{iteam.get_absolute_url}}">
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image2.url}}" alt="Product" width="280" height="271" />
                                         </a>
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-cart w-icon-cart"
                                                 title="Add to cart"></a>
-                                            <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                                title="Add to wishlist"></a>
+                                           <!--  <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                                                title="Add to wishlist"></a> -->
                                             <a href="#" class="btn-product-icon btn-quickview w-icon-search"
                                                 title="Quickview"></a>
-                                            <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                                title="Add to Compare"></a>
+                                           <!--  <a href="#" class="btn-product-icon btn-compare w-icon-compare"
+                                                title="Add to Compare"></a> -->
                                         </div>
                                     </figure>
                                     <div class="product-details">
@@ -694,8 +692,8 @@
                                                 <span class="ratings" style="width: 60%;"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
-                                            <a href="product-default.html" class="rating-reviews">(3
-                                                reviews)</a>
+                                        <!--     <a href="product-default.html" class="rating-reviews">(3
+                                                reviews)</a> -->
                                         </div>
                                         <div class="product-price">
                                             {%if iteam.discount_price %}
@@ -713,20 +711,20 @@
                             <div class="swiper-slide product-col">
                                 {% for iteam in women_cloth3 %}
                                 <div class="product-wrap product text-center">
-                                    <figure class="product-media">
-                                        <a href="{{iteam.get_absolute_url}}">
-                                            <img src="{{iteam.image.url}}" alt="Product" width="216" height="243" />
-                                            <img src="{{iteam.image2.url}}" alt="Product" width="216" height="243" />
+                                   <figure class="product-media" style="width: 210px;height: 241px">
+                                    <a href="{{iteam.get_absolute_url}}">
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image2.url}}" alt="Product" width="280" height="271" />
                                         </a>
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-cart w-icon-cart"
                                                 title="Add to cart"></a>
-                                            <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                                title="Add to wishlist"></a>
+                                          <!--   <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                                                title="Add to wishlist"></a> -->
                                             <a href="#" class="btn-product-icon btn-quickview w-icon-search"
                                                 title="Quickview"></a>
-                                            <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                                title="Add to Compare"></a>
+                                          <!--   <a href="#" class="btn-product-icon btn-compare w-icon-compare"
+                                                title="Add to Compare"></a> -->
                                         </div>
                                     </figure>
                                     <div class="product-details">
@@ -757,20 +755,20 @@
                             <div class="swiper-slide product-col">
                                 {% for iteam in women_cloth4 %}
                                 <div class="product-wrap product text-center">
-                                    <figure class="product-media">
-                                        <a href="{{iteam.get_absolute_url}}">
-                                            <img src="{{iteam.image.url}}" alt="Product" width="216" height="243" />
-                                            <img src="{{iteam.image2.url}}" alt="Product" width="216" height="243" />
+                                     <figure class="product-media" style="width: 210px;height: 241px">
+                                    <a href="{{iteam.get_absolute_url}}">
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image2.url}}" alt="Product" width="280" height="271" />
                                         </a>
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-cart w-icon-cart"
                                                 title="Add to cart"></a>
-                                            <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                                title="Add to wishlist"></a>
+                                         <!--    <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                                                title="Add to wishlist"></a> -->
                                             <a href="#" class="btn-product-icon btn-quickview w-icon-search"
                                                 title="Quickview"></a>
-                                            <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                                title="Add to Compare"></a>
+                                          <!--   <a href="#" class="btn-product-icon btn-compare w-icon-compare"
+                                                title="Add to Compare"></a> -->
                                         </div>
                                     </figure>
                                     <div class="product-details">
@@ -782,8 +780,8 @@
                                                 <span class="ratings" style="width: 60%;"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
-                                            <a href="product-default.html" class="rating-reviews">(3
-                                                reviews)</a>
+                                            <!-- <a href="product-default.html" class="rating-reviews">(3
+                                                reviews)</a> -->
                                         </div>
                                         <div class="product-price">
                                             {%if iteam.discount_price %}
@@ -850,20 +848,20 @@
                             <div class="swiper-slide product-col">
                                 {% for iteam in ACCESSORIES %}
                                 <div class="product-wrap product text-center">
-                                    <figure class="product-media">
-                                        <a href="{{iteam.get_absolute_url}}">
-                                            <img src="{{iteam.image.url}}" alt="Product" width="216" height="243" />
-                                            <img src="{{iteam.image2.url}}" alt="Product" width="216" height="243" />
+                                   <figure class="product-media" style="width: 210px;height: 241px">
+                                    <a href="{{iteam.get_absolute_url}}">
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image2.url}}" alt="Product" width="280" height="271" />
                                         </a>
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-cart w-icon-cart"
                                                 title="Add to cart"></a>
-                                            <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                                title="Add to wishlist"></a>
+                                        <!--     <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                                                title="Add to wishlist"></a> -->
                                             <a href="#" class="btn-product-icon btn-quickview w-icon-search"
                                                 title="Quickview"></a>
-                                            <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                                title="Add to Compare"></a>
+                                            <!-- <a href="#" class="btn-product-icon btn-compare w-icon-compare"
+                                                title="Add to Compare"></a> -->
                                         </div>
                                     </figure>
                                     <div class="product-details">
@@ -875,8 +873,8 @@
                                                 <span class="ratings" style="width: 60%;"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
-                                            <a href="{{iteam.get_absolute_url}}" class="rating-reviews">(3
-                                                reviews)</a>
+                                           <!--  <a href="{{iteam.get_absolute_url}}" class="rating-reviews">(3
+                                                reviews)</a> -->
                                         </div>
                                         <div class="product-price">
                                             {%if iteam.discount_price %}
@@ -894,20 +892,20 @@
                             <div class="swiper-slide product-col">
                                 {% for iteam in ACCESSORIES2 %}
                                 <div class="product-wrap product text-center">
-                                    <figure class="product-media">
-                                        <a href="#">
-                                            <img src="{{iteam.image.url}}" alt="Product" width="216" height="243" />
-                                            <img src="{{iteam.image2.url}}" alt="Product" width="216" height="243" />
+                                     <figure class="product-media" style="width: 210px;height: 241px">
+                                    <a href="{{iteam.get_absolute_url}}">
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{iteam.image2.url}}" alt="Product" width="280" height="271" />
                                         </a>
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-cart w-icon-cart"
                                                 title="Add to cart"></a>
-                                            <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                                title="Add to wishlist"></a>
+                                            <!-- <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                                                title="Add to wishlist"></a> -->
                                             <a href="#" class="btn-product-icon btn-quickview w-icon-search"
                                                 title="Quickview"></a>
-                                            <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                                title="Add to Compare"></a>
+                                          <!--   <a href="#" class="btn-product-icon btn-compare w-icon-compare"
+                                                title="Add to Compare"></a> -->
                                         </div>
                                     </figure>
                                     <div class="product-details">
@@ -918,8 +916,8 @@
                                                 <span class="ratings" style="width: 60%;"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
-                                            <a href="product-default.html" class="rating-reviews">(3
-                                                reviews)</a>
+                                         <!--    <a href="product-default.html" class="rating-reviews">(3
+                                                reviews)</a> -->
                                         </div>
                                         <div class="product-price">
                                             {%if iteam.discount_price %}
@@ -945,12 +943,12 @@
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-cart w-icon-cart"
                                                 title="Add to cart"></a>
-                                            <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                                title="Add to wishlist"></a>
+                                            <!-- <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                                                title="Add to wishlist"></a> -->
                                             <a href="#" class="btn-product-icon btn-quickview w-icon-search"
                                                 title="Quickview"></a>
-                                            <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                                title="Add to Compare"></a>
+                                        <!--     <a href="#" class="btn-product-icon btn-compare w-icon-compare"
+                                                title="Add to Compare"></a> -->
                                         </div>
                                     </figure>
                                     <div class="product-details">
@@ -961,8 +959,8 @@
                                                 <span class="ratings" style="width: 60%;"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
-                                            <a href="product-default.html" class="rating-reviews">(3
-                                                reviews)</a>
+                                           <!--  <a href="product-default.html" class="rating-reviews">(3
+                                                reviews)</a> -->
                                         </div>
                                         <div class="product-price">
                                             {%if iteam.discount_price %}
@@ -988,12 +986,12 @@
                                         <div class="product-action-vertical">
                                             <a href="#" class="btn-product-icon btn-cart w-icon-cart"
                                                 title="Add to cart"></a>
-                                            <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
-                                                title="Add to wishlist"></a>
+                                          <!--   <a href="#" class="btn-product-icon btn-wishlist w-icon-heart"
+                                                title="Add to wishlist"></a> -->
                                             <a href="#" class="btn-product-icon btn-quickview w-icon-search"
                                                 title="Quickview"></a>
-                                            <a href="#" class="btn-product-icon btn-compare w-icon-compare"
-                                                title="Add to Compare"></a>
+                                         <!--    <a href="#" class="btn-product-icon btn-compare w-icon-compare"
+                                                title="Add to Compare"></a> -->
                                         </div>
                                     </figure>
                                     <div class="product-details">
@@ -1004,8 +1002,8 @@
                                                 <span class="ratings" style="width: 60%;"></span>
                                                 <span class="tooltiptext tooltip-top"></span>
                                             </div>
-                                            <a href="product-default.html" class="rating-reviews">(3
-                                                reviews)</a>
+                                           <!--  <a href="product-default.html" class="rating-reviews">(3
+                                                reviews)</a> -->
                                         </div>
                                         <div class="product-price">
                                             {%if iteam.discount_price %}
