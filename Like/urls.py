@@ -45,7 +45,7 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('sell-here/', views.sell_here, name='sell_here'),
     path('sell-form/', views.sell_form, name='sell_form'),
-    path('all-vendors/', views.vendors, name='vendors'),
+    path('brands/', views.vendors, name='vendors'),
     path('successfully/', views.successfully, name='successfully'),
 
     path('contact-us/', views.contact, name="contact"),
