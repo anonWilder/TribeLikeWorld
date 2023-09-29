@@ -63,23 +63,44 @@
             </div>
 
             <ul class="pagination justify-content-center mb-10 pb-2 pt-2">
-                <li class="prev disabled">
-                    <a href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                {% if news.has_previous %}
+                <li class="prev">
+                    <a href="?page={{ news.previous_page_number }}" aria-label="Previous">
                         <i class="w-icon-long-arrow-left"></i>Prev
                     </a>
                 </li>
-                <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
+                {% else %}
+                <li class="prev disabled">
+                    <span aria-label="Previous">
+                        <i class="w-icon-long-arrow-left"></i>Prev
+                    </span>
                 </li>
-                <li class="page-item">
-                    <a class="page-link" href="#">2</a>
+                {% endif %}
+                <li class="page-item{% if news.number == 1 %} active{% endif %}">
+                    <a class="page-link" href="?page=1">1</a>
                 </li>
+                {% for i in news.paginator.page_range %}
+                {% if i != 1 %}
+                <li class="page-item{% if news.number == i %} active{% endif %}">
+                    <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+                {% if news.has_next %}
                 <li class="next">
-                    <a href="#" aria-label="Next">
+                    <a href="?page={{ news.next_page_number }}" aria-label="Next">
                         Next<i class="w-icon-long-arrow-right"></i>
                     </a>
                 </li>
+                {% else %}
+                <li class="next disabled">
+                    <span aria-label="Next">
+                        Next<i class="w-icon-long-arrow-right"></i>
+                    </span>
+                </li>
+                {% endif %}
             </ul>
+    
         </div>
     </div>
 </main>
