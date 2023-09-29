@@ -15,7 +15,7 @@ urlpatterns = [
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
     path('', include('Like.urls')),
-    path('news-page/', include('blog.urls')),
+    path('Editorial/', include('blog.urls')),
     path('profile/', view.profile, name='profile'),
     path('register/', view.register, name='register'),
     # path('register/', register.as_view(), name='register'),

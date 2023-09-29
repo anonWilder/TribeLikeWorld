@@ -42,6 +42,12 @@ import time
 # import Paystack
 from django.shortcuts import render
 from .models import Main_Category, Order, counter
+
+import requests
+from django.http import JsonResponse
+from django.shortcuts import render
+from .models import Item, Main_Category, BOUTIQUE_REQUEST
+
 # paystack.api_key = settings.PAYSTACK_SECRET_KEY
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -103,27 +109,27 @@ def is_valid_form(values):
 
 
 def order_invoice(request):
-    order = Order.objects.get(user=request.user, ordered=False)
-    form = CheckoutForm()
-    amount = order.get_total()
-    category = Main_Category.objects.all().order_by('-id')
-    random_value = random.randint(1, 10)
-    current_date = datetime.now()
-    result = "tb-" + str(random_value) + current_date.strftime("%Y%m%d%H%M%S")
-    transaction_id = generate_transaction_id()
-    short_id = generate_short_id()
-    context = {
-        'form': form,
-        'couponform': CouponForm(),
-        'order': order,
-        'DISPLAY_COUPON_FORM': True,
-        'amount': amount,
-        'category': category,
-	    'random': result,
-	    'transaction_id': transaction_id,
-	    'short_id': short_id,
-    }
-    return render(request, 'Tribelikeinvoice.html', context)
+	order = Order.objects.get(user=request.user, ordered=False)
+	form = CheckoutForm()
+	amount = order.get_total()
+	category = Main_Category.objects.all().order_by('-id')
+	random_value = random.randint(1, 10)
+	current_date = datetime.now()
+	result = "tb-" + str(random_value) + current_date.strftime("%Y%m%d%H%M%S")
+	transaction_id = generate_transaction_id()
+	short_id = generate_short_id()
+	context = {
+		'form': form,
+		'couponform': CouponForm(),
+		'order': order,
+		'DISPLAY_COUPON_FORM': True,
+		'amount': amount,
+		'category': category,
+		'random': result,
+		'transaction_id': transaction_id,
+		'short_id': short_id,
+	}
+	return render(request, 'Tribelikeinvoice.html', context)
 
 
 
@@ -448,22 +454,22 @@ class PaymentView(View):
 		return redirect("/payment/stripe/")
 
 def generate_transaction_id():
-    return str(uuid.uuid4())
+	return str(uuid.uuid4())
 
 
 
 def generate_short_id():
-    # Create a combination of timestamp and random number
-    timestamp = int(time.time())
-    random_number = random.randint(1000, 9999)
-    
-    # Combine and encode the values into a short string
-    combined_value = f"{timestamp}-{random_number}"
-    encoded_value = base64.b64encode(combined_value.encode()).decode('utf-8')
-    
-    # Remove non-alphanumeric characters and limit the length
-    short_id = ''.join(char for char in encoded_value if char.isalnum())[:8]
-    return short_id
+	# Create a combination of timestamp and random number
+	timestamp = int(time.time())
+	random_number = random.randint(1000, 9999)
+	
+	# Combine and encode the values into a short string
+	combined_value = f"{timestamp}-{random_number}"
+	encoded_value = base64.b64encode(combined_value.encode()).decode('utf-8')
+	
+	# Remove non-alphanumeric characters and limit the length
+	short_id = ''.join(char for char in encoded_value if char.isalnum())[:8]
+	return short_id
 
 
 
@@ -1237,21 +1243,68 @@ def contact(request):
 # 	res = Reservation.objects.filter(user=request.user).order_by('-timestamp')[:2]
 # 	return render(request,'reservation.html',{'res':res})
 
+# def shop(request):
+# 	# if request.user.is_authenticated:
+# 	# 	order = Order.objects.get(user=request.user, ordered=False)
+# 	# else:
+# 	order = 0
+# 	category = Main_Category.objects.all().order_by('-id')
+# 	shops = Item.objects.all().order_by('-timestamp')
+# 	vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
+# 	const = {
+# 		'order':order,
+# 		"shops":shops,
+# 		"category":category,
+# 		"vendors_list":vendors_list,
+# 	}
+# 	return render(request,"shop.html",const)
+
+
+
 def shop(request):
-	# if request.user.is_authenticated:
-	# 	order = Order.objects.get(user=request.user, ordered=False)
-	# else:
+	url = "https://nova.shopwoo.com/api/v1/products?store_id=2&per_page=100&lang=en"
+	header = {'Authorization': 'Basic aS5ubmFqaUBpY2xvdWQuY29tOjc4aWtlbm5h', 'Content-Type': 'application/json'}
+	rec = requests.get(url, headers=header)
+	api_data = rec.json()
+	shops = list(Item.objects.all().order_by('-timestamp').values())
+	image_urls_list = []
+	for product_data in api_data:
+		images = product_data.get('images', [])
+		image_urls = [image.get('src') for image in images]
+		image_urls_list.append({"id": product_data.get('id', 'N/A'),
+				"title": product_data.get("name", ""),
+				"price": product_data.get("sale_price", 0.1 ),
+				"description": product_data.get("description", ""),
+				"image": image_urls[:1][0],
+				"image2": image_urls[1:2][0]})
+	for db_item in shops:
+		common_item = {
+			"id":db_item['id'],
+			"title": db_item['title'],
+			"price": db_item['price'],
+			"description": db_item['description'],
+			"image": "https://tribelikeworld.com/media/"+ db_item['image'],
+			"image2": "https://tribelikeworld.com/media/" + db_item['image2'],
+		}
+		image_urls_list.append(common_item)
 	order = 0
 	category = Main_Category.objects.all().order_by('-id')
-	shops = Item.objects.all().order_by('-timestamp')
 	vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
-	const = {
-		'order':order,
-		"shops":shops,
-		"category":category,
-		"vendors_list":vendors_list,
+
+	context = {
+		'order': order,
+		'shops': image_urls_list,  # Use the combined_items list
+		'category': category,
+		'vendors_list': vendors_list,
 	}
-	return render(request,"shop.html",const)
+
+		# Render the HTML template with the context
+	return render(request, "shop.html",context)
+
+	# except requests.exceptions.RequestException as e:
+	#     # Handle exceptions from the HTTP request
+	#     return JsonResponse({'message': f'Request failed: {str(e)}'}, status=500)
+
 
 def sell_here(request):
 	category = Main_Category.objects.all().order_by('-id')
@@ -1396,70 +1449,70 @@ def all_soled_iteam(request):
 
 @login_required
 def sell_form(request):
-    category = Main_Category.objects.all().order_by('-id')
-    
-    try:
-        order = 0
-        if request.method == "POST":
-            user_email = request.user.email
-            pod = BOUTIQUE_REQUEST()
-            pod.user = request.user
-            pod.Boutique_name = request.POST.get("Boutique_name")
-            pod.address = request.POST.get("address")
-            pod.items_to_sell = request.POST.get("items_to_sell")
-            pod.number = request.POST.get("number")
-            pod.where_else_you_sell = request.POST.get("where_else_you_sell")
-            pod.social_media = request.POST.get("social_media")
-            pod.country = request.POST.get("country")
-            pod.about_your_business = request.POST.get("about_your_business")
-            pod.hear_about_us = request.POST.get("hear_about_us")
-            
-            if len(request.FILES) != 0:
-                pod.brand_logo = request.FILES["brand_logo"]
-                pod.brand_banner = request.FILES["brand_banner"]
-                pod.products_image1 = request.FILES["products_image1"]
-                pod.products_image2 = request.FILES["products_image2"]
-                pod.products_image3 = request.FILES["products_image3"]
-                pod.products_image4 = request.FILES["products_image4"]
-            
-            pod.save()
-            
-            template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html', {"title": "text file", "email": user_email})
-            
-            # Attach images to the email
-            email = EmailMultiAlternatives('From Tribe Like', strip_tags(template), settings.EMAIL_HOST_USER, [user_email, 'tribelikeventures@gmail.com'])
-            email.attach_alternative(template, "text/html")
-            
-            # Attach images
-            image_paths = [
-                pod.brand_logo.path,
-                pod.brand_banner.path,
-                pod.products_image1.path,
-                pod.products_image2.path,
-                pod.products_image3.path,
-                pod.products_image4.path,
-            ]
-            for image_path in image_paths:
-                with open(image_path, 'rb') as f:
-                    image_data = f.read()
-                    image_filename = os.path.basename(image_path)
-                    email.attach(image_filename, image_data, 'image/jpg')
-            
-            email.send()
-            
-            messages.success(request, f'Request has been sent Successfully !')
-            return redirect('/successfully')
-        else:
-            return render(request, "sell_form.html", {'order': order, 'category': category})
-    except Exception as e:
-        messages.warning(request, str(e))
-        return render(request, "sell_form.html", {'category': category})
+	category = Main_Category.objects.all().order_by('-id')
+	
+	try:
+		order = 0
+		if request.method == "POST":
+			user_email = request.user.email
+			pod = BOUTIQUE_REQUEST()
+			pod.user = request.user
+			pod.Boutique_name = request.POST.get("Boutique_name")
+			pod.address = request.POST.get("address")
+			pod.items_to_sell = request.POST.get("items_to_sell")
+			pod.number = request.POST.get("number")
+			pod.where_else_you_sell = request.POST.get("where_else_you_sell")
+			pod.social_media = request.POST.get("social_media")
+			pod.country = request.POST.get("country")
+			pod.about_your_business = request.POST.get("about_your_business")
+			pod.hear_about_us = request.POST.get("hear_about_us")
+			
+			if len(request.FILES) != 0:
+				pod.brand_logo = request.FILES["brand_logo"]
+				pod.brand_banner = request.FILES["brand_banner"]
+				pod.products_image1 = request.FILES["products_image1"]
+				pod.products_image2 = request.FILES["products_image2"]
+				pod.products_image3 = request.FILES["products_image3"]
+				pod.products_image4 = request.FILES["products_image4"]
+			
+			pod.save()
+			
+			template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html', {"title": "text file", "email": user_email})
+			
+			# Attach images to the email
+			email = EmailMultiAlternatives('From Tribe Like', strip_tags(template), settings.EMAIL_HOST_USER, [user_email, 'tribelikeventures@gmail.com'])
+			email.attach_alternative(template, "text/html")
+			
+			# Attach images
+			image_paths = [
+				pod.brand_logo.path,
+				pod.brand_banner.path,
+				pod.products_image1.path,
+				pod.products_image2.path,
+				pod.products_image3.path,
+				pod.products_image4.path,
+			]
+			for image_path in image_paths:
+				with open(image_path, 'rb') as f:
+					image_data = f.read()
+					image_filename = os.path.basename(image_path)
+					email.attach(image_filename, image_data, 'image/jpg')
+			
+			email.send()
+			
+			messages.success(request, f'Request has been sent Successfully !')
+			return redirect('/successfully')
+		else:
+			return render(request, "sell_form.html", {'order': order, 'category': category})
+	except Exception as e:
+		messages.warning(request, str(e))
+		return render(request, "sell_form.html", {'category': category})
 
 
 # @login_required
 # def sell_form(request):
 #     category = Main_Category.objects.all().order_by('-id')
-    
+	
 #     try:
 #         order = 0
 #         if request.method == "POST":
@@ -1474,7 +1527,7 @@ def sell_form(request):
 #             pod.country =  request.POST.get("country")
 #             pod.about_your_business = request.POST.get("about_your_business")
 # 	    	pod.hear_about_us = request.POST.get("hear_about_us")
-            
+			
 #             if len(request.FILES) != 0:
 #                 pod.brand_logo = request.FILES["brand_logo"]
 #                 pod.brand_banner = request.FILES["brand_banner"]
@@ -1482,15 +1535,15 @@ def sell_form(request):
 #                 pod.products_image2 = request.FILES["products_image2"]
 #                 pod.products_image3 = request.FILES["products_image3"]
 #                 pod.products_image4 = request.FILES["products_image4"]
-            
+			
 #             pod.save()
-            
+			
 #             template = render_to_string('emails/BOUTIQUE_REQUEST_EMAIL_TEM.html', {"title": "text file", "email": user_email})
-            
+			
 #             # Attach images to the email
 #             email = EmailMultiAlternatives('From Tribe Like', strip_tags(template), settings.EMAIL_HOST_USER, [user_email, 'tribelikeventures@gmail.com'])
 #             email.attach_alternative(template, "text/html")
-            
+			
 #             # Attach images
 #             image_paths = [
 #                 pod.brand_logo.path,
@@ -1505,9 +1558,9 @@ def sell_form(request):
 #                     image_data = f.read()
 #                     image_filename = os.path.basename(image_path)
 #                     email.attach(image_filename, image_data, 'image/jpg')
-            
+			
 #             email.send()
-            
+			
 #             messages.success(request, f'Request has been sent Successfully !')
 #             return redirect('/successfully')
 #         else:
@@ -1613,16 +1666,16 @@ def contact(request):
 
 
 def about_us(request):
-    category = Main_Category.objects.all().order_by('-id')
-    
-    if request.user.is_authenticated:
-        order = Order.objects.get(user=request.user, ordered=False)
-    else:
-        order = False
-    
-    counters = counter.objects.all()
-    
-    return render(request, "about-us.html", {'order': order, 'counter': counters, 'category': category})
+	category = Main_Category.objects.all().order_by('-id')
+	
+	if request.user.is_authenticated:
+		order = Order.objects.get(user=request.user, ordered=False)
+	else:
+		order = False
+	
+	counters = counter.objects.all()
+	
+	return render(request, "about-us.html", {'order': order, 'counter': counters, 'category': category})
 
 
 
@@ -1665,20 +1718,20 @@ def Dashboard(request,pk):
 #added this piece to make passing the address possible
 @login_required
 def Dashboard_sells(request):
-    try:
-        
-        objects = BOUTIQUE_REQUEST.objects.filter(user=request.user, approved=True).latest('id')
-    except BOUTIQUE_REQUEST.DoesNotExist:
-        objects = None
+	try:
+		
+		objects = BOUTIQUE_REQUEST.objects.filter(user=request.user, approved=True).latest('id')
+	except BOUTIQUE_REQUEST.DoesNotExist:
+		objects = None
 
-    BOUTIQUE_ = BOUTIQUE_REQUEST.objects.filter(user=request.user, approved=True).order_by('-id')
-    
-    context = {
-        'object': objects,
-        "vendors_list": BOUTIQUE_,
-    }
-    
-    return render(request, "dashboard/sells.html", context)
+	BOUTIQUE_ = BOUTIQUE_REQUEST.objects.filter(user=request.user, approved=True).order_by('-id')
+	
+	context = {
+		'object': objects,
+		"vendors_list": BOUTIQUE_,
+	}
+	
+	return render(request, "dashboard/sells.html", context)
 
 
 
@@ -1970,23 +2023,53 @@ def User_dashboad(request):
 # 	return redirect("index")
 
 def confirm_payment(request, pk):
-    category = Main_Category.objects.all().order_by('-id')
-    amount = 0  # Initialize the amount to 0
+	category = Main_Category.objects.all().order_by('-id')
+	amount = 0  # Initialize the amount to 0
 
-    if request.user.is_authenticated:
-        order = Order.objects.get(user=request.user, ordered=False)
-        amount = order.get_total()  # Update the amount based on cart contents
+	if request.user.is_authenticated:
+		order = Order.objects.get(user=request.user, ordered=False)
+		amount = order.get_total()  # Update the amount based on cart contents
 
-    context = {
-        'order': order,
-        'DISPLAY_COUPON_FORM': False,
-        'amount': amount,
-        'category': category,
-    }
-    
+	context = {
+		'order': order,
+		'DISPLAY_COUPON_FORM': False,
+		'amount': amount,
+		'category': category,
+	}
+	
+
+# def designer_labels(request):
+# 	url = "https://nova.shopwoo.com/api/v1/brands?store_id=2&page=1&per_page=100"
+# 	header = {'Authorization': 'Basic aS5ubmFqaUBpY2xvdWQuY29tOjc4aWtlbm5h', 'Content-Type': 'application/json'}
+# 	rec = requests.get(url, headers=header)
+# 	api_data = rec.json()
+# 	# Retrieve data from your database
+# 	# shops = list(Item.objects.all().order_by('-timestamp').values())
+# 	item_dict = {}
+# 	for item in api_data:
+# 		first_letter = item['name'][0].lower()
+# 		item_dict.setdefault(first_letter, []).append(item)
+# 	categories = Main_Category.objects.all().order_by('-id')
+# 	return render(request,"designers.html", {'item_dict': item_dict}, {'categories': categories})
 
 def designer_labels(request):
-	return render(request,"designers.html")
-    # Rest of your code...
+    url = "https://nova.shopwoo.com/api/v1/brands?store_id=2&page=1&per_page=100"
+    header = {'Authorization': 'Basic aS5ubmFqaUBpY2xvdWQuY29tOjc4aWtlbm5h', 'Content-Type': 'application/json'}
+    rec = requests.get(url, headers=header)
+    api_data = rec.json()
+
+    item_dict = {}
+    for item in api_data:
+        first_letter = item['name'][0].lower()
+        item_dict.setdefault(first_letter, []).append(item)
+
+    category = Main_Category.objects.all().order_by('-id')
+
+    # Pass both item_dict and categories in a single dictionary
+    context = {'item_dict': item_dict, "category":category}
+
+    return render(request, "designers.html", context)
+
+	# Rest of your code...
 
 

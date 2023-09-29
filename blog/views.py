@@ -7,19 +7,22 @@ from .models import *
 # from users.models import *
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Sum
+from Like.models import Main_Category
 
 
 
 def news(request):
     news = New.objects.all().order_by('-date_updated')
     popular = New.objects.filter(popular=True).order_by('-date_updated')[0:3]
+    category = Main_Category.objects.all().order_by('-id')
     if request.method == 'POST':
         email = request.POST.get('EMAIL')
         print("this the email",email)
         Email.objects.create(emais=email)
     constant = {
         'news':news,
-        'popular':popular
+        'popular':popular,
+        "category":category,
     }
     return render(request,"blog/news.html",constant)
 
