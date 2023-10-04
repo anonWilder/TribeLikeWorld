@@ -8,7 +8,7 @@
             <ul class="breadcrumb bb-no">
                 <li><a href="demo1.html">Home</a></li>
                 <li><a href="#">Vendor</a></li>
-                <li><a href="#">Dokan</a></li>
+                <!-- <li><a href="#">Dokan</a></li> -->
                 <li>Store</li>
             </ul>
         </div>
@@ -75,6 +75,15 @@
                 <!-- End of Sidebar -->
 
                 <div class="main-content">
+
+                    <h2 class="title vendor-product-title mb-4">
+                        <a href="#">Products</a>
+                        <div class="header-right">
+                            <a href="/dashboard_sells/" class="btn btn-dark btn-rounded" style="color: #fff;"><i
+                                    class="w-icon-map-marker mr-1"></i>Dashboard</a>
+                        </div>
+                    
+                    </h2>
                     <div class="store store-banner mb-4">
                         <figure class="store-media">
                             <img src="{{object.brand_banner.url}}" alt="Vendor" width="930" height="446"
@@ -116,14 +125,12 @@
                         </div>
                     </div>
                     <!-- End of Store Banner -->
-
-                        <h2 class="title vendor-product-title mb-4">
-                            <a href="#">Products</a>
-                             <div class="header-right">
-                            <a href="/dashboard_sells/" class="btn btn-dark btn-rounded" style="color: #fff;"><i class="w-icon-map-marker mr-1"></i>Dashboard</a>
-                        </div>
-
-                    </h2>
+                    
+                    <div class="title-link-wrapper mb-4">
+                        <h4 class="title text-left">More Products From This Vendor</h4>
+                        <a href="/shop/" class="btn btn-dark btn-link btn-slide-right btn-icon-right">See
+                            Products from other vendors<i class="w-icon-long-arrow-right"></i></a>
+                    </div>
 
                     <div class="product-wrapper row cols-md-3 cols-sm-2 cols-2">
                         {% for sh in latest %}
