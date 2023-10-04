@@ -32,7 +32,7 @@ from django.core.exceptions import MultipleObjectsReturned
 import os
 import base64
 import time
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 #html mail required imports
 from .models import Main_Category, BOUTIQUE_REQUEST
@@ -1251,59 +1251,116 @@ def contact(request):
 # 	category = Main_Category.objects.all().order_by('-id')
 # 	shops = Item.objects.all().order_by('-timestamp')
 # 	vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
+# 	# image_urls_list = []
+# 	items_per_page = int(request.GET.get('count', 20))
+# 	paginator = Paginator(shopspage, items_per_page)
+# 	page = request.GET.get('page')
+
+# 	try:
+# 		shopspage = paginator.page(page)
+# 	except PageNotAnInteger:
+# 		shopspage = paginator.page(1)
+# 	except EmptyPage:
+# 		shopspage = paginator.page(paginator.num_pages)
+
+	
 # 	const = {
 # 		'order':order,
 # 		"shops":shops,
 # 		"category":category,
 # 		"vendors_list":vendors_list,
+# 		'shopspage': shopspage
 # 	}
 # 	return render(request,"shop.html",const)
 
 
-
 def shop(request):
-	url = "https://nova.shopwoo.com/api/v1/products?store_id=2&per_page=100&lang=en"
-	header = {'Authorization': 'Basic aS5ubmFqaUBpY2xvdWQuY29tOjc4aWtlbm5h', 'Content-Type': 'application/json'}
-	rec = requests.get(url, headers=header)
-	api_data = rec.json()
-	shops = list(Item.objects.all().order_by('-timestamp').values())
-	image_urls_list = []
-	for product_data in api_data:
-		images = product_data.get('images', [])
-		image_urls = [image.get('src') for image in images]
-		image_urls_list.append({"id": product_data.get('id', 'N/A'),
-				"title": product_data.get("name", ""),
-				"price": product_data.get("sale_price", 0.1 ),
-				"description": product_data.get("description", ""),
-				"image": image_urls[:1][0],
-				"image2": image_urls[1:2][0]})
-	for db_item in shops:
-		common_item = {
-			"id":db_item['id'],
-			"title": db_item['title'],
-			"price": db_item['price'],
-			"description": db_item['description'],
-			"image": "https://tribelikeworld.com/media/"+ db_item['image'],
-			"image2": "https://tribelikeworld.com/media/" + db_item['image2'],
-		}
-		image_urls_list.append(common_item)
-	order = 0
-	category = Main_Category.objects.all().order_by('-id')
-	vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
+    order = 0
+    category = Main_Category.objects.all().order_by('-id')
+    shops = Item.objects.all().order_by('-timestamp')
+    vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
+    
+    # Retrieve the selected items per page value or default to 20
+    items_per_page = int(request.GET.get('count', 20))
+    
+    # Get the page number from the request
+    page = request.GET.get('page')
+    
+    # Paginate the 'shops' queryset with the correct items_per_page
+    paginator = Paginator(shops, 20)
+    
+    try:
+        shopspage = paginator.page(page)
+    except PageNotAnInteger:
+        shopspage = paginator.page(1)
+    except EmptyPage:
+        shopspage = paginator.page(paginator.num_pages)
+    
+    const = {
+        'order': order,
+        'shops': shops,
+        'category': category,
+        'vendors_list': vendors_list,
+        'shopspage': shopspage
+    }
+    return render(request, "shop.html", const)
 
-	context = {
-		'order': order,
-		'shops': image_urls_list,  # Use the combined_items list
-		'category': category,
-		'vendors_list': vendors_list,
-	}
 
-		# Render the HTML template with the context
-	return render(request, "shop.html",context)
 
-	# except requests.exceptions.RequestException as e:
-	#     # Handle exceptions from the HTTP request
-	#     return JsonResponse({'message': f'Request failed: {str(e)}'}, status=500)
+
+
+# def shop(request):
+# 	url = "https://nova.shopwoo.com/api/v1/products?store_id=2&per_page=100&lang=en"
+# 	header = {'Authorization': 'Basic aS5ubmFqaUBpY2xvdWQuY29tOjc4aWtlbm5h', 'Content-Type': 'application/json'}
+# 	rec = requests.get(url, headers=header)
+# 	api_data = rec.json()
+# 	shops = list(Item.objects.all().order_by('-timestamp').values())
+# 	image_urls_list = []
+# 	for product_data in api_data:
+# 		images = product_data.get('images', [])
+# 		image_urls = [image.get('src') for image in images]
+# 		image_urls_list.append({"id": product_data.get('id', 'N/A'),
+# 				"title": product_data.get("name", ""),
+# 				"price": product_data.get("sale_price", 0.1 ),
+# 				"description": product_data.get("description", ""),
+# 				"image": image_urls[:1][0],
+# 				"image2": image_urls[1:2][0]})
+# 	for db_item in shops:
+# 		common_item = {
+# 			"id":db_item['id'],
+# 			"title": db_item['title'],
+# 			"price": db_item['price'],
+# 			"description": db_item['description'],
+# 			"image": "https://tribelikeworld.com/media/"+ db_item['image'],
+# 			"image2": "https://tribelikeworld.com/media/" + db_item['image2'],
+# 		}
+# 		image_urls_list.append(common_item)
+# 	order = 0
+# 	category = Main_Category.objects.all().order_by('-id')
+# 	vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
+
+
+# 	items_per_page = int(request.GET.get('count', 20))
+# 	paginator = Paginator(image_urls_list, items_per_page)
+
+# 	page = request.GET.get('page')
+
+# 	try:
+# 		shopspage = paginator.page(page)
+# 	except PageNotAnInteger:
+# 		shopspage = paginator.page(1)
+# 	except EmptyPage:
+# 		shopspage = paginator.page(paginator.num_pages)
+# 	context = {
+# 		'order': order,
+# 		'shops': image_urls_list,  # Use the combined_items list
+# 		'category': category,
+# 		'vendors_list': vendors_list,
+# 		'shopspage': shopspage
+# 	}
+
+# 		# Render the HTML template with the context
+# 	return render(request, "shop.html",context)
 
 
 def sell_here(request):
@@ -1484,19 +1541,19 @@ def sell_form(request):
 			email.attach_alternative(template, "text/html")
 			
 			# Attach images
-			image_paths = [
-				pod.brand_logo.path,
-				pod.brand_banner.path,
-				pod.products_image1.path,
-				pod.products_image2.path,
-				pod.products_image3.path,
-				pod.products_image4.path,
-			]
-			for image_path in image_paths:
-				with open(image_path, 'rb') as f:
-					image_data = f.read()
-					image_filename = os.path.basename(image_path)
-					email.attach(image_filename, image_data, 'image/jpg')
+			# image_paths = [
+			# 	pod.brand_logo.path,
+			# 	pod.brand_banner.path,
+			# 	pod.products_image1.path,
+			# 	pod.products_image2.path,
+			# 	pod.products_image3.path,
+			# 	pod.products_image4.path,
+			# ]
+			# for image_path in image_paths:
+			# 	with open(image_path, 'rb') as f:
+			# 		image_data = f.read()
+			# 		image_filename = os.path.basename(image_path)
+			# 		email.attach(image_filename, image_data, 'image/jpg')
 			
 			email.send()
 			
@@ -2073,3 +2130,5 @@ def designer_labels(request):
 	# Rest of your code...
 
 
+def bulk(request):
+	return render(request,"bulk.html")

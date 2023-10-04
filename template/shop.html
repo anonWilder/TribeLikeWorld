@@ -54,13 +54,15 @@
                         </div>
                         <div class="toolbox-right">
                             <div class="toolbox-item toolbox-show select-box">
-                                <select name="count" class="form-control">
-                                    <option value="9">Show 9</option>
-                                    <option value="12" selected="selected">Show 12</option>
-                                    <option value="24">Show 24</option>
-                                    <option value="36">Show 36</option>
+                                <label>Show:</label>
+                                <select id="itemsPerPage" name="count" class="form-control">
+                                    <option value="10">Show 10</option>
+                                    <option value="20" selected="selected">Show 20</option>
+                                    <option value="30">Show 30</option>
+                                    <option value="40">Show 40</option>
                                 </select>
                             </div>
+                            
                             <div class="toolbox-item toolbox-layout">
                                 <a href="shop-fullwidth-banner.html" class="icon-mode-grid btn-layout active">
                                     <i class="w-icon-grid"></i>
@@ -70,16 +72,17 @@
                                 </a>
                             </div>
                         </div>
+                        
                     </nav>
                     <div class="product-wrapper row cols-xl-6 cols-lg-5 cols-md-4 cols-sm-3 cols-2">
 
-                        {% for sh in shops %}
+                        {% for sh in shopspage %}
                         <div class="product-wrap">
                             <div class="product text-center">
                                 <figure class="product-media" style="width: 210px;height: 241px">
                                     <a href="{{sh.get_absolute_url}}">
-                                        <img style="width: 280px;height: 271px" src="{{sh.image}}" alt="Product" width="280" height="271" />
-                                        <img style="width: 280px;height: 271px" src="{{sh.image2}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{sh.image.url}}" alt="Product" width="280" height="271" />
+                                        <img style="width: 280px;height: 271px" src="{{sh.image2.url}}" alt="Product" width="280" height="271" />
                                     </a>
                                     <div class="product-action-horizontal">
                                         <a href="#" class="btn-product-icon btn-cart w-icon-cart"
@@ -121,27 +124,31 @@
 
                     <div class="toolbox toolbox-pagination justify-content-between">
                         <p class="showing-info mb-2 mb-sm-0">
-                            Showing<span>1-12 of 60</span>Products
+                            Showing {{ shopspage.start_index }}-{{ shopspage.end_index }} of {{ shopspage.paginator.count }} Products
                         </p>
                         <ul class="pagination">
-                            <li class="prev disabled">
-                                <a href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
+                            {% if shopspage.has_previous %}
+                            <li class="prev">
+                                <a href="?page={{ shopspage.previous_page_number }}" aria-label="Previous">
                                     <i class="w-icon-long-arrow-left"></i>Prev
                                 </a>
                             </li>
-                            <li class="page-item active">
-                                <a class="page-link" href="#">1</a>
+                            {% endif %}
+                            {% for page_num in shopspage.paginator.page_range %}
+                            <li class="{% if page_num == shopspage.number %}page-item active{% else %}page-item{% endif %}">
+                                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
                             </li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">2</a>
-                            </li>
+                            {% endfor %}
+                            {% if shopspage.has_next %}
                             <li class="next">
-                                <a href="#" aria-label="Next">
+                                <a href="?page={{ shopspage.next_page_number }}" aria-label="Next">
                                     Next<i class="w-icon-long-arrow-right"></i>
                                 </a>
                             </li>
+                            {% endif %}
                         </ul>
                     </div>
+                    
                 </div>
                 <!-- End of Shop Main Content -->
 
@@ -240,5 +247,29 @@
     <!-- End of Page Content -->
 </main>
 <!-- End of Main -->
+
+<script>
+    document.getElementById('itemsPerPage').addEventListener('change', function () {
+        const selectedValue = this.value;
+        const currentURL = window.location.href;
+
+        // Update the URL with the selected number of items per page
+        const newURL = updateQueryStringParameter(currentURL, 'count', selectedValue);
+
+        // Redirect to the new URL
+        window.location.href = newURL;
+    });
+
+    function updateQueryStringParameter(uri, key, value) {
+        const re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        const separator = uri.indexOf('?') !== -1 ? "&" : "?";
+        if (uri.match(re)) {
+            return uri.replace(re, '$1' + key + "=" + value + '$2');
+        } else {
+            return uri + separator + key + "=" + value;
+        }
+    }
+</script>
+
 
 {% include 'footer.html' %}
