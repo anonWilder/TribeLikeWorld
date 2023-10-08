@@ -186,20 +186,22 @@ class BOUTIQUE_REQUEST(models.Model):
     social_media =  models.TextField()
     approved = models.BooleanField(default=False)
     about_your_business = models.TextField()
-    brand_logo = models.ImageField(blank=True,null=True)
-    brand_banner = models.ImageField(blank=True,null=True)
     country = models.CharField(max_length=140)
     hear_about_us = models.CharField(max_length=900)
-    products_image1 = models.ImageField(blank=True,null=True,default="null")
-    products_image2 = models.ImageField(blank=True,null=True,default="null")
-    products_image3 = models.ImageField(blank=True,null=True,default="null")
-    products_image4 = models.ImageField(blank=True,null=True,default="null")
+
+    no_image = models.BooleanField(default=False)
+    brand_logo = models.ImageField(blank=True,null=True,default="/static/images/banner3.png")
+    brand_banner = models.ImageField(blank=True,null=True,default="/static/images/banner3.png")
+    products_image1 = models.ImageField(blank=True,null=True,default="/static/images/banner3.png")
+    products_image2 = models.ImageField(blank=True,null=True,default="/static/images/banner3.png")
+    products_image3 = models.ImageField(blank=True,null=True,default="/static/images/banner3.png")
+    products_image4 = models.ImageField(blank=True,null=True,default="/static/images/banner3.png")
 
     def __str__(self):
         return f'{self.Boutique_name}'
 
     def get_absolute_url(self):
-        return reverse("core:vendors", kwargs={
+        return reverse("core:vendor-Details", kwargs={
             'pk': self.pk
         })
     

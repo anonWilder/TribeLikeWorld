@@ -7,7 +7,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect, reverse
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.views.generic import ListView, DetailView, View
-from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm, ContactForm, ContactMessage
@@ -47,6 +46,9 @@ import requests
 from django.http import JsonResponse
 from django.shortcuts import render
 from .models import Item, Main_Category, BOUTIQUE_REQUEST
+import csv
+import io
+from django.contrib.auth.models import User
 
 # paystack.api_key = settings.PAYSTACK_SECRET_KEY
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -1645,7 +1647,8 @@ def vendors(request):
 	# else:
 	order = 0
 	category = Main_Category.objects.all().order_by('-id')
-	vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
+	list_ = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
+	vendors_list =list_.filter(no_image=False)
 	vendors_count = BOUTIQUE_REQUEST.objects.filter(approved=True)
 	# for i in vendors_count:
 	#     n = i.user
@@ -2110,25 +2113,206 @@ def confirm_payment(request, pk):
 # 	return render(request,"designers.html", {'item_dict': item_dict}, {'categories': categories})
 
 def designer_labels(request):
-    url = "https://nova.shopwoo.com/api/v1/brands?store_id=2&page=1&per_page=100"
-    header = {'Authorization': 'Basic aS5ubmFqaUBpY2xvdWQuY29tOjc4aWtlbm5h', 'Content-Type': 'application/json'}
-    rec = requests.get(url, headers=header)
-    api_data = rec.json()
+	order = 0
+	vendorsL = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
+	vendors_list = vendorsL.filter(no_image=True)
+	#return JsonResponse(item,safe=False)
+	vendors_serialized = serializers.serialize('json', vendors_list)
+	vendors_deserialized = json.loads(vendors_serialized)
+	# for i in vendors_deserialized:
+	# 	ig = i['pk']
+	# 	return JsonResponse(i,safe=False)
+	# 	print(i)
+	item_dict = {}
+	for item in vendors_deserialized:
+		fields = item['fields']
+		boutique_request_data = {
+			"model": "Like.boutique_request",
+			"pk": item['pk'],
+		}
+		fields.update(boutique_request_data)
+		#return JsonResponse(item,safe=False)
+		first_letter = fields['Boutique_name'][0].lower()
+		item_dict.setdefault(first_letter, []).append(fields)
 
-    item_dict = {}
-    for item in api_data:
-        first_letter = item['name'][0].lower()
-        item_dict.setdefault(first_letter, []).append(item)
+	category = Main_Category.objects.all().order_by('-id')
+	#return JsonResponse(item_dict,safe=False)
 
-    category = Main_Category.objects.all().order_by('-id')
+	context = {'item_dict': item_dict, "category": category}
 
-    # Pass both item_dict and categories in a single dictionary
-    context = {'item_dict': item_dict, "category":category}
-
-    return render(request, "designers.html", context)
+	return render(request, "designers.html", context)
 
 	# Rest of your code...
 
 
+# @login_required
+# def bulk(request):
+# 	# Fetch data from API
+# 	api_endpoint = "https://nova.shopwoo.com/api/v1/brands?store_id=2&page=1&per_page=100"
+# 	header = {'Authorization': 'Basic aS5ubmFqaUBpY2xvdWQuY29tOjc4aWtlbm5h', 'Content-Type': 'application/json'}
+# 	response = requests.get(api_endpoint, headers=header)
+	
+# 	# Check if the request was successful (HTTP status code 200)
+# 	if response.status_code == 200:
+# 		data = response.json()  # Assuming the API returns JSON data
+		
+# 		# Save data to CSV
+# 		csv_data = io.StringIO()
+# 		csv_writer = csv.writer(csv_data)
+		
+# 		# Write the header row
+# 		csv_writer.writerow(["id","Boutique_name","user"])
+		
+# 		for item in data:
+# 			csv_writer.writerow([item.get('id', ''),item.get('name', ''),request.user.username])  # Adjust fields accordingly
+		
+# 		base_directory = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
+# 		file_path = os.path.join(base_directory, 'brands.csv')
+# 		# Save CSV data to a file
+# 		# with open('brands.csv', 'w', newline='') as csvfile:
+# 		# 	csvfile.write(csv_data.getvalue())
+# 		with open(file_path, 'w', newline='') as csvfile:
+# 			csvfile.write(csv_data.getvalue())
+		
+# 		retur = upload_data_from_csv(file_path)
+# 		return HttpResponse(retur)
+
+# 		response_data = {"message": "Data saved to CSV and fetched successfully."}
+# 		return JsonResponse(response_data)
+	
+# 	return render(request, "bulk.html")
+
+
+# def upload_data_from_csv(file_path):
+# 	response_data = {"message": "Data saved to CSV and fetched successfully."}
+# 	with open(file_path, 'r') as csv_file:
+# 		csv_reader = csv.DictReader(csv_file)
+# 		try:
+# 			for row in csv_reader:
+# 				username = row['user']
+# 				try:
+# 					user_instance = User.objects.get(username=username)
+# 				except User.DoesNotExist:
+# 					user_instance = None
+# 				boutique_request = BOUTIQUE_REQUEST(
+# 					pk=row['id'],
+# 					user=user_instance,
+# 					Boutique_name=row['Boutique_name'],
+# 					items_to_sell="Boutique",
+# 					number="+1 00--------",
+# 					approved=True,
+# 					no_image=True,
+# 					where_else_you_sell="physical Store",
+# 					hear_about_us="other",
+# 					about_your_business="selling the best and unique clothing ",
+# 					country="WorldWide",
+# 					social_media="instagram",
+# 				)
+# 				boutique_request.save()
+# 				message = 'Request has been sent Successfully !'
+# 		except Exception as e:
+# 			message = str(e)
+# 	return message
+
+@login_required
 def bulk(request):
-	return render(request,"bulk.html")
+    # Fetch data from API
+    api_endpoint = "https://nova.shopwoo.com/api/v1/brands?store_id=2&page=5&per_page=100"
+    header = {'Authorization': 'Basic aS5ubmFqaUBpY2xvdWQuY29tOjc4aWtlbm5h', 'Content-Type': 'application/json'}
+    response = requests.get(api_endpoint, headers=header)
+
+    # Check if the request was successful (HTTP status code 200)
+    if response.status_code == 200:
+        data = response.json()  # Assuming the API returns JSON data
+
+        print(data)
+
+        # Save data to CSV
+        csv_data = io.StringIO()
+        csv_writer = csv.writer(csv_data)
+
+        # Write the header row
+        csv_writer.writerow(["id", "Boutique_name", "user"])
+
+        for item in data:
+            csv_writer.writerow([item.get('id', ''), item.get('name', ''), request.user.username])  # Adjust fields accordingly
+
+        base_directory = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
+        file_path = os.path.join(base_directory, 'brands.csv')
+        # Save CSV data to a file with UTF-8 encoding
+        with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
+            csvfile.write(csv_data.getvalue())
+
+        retur = upload_data_from_csv(file_path)
+        if retur is not None:
+           return HttpResponse(retur)
+
+    response_data = {"message": "Data saved to CSV and fetched successfully."}
+    return JsonResponse(response_data)
+
+
+
+
+def upload_data_from_csv(file_path):
+    message = ['']  # Initialize message as a list with an empty string
+    with open(file_path, 'r', encoding='utf-8') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        try:
+            for row in csv_reader:
+                username = row['user']
+                try:
+                    user_instance = User.objects.get(username=username)
+                except User.DoesNotExist:
+                    user_instance = None
+                boutique_request = BOUTIQUE_REQUEST(
+                    pk=row['id'],
+                    user=user_instance,
+                    Boutique_name=row['Boutique_name'],
+                    items_to_sell="Boutique",
+                    number="+1 00--------",
+                    approved=True,
+                    no_image=True,
+                    where_else_you_sell="physical Store",
+                    hear_about_us="other",
+                    about_your_business="selling the best and unique clothing ",
+                    country="WorldWide",
+                    social_media="instagram",
+                )
+                boutique_request.save()
+                message[0] = 'Request has been sent Successfully !'
+        except Exception as e:
+            message[0] = str(e)
+    print("Message within function:", message[0])  # Add this debug statement
+    return message[0]
+
+
+# def upload_data_from_csv(file_path):
+#     response_data = {"message": "Data saved to CSV and fetched successfully."}
+#     with open(file_path, 'r', encoding='utf-8') as csv_file:
+#         csv_reader = csv.DictReader(csv_file)
+#         try:
+#             for row in csv_reader:
+#                 username = row['user']
+#                 try:
+#                     user_instance = User.objects.get(username=username)
+#                 except User.DoesNotExist:
+#                     user_instance = None
+#                 boutique_request = BOUTIQUE_REQUEST(
+#                     pk=row['id'],
+#                     user=user_instance,
+#                     Boutique_name=row['Boutique_name'],
+#                     items_to_sell="Boutique",
+#                     number="+1 00--------",
+#                     approved=True,
+#                     no_image=True,
+#                     where_else_you_sell="physical Store",
+#                     hear_about_us="other",
+#                     about_your_business="selling the best and unique clothing ",
+#                     country="WorldWide",
+#                     social_media="instagram",
+#                 )
+#                 boutique_request.save()
+#                 message = 'Request has been sent Successfully !'
+#         except Exception as e:
+#             message = str(e)
+#     return message

@@ -111,7 +111,7 @@
    <h2>{{ letter|upper }}</h2>
     {% for item in items %}
      <li class="list-li">
-          <a href="#" class="list-link">{{ item.name }}</a>
+          <a href="{% url 'core:vendor-Details' pk=item.pk %}" class="list-link">{{ item.Boutique_name }}</a>
       </li>
     {% endfor %}
   </ul>
