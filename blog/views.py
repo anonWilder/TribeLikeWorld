@@ -30,7 +30,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def news(request):
     news_list = New.objects.all().order_by('-date_updated')
-    paginator = Paginator(news_list, 2)  # Change '2' to the number of articles per page you want
+    paginator = Paginator(news_list, 4)  # Change '2' to the number of articles per page you want
 
     page = request.GET.get('page')
     try:

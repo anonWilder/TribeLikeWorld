@@ -320,7 +320,7 @@ JAZZMIN_UI_TWEAKS = {
 
 JAZZMIN_SETTINGS["show_ui_builder"] = False
 
-
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20MB limit (adjust as needed)
 #flutterwave keys
 
 # FLW_PRODUCTION_PUBLIC_KEY = 'your_public_key'

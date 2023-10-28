@@ -1,3 +1,4 @@
+
 from django.urls import path
 from . import views
 from django.contrib.auth.decorators import login_required
@@ -55,6 +56,7 @@ urlpatterns = [
     path('filler/', views.country_filter, name='filler'),
     
     path('shop/', views.shop, name="shop"),
+    path('sizes/<str:string>', views.sizes, name="sizes"),
     path('dashboard/<int:pk>', views.Dashboard, name="dashboard"),
     path('dashboard_sells/', views.Dashboard_sells, name="Dashboard_sells"),
     path('draft_sells/', views.Dashboard_draft, name="Dashboard_draft"),

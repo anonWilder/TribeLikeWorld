@@ -1277,35 +1277,35 @@ def contact(request):
 
 
 def shop(request):
-    order = 0
-    category = Main_Category.objects.all().order_by('-id')
-    shops = Item.objects.all().order_by('-timestamp')
-    vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
-    
-    # Retrieve the selected items per page value or default to 20
-    items_per_page = int(request.GET.get('count', 20))
-    
-    # Get the page number from the request
-    page = request.GET.get('page')
-    
-    # Paginate the 'shops' queryset with the correct items_per_page
-    paginator = Paginator(shops, 20)
-    
-    try:
-        shopspage = paginator.page(page)
-    except PageNotAnInteger:
-        shopspage = paginator.page(1)
-    except EmptyPage:
-        shopspage = paginator.page(paginator.num_pages)
-    
-    const = {
-        'order': order,
-        'shops': shops,
-        'category': category,
-        'vendors_list': vendors_list,
-        'shopspage': shopspage
-    }
-    return render(request, "shop.html", const)
+	order = 0
+	category = Main_Category.objects.all().order_by('-id')
+	shops = Item.objects.all().order_by('-timestamp')
+	vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
+	
+	# Retrieve the selected items per page value or default to 20
+	items_per_page = int(request.GET.get('count', 50))
+	
+	# Get the page number from the request
+	page = request.GET.get('page')
+	
+	# Paginate the 'shops' queryset with the correct items_per_page
+	paginator = Paginator(shops, 50)
+	
+	try:
+		shopspage = paginator.page(page)
+	except PageNotAnInteger:
+		shopspage = paginator.page(1)
+	except EmptyPage:
+		shopspage = paginator.page(paginator.num_pages)
+	
+	const = {
+		'order': order,
+		'shops': shops,
+		'category': category,
+		'vendors_list': vendors_list,
+		'shopspage': shopspage
+	}
+	return render(request, "shop.html", const)
 
 
 
@@ -2214,76 +2214,76 @@ def designer_labels(request):
 # 			message = str(e)
 # 	return message
 
-@login_required
-def bulk(request):
-    # Fetch data from API
-    api_endpoint = "https://nova.shopwoo.com/api/v1/brands?store_id=2&page=5&per_page=100"
-    header = {'Authorization': 'Basic aS5ubmFqaUBpY2xvdWQuY29tOjc4aWtlbm5h', 'Content-Type': 'application/json'}
-    response = requests.get(api_endpoint, headers=header)
+# @login_required
+# def bulk(request):
+#     # Fetch data from API
+#     api_endpoint = "https://nova.shopwoo.com/api/v1/brands?store_id=2&page=5&per_page=100"
+#     header = {'Authorization': 'Basic aS5ubmFqaUBpY2xvdWQuY29tOjc4aWtlbm5h', 'Content-Type': 'application/json'}
+#     response = requests.get(api_endpoint, headers=header)
 
-    # Check if the request was successful (HTTP status code 200)
-    if response.status_code == 200:
-        data = response.json()  # Assuming the API returns JSON data
+#     # Check if the request was successful (HTTP status code 200)
+#     if response.status_code == 200:
+#         data = response.json()  # Assuming the API returns JSON data
 
-        print(data)
+#         print(data)
 
-        # Save data to CSV
-        csv_data = io.StringIO()
-        csv_writer = csv.writer(csv_data)
+#         # Save data to CSV
+#         csv_data = io.StringIO()
+#         csv_writer = csv.writer(csv_data)
 
-        # Write the header row
-        csv_writer.writerow(["id", "Boutique_name", "user"])
+#         # Write the header row
+#         csv_writer.writerow(["id", "Boutique_name", "user"])
 
-        for item in data:
-            csv_writer.writerow([item.get('id', ''), item.get('name', ''), request.user.username])  # Adjust fields accordingly
+#         for item in data:
+#             csv_writer.writerow([item.get('id', ''), item.get('name', ''), request.user.username])  # Adjust fields accordingly
 
-        base_directory = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
-        file_path = os.path.join(base_directory, 'brands.csv')
-        # Save CSV data to a file with UTF-8 encoding
-        with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
-            csvfile.write(csv_data.getvalue())
+#         base_directory = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
+#         file_path = os.path.join(base_directory, 'brands.csv')
+#         # Save CSV data to a file with UTF-8 encoding
+#         with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
+#             csvfile.write(csv_data.getvalue())
 
-        retur = upload_data_from_csv(file_path)
-        if retur is not None:
-           return HttpResponse(retur)
+#         retur = upload_data_from_csv(file_path)
+#         if retur is not None:
+#            return HttpResponse(retur)
 
-    response_data = {"message": "Data saved to CSV and fetched successfully."}
-    return JsonResponse(response_data)
-
-
+#     response_data = {"message": "Data saved to CSV and fetched successfully."}
+#     return JsonResponse(response_data)
 
 
-def upload_data_from_csv(file_path):
-    message = ['']  # Initialize message as a list with an empty string
-    with open(file_path, 'r', encoding='utf-8') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        try:
-            for row in csv_reader:
-                username = row['user']
-                try:
-                    user_instance = User.objects.get(username=username)
-                except User.DoesNotExist:
-                    user_instance = None
-                boutique_request = BOUTIQUE_REQUEST(
-                    pk=row['id'],
-                    user=user_instance,
-                    Boutique_name=row['Boutique_name'],
-                    items_to_sell="Boutique",
-                    number="+1 00--------",
-                    approved=True,
-                    no_image=True,
-                    where_else_you_sell="physical Store",
-                    hear_about_us="other",
-                    about_your_business="selling the best and unique clothing ",
-                    country="WorldWide",
-                    social_media="instagram",
-                )
-                boutique_request.save()
-                message[0] = 'Request has been sent Successfully !'
-        except Exception as e:
-            message[0] = str(e)
-    print("Message within function:", message[0])  # Add this debug statement
-    return message[0]
+
+
+# def upload_data_from_csv(file_path):
+#     message = ['']  # Initialize message as a list with an empty string
+#     with open(file_path, 'r', encoding='utf-8') as csv_file:
+#         csv_reader = csv.DictReader(csv_file)
+#         try:
+#             for row in csv_reader:
+#                 username = row['user']
+#                 try:
+#                     user_instance = User.objects.get(username=username)
+#                 except User.DoesNotExist:
+#                     user_instance = None
+#                 boutique_request = BOUTIQUE_REQUEST(
+#                     pk=row['id'],
+#                     user=user_instance,
+#                     Boutique_name=row['Boutique_name'],
+#                     items_to_sell="Boutique",
+#                     number="+1 00--------",
+#                     approved=True,
+#                     no_image=True,
+#                     where_else_you_sell="physical Store",
+#                     hear_about_us="other",
+#                     about_your_business="selling the best and unique clothing ",
+#                     country="WorldWide",
+#                     social_media="instagram",
+#                 )
+#                 boutique_request.save()
+#                 message[0] = 'Request has been sent Successfully !'
+#         except Exception as e:
+#             message[0] = str(e)
+#     print("Message within function:", message[0])  # Add this debug statement
+#     return message[0]
 
 
 # def upload_data_from_csv(file_path):
@@ -2316,3 +2316,142 @@ def upload_data_from_csv(file_path):
 #         except Exception as e:
 #             message = str(e)
 #     return message
+
+
+def upload_data_from_csv(file_path):
+	response_data = {"message": "Data saved to CSV and fetched successfully."}
+	# message = ""
+	with open(file_path, 'r', encoding='utf-8') as csv_file:
+		csv_reader = csv.DictReader(csv_file)
+		try:
+			for row in csv_reader:
+				username = row['user']
+				try:
+					user_instance = User.objects.get(username=username)
+				except User.DoesNotExist:
+					user_instance = None
+
+				try:
+					boutique_request = BOUTIQUE_REQUEST.objects.get(Boutique_name=row['Boutique_name'])
+				except BOUTIQUE_REQUEST.DoesNotExist:
+					boutique_request = None
+					# continue
+
+				try:
+					category = Category.objects.get(name="Men's Clothing")
+				except Category.DoesNotExist:
+					category = None
+				try:
+					sub_Category = Sub_Category.objects.get(name="T-Shirts")
+				except Sub_Category.DoesNotExist:
+					sub_Category = None
+				except MultipleObjectsReturned:
+					# Handle multiple Sub_Category instances with the same name and category
+					sub_Category = None
+				
+				# return JsonResponse(file_path,safe=False)
+				request_ = Item(
+					pk=row['id'],
+					user=user_instance,
+					title=row['title'],
+					price = row['price'],
+					Boutique_name=boutique_request,
+					shiping_fee=2.00,
+					category=category,
+					approved=True,
+					image_link=True,
+					sub_category=sub_Category,
+					overview= row['overview'],
+					description=row['description'],
+					sku=row['sku'],
+					in_stock=row['in_stock'],
+					stock_quantity=row['stock_quantity'],
+					stock_status=row['stock_status'],
+					image0 = row['image0'],
+					image1 = row['image1'],
+					image2 = row['image2a'],
+					image3 = row['image3'],
+					barcode =row['barcode'],
+					size = row['size'],
+					size_name = row['size_name'],
+					weight=row['weight'],
+				)
+				request_.save()
+				message = 'Request has been sent Successfully !'
+		except Exception as e:
+			message = str(e)
+	return message
+
+
+@login_required
+def bulk(request):
+	# Fetch data from API
+	api_endpoint = "https://nova.shopwoo.com/api/v1/products?store_id=2&page=2&per_page=100&lang=en"
+	header = {'Authorization': 'Basic aS5ubmFqaUBpY2xvdWQuY29tOjc4aWtlbm5h', 'Content-Type': 'application/json'}
+	response = requests.get(api_endpoint, headers=header)
+
+	# Check if the request was successful (HTTP status code 200)
+	if response.status_code == 200:
+		data = response.json()  # Assuming the API returns JSON data
+		
+		# Save data to CSV
+		csv_data = io.StringIO()
+		csv_writer = csv.writer(csv_data)
+		
+		# Write the header row
+		csv_writer.writerow(["id","user","title", "price", "Boutique_name", "image0", "image1", "image2a","image3", "overview", "description", "in_stock", "sku", "stock_quantity", "stock_status", "barcode", "size", "size_name","weight"])
+		
+		for item in data:
+			images = item.get('images', [])
+			brands = item.get('brands', [])
+			image_urls = [image.get('src') for image in images]
+			list_ = item.get('variations', [])
+			
+			for variant in list_:
+				option_size = variant.get('attributes', [])
+				for option_ in option_size:
+					csv_writer.writerow([variant.get('id', ''),request.user.username, item.get('name', ''), variant.get('sale_price', ''),brands[0],image_urls[:1][0], image_urls[1:2][0], image_urls[2:3][0],image_urls[3:4][0],item.get('description', ''),item.get('description', ''),variant.get('in_stock', ''),variant.get('sku', ''),variant.get('stock_quantity', ''),variant.get('stock_status', ''),variant.get('barcode', ''),option_.get("option"),option_.get('name', ''),item.get('weight', '')])  # Adjust fields accordingly
+			
+		base_directory = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
+		file_path = os.path.join(base_directory, 'shop.csv')
+
+		with open(file_path, 'w', newline='', encoding='utf-8') as csvfile:
+			csvfile.write(csv_data.getvalue())
+		
+		retur = upload_data_from_csv(file_path)
+		return HttpResponse(retur)
+
+	response_data = {"message": "Data saved to CSV and fetched successfully."}
+	return JsonResponse(response_data,safe=False)
+
+
+def sizes(request,string):
+	order = 0
+	category = Main_Category.objects.all().order_by('-id')
+	shops = Item.objects.filter(size__contains=string).order_by('-timestamp')
+	print(shops)
+	vendors_list = BOUTIQUE_REQUEST.objects.filter(approved=True).order_by('-id')
+	
+	# Retrieve the selected items per page value or default to 20
+	items_per_page = int(request.GET.get('count', 50))
+	
+	# Get the page number from the request
+	page = request.GET.get('page')
+	
+	# Paginate the 'shops' queryset with the correct items_per_page
+	paginator = Paginator(shops, 50)
+	
+	try:
+		shopspage = paginator.page(page)
+	except PageNotAnInteger:
+		shopspage = paginator.page(1)
+	except EmptyPage:
+		shopspage = paginator.page(paginator.num_pages)
+	const = {
+		'order': order,
+		'shops': shops,
+		'category': category,
+		'vendors_list': vendors_list,
+		'shopspage': shopspage
+	}
+	return render(request,"sizes.html",const)
